@@ -1,9 +1,19 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import Table from "@/components/table";
+import { getStocks } from "@/utils/getStocks";
+import { IStock } from "@/types/stock";
 
 export default function Home() {
+  const [stocks, setStocks] = useState<IStock[]>([]);
+
+  useEffect(() => {
+    getStocks().then(setStocks).catch(console.error);
+  }, []);
+
   return (
     <>
       {/* Header */}
@@ -95,6 +105,7 @@ export default function Home() {
             </div>
           </div>
         </div>
+        <Table data={stocks} />
       </main>
     </>
   );
