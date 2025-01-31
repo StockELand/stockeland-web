@@ -19,6 +19,9 @@ module.exports = {
         signature: "#a6fc35", // 웹사이트 시그니처 색상
         signature2: "#fcd535", // 웹사이트 시그니처 색상2
         outline1: "#2b3139", // 외곽선 색상1
+
+        thTxt: "#626A76",
+        selectedBg: "#1E2026",
       },
     },
   },

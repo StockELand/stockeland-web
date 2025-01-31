@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import Table from "@/components/table";
 import { getStocks } from "@/utils/getStocks";
-import { IStock } from "@/types/stock";
+import { IStock } from "@/types/table";
+import { StockTable } from "@/components/table";
 
 export default function Home() {
   const [stocks, setStocks] = useState<IStock[]>([]);
@@ -37,12 +37,12 @@ export default function Home() {
       <main className="px-8 py-6">
         <h1 className="mb-6 text-3xl font-bold text-white">Dashboard</h1>
 
-        <div className="flex flex-wrap gap-6">
+        <div className="flex flex-wrap gap-6 mb-6">
           {/* Manual Run Card */}
           <div className="flex flex-col w-80 p-6 space-y-4 bg-gray-800 rounded-2xl h-fit">
             <h2 className="text-m font-bold text-white">수동 실행</h2>
             <div className="flex flex-col space-y-2">
-              <button className="h-12 text-sm font-bold bg-signature2 rounded-md text-#101010-900">
+              <button className="h-12 text-sm font-bold bg-signature2 rounded-md text-gray-900">
                 Data Parsing
               </button>
               <button className="h-12 text-sm font-bold bg-signature2 rounded-md text-gray-900">
@@ -52,7 +52,7 @@ export default function Home() {
           </div>
 
           {/* Top 5 Card */}
-          <div className="flex flex-col w-80 p-6 space-y-4 bg-gray-800 rounded-2xl h-fit">
+          <div className="flex flex-col w-80 p-6 space-y-4 border-outline1 border-[1px] rounded-2xl h-fit">
             <h2 className="text-m font-bold text-white">Top 5</h2>
             <div className="flex flex-col space-y-3">
               {[1, 2, 3, 4, 5].map((_, index) => (
@@ -80,7 +80,7 @@ export default function Home() {
           </div>
 
           {/* Bottom 5 Card */}
-          <div className="flex flex-col w-80 p-6 space-y-4 bg-gray-800 rounded-2xl h-fit">
+          <div className="flex flex-col w-80 p-6 space-y-4 border-outline1 border-[1px] rounded-2xl h-fit">
             <h2 className="text-m font-bold text-white">Bottom 5</h2>
             <div className="flex flex-col space-y-3">
               {[1, 2, 3, 4, 5].map((_, index) => (
@@ -105,7 +105,9 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <Table data={stocks} />
+        <div className="border-outline1 border-[1px] rounded-2xl overflow-hidden">
+          <StockTable data={stocks} />
+        </div>
       </main>
     </>
   );

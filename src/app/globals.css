@@ -5,7 +5,7 @@
 @layer base {
   :root {
     --tw-bg: #181a20;
-    --tw-text: #171717;
+    --tw-text: #ededed;
   }
 
   @media (prefers-color-scheme: dark) {

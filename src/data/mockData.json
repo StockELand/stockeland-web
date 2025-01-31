@@ -78,5 +78,85 @@
     "today_close": 36.4,
     "previous_prediction_error": 0.2,
     "today_prediction_percent": 1.39
+  },
+  {
+    "ticker": "BA",
+    "name": "Boeing Co.",
+    "previous_close": 210.5,
+    "today_close": 215.0,
+    "previous_prediction_error": 0.3,
+    "today_prediction_percent": 2.14
+  },
+  {
+    "ticker": "V",
+    "name": "Visa Inc.",
+    "previous_close": 225.9,
+    "today_close": 228.2,
+    "previous_prediction_error": -0.4,
+    "today_prediction_percent": 1.02
+  },
+  {
+    "ticker": "JPM",
+    "name": "JPMorgan Chase & Co.",
+    "previous_close": 155.8,
+    "today_close": 157.3,
+    "previous_prediction_error": 0.5,
+    "today_prediction_percent": 0.97
+  },
+  {
+    "ticker": "DIS",
+    "name": "Walt Disney Co.",
+    "previous_close": 110.6,
+    "today_close": 112.0,
+    "previous_prediction_error": -1.1,
+    "today_prediction_percent": 1.35
+  },
+  {
+    "ticker": "PG",
+    "name": "Procter & Gamble Co.",
+    "previous_close": 152.4,
+    "today_close": 154.1,
+    "previous_prediction_error": 0.6,
+    "today_prediction_percent": 1.12
+  },
+  {
+    "ticker": "KO",
+    "name": "Coca-Cola Co.",
+    "previous_close": 58.6,
+    "today_close": 59.1,
+    "previous_prediction_error": -0.3,
+    "today_prediction_percent": 0.85
+  },
+  {
+    "ticker": "PEP",
+    "name": "PepsiCo Inc.",
+    "previous_close": 171.9,
+    "today_close": 174.2,
+    "previous_prediction_error": 0.7,
+    "today_prediction_percent": 1.33
+  },
+  {
+    "ticker": "WMT",
+    "name": "Walmart Inc.",
+    "previous_close": 140.8,
+    "today_close": 142.5,
+    "previous_prediction_error": -0.5,
+    "today_prediction_percent": 1.2
+  },
+  {
+    "ticker": "MCD",
+    "name": "McDonald's Corp.",
+    "previous_close": 278.5,
+    "today_close": 281.0,
+    "previous_prediction_error": 0.9,
+    "today_prediction_percent": 0.89
+  },
+  {
+    "ticker": "XOM",
+    "name": "Exxon Mobil Corp.",
+    "previous_close": 110.2,
+    "today_close": 112.6,
+    "previous_prediction_error": -0.7,
+    "today_prediction_percent": 1.79
   }
 ]
