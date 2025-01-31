@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
 import { getStocks } from "@/utils/getStocks";
 import { IStock } from "@/types/table";
@@ -16,23 +15,6 @@ export default function Home() {
 
   return (
     <>
-      {/* Header */}
-      <header className="flex items-center w-full h-16 px-6 bg-gray-900">
-        <div className="flex items-center px-3">
-          <Link href="/">
-            <span className="text-lg font-bold text-signature">StockELand</span>
-          </Link>
-        </div>
-        <nav className="flex items-center">
-          <span className="px-3 text-sm font-bold text-white cursor-pointer">
-            Dashboard
-          </span>
-          <span className="px-3 text-sm font-bold text-white cursor-pointer">
-            설정
-          </span>
-        </nav>
-      </header>
-
       {/* Main Content */}
       <main className="px-8 py-6">
         <h1 className="mb-6 text-3xl font-bold text-white">Dashboard</h1>
