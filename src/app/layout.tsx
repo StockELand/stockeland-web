@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang="ko">
       <body className={`${notoSansKr.variable} font-sans`}>
         <Header />
-        {children}
+        <main className="px-8 py-6">{children}</main>
       </body>
     </html>
   );
