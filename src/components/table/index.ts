@@ -1,1 +1,1 @@
-export { default as StockTable } from "./StockTable";
+export { default as Table } from "./Table";

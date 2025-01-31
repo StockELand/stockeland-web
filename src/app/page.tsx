@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { getStocks } from "@/utils/getStocks";
 import { IStock } from "@/types/table";
-import { StockTable } from "@/components/table";
+import StockTable from "@/components/domain/StockTable";
 
 export default function Home() {
   const [stocks, setStocks] = useState<IStock[]>([]);
