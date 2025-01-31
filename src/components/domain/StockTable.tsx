@@ -1,6 +1,6 @@
 import { IStock } from "@/types/table";
 import { createColumnHelper } from "@tanstack/react-table";
-import Table from "./Table";
+import { Table } from "../table";
 
 const columnHelper = createColumnHelper<IStock>();
 

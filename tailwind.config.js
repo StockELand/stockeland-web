@@ -12,7 +12,9 @@ module.exports = {
       },
       colors: {
         background: "var(--tw-bg)", // 배경색
+        background1: "var(--tw-bg1)", // 배경색
         foreground: "var(--tw-text)", // 글자색
+        inverseForground: "var(--tw-inverseTxt)", // 글자색 반전색
 
         rise: "#a6fc35", // 상승 주가 표시
         fall: "#F6465D", // 하락 주가 표시
