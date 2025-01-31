@@ -1,0 +1,162 @@
+[
+  {
+    "ticker": "AAPL",
+    "name": "Apple Inc.",
+    "previous_close": 180.45,
+    "today_close": 182.3,
+    "previous_prediction_error": -0.5,
+    "today_prediction_percent": 1.02
+  },
+  {
+    "ticker": "MSFT",
+    "name": "Microsoft Corp.",
+    "previous_close": 320.2,
+    "today_close": 322.15,
+    "previous_prediction_error": 0.3,
+    "today_prediction_percent": 0.61
+  },
+  {
+    "ticker": "TSLA",
+    "name": "Tesla Inc.",
+    "previous_close": 210.35,
+    "today_close": 215.8,
+    "previous_prediction_error": -1.2,
+    "today_prediction_percent": 2.59
+  },
+  {
+    "ticker": "AMZN",
+    "name": "Amazon.com Inc.",
+    "previous_close": 145.9,
+    "today_close": 147.25,
+    "previous_prediction_error": -0.8,
+    "today_prediction_percent": 0.93
+  },
+  {
+    "ticker": "GOOGL",
+    "name": "Alphabet Inc. (Google)",
+    "previous_close": 135.4,
+    "today_close": 138.1,
+    "previous_prediction_error": 0.6,
+    "today_prediction_percent": 1.99
+  },
+  {
+    "ticker": "NVDA",
+    "name": "NVIDIA Corp.",
+    "previous_close": 460.75,
+    "today_close": 470.9,
+    "previous_prediction_error": -1.5,
+    "today_prediction_percent": 2.21
+  },
+  {
+    "ticker": "META",
+    "name": "Meta Platforms Inc. (Facebook)",
+    "previous_close": 280.3,
+    "today_close": 285.5,
+    "previous_prediction_error": 0.4,
+    "today_prediction_percent": 1.86
+  },
+  {
+    "ticker": "NFLX",
+    "name": "Netflix Inc.",
+    "previous_close": 400.5,
+    "today_close": 405.75,
+    "previous_prediction_error": -0.9,
+    "today_prediction_percent": 1.31
+  },
+  {
+    "ticker": "AMD",
+    "name": "Advanced Micro Devices Inc.",
+    "previous_close": 120.25,
+    "today_close": 123.8,
+    "previous_prediction_error": -0.7,
+    "today_prediction_percent": 2.96
+  },
+  {
+    "ticker": "INTC",
+    "name": "Intel Corp.",
+    "previous_close": 35.9,
+    "today_close": 36.4,
+    "previous_prediction_error": 0.2,
+    "today_prediction_percent": 1.39
+  },
+  {
+    "ticker": "BA",
+    "name": "Boeing Co.",
+    "previous_close": 210.5,
+    "today_close": 215.0,
+    "previous_prediction_error": 0.3,
+    "today_prediction_percent": 2.14
+  },
+  {
+    "ticker": "V",
+    "name": "Visa Inc.",
+    "previous_close": 225.9,
+    "today_close": 228.2,
+    "previous_prediction_error": -0.4,
+    "today_prediction_percent": 1.02
+  },
+  {
+    "ticker": "JPM",
+    "name": "JPMorgan Chase & Co.",
+    "previous_close": 155.8,
+    "today_close": 157.3,
+    "previous_prediction_error": 0.5,
+    "today_prediction_percent": 0.97
+  },
+  {
+    "ticker": "DIS",
+    "name": "Walt Disney Co.",
+    "previous_close": 110.6,
+    "today_close": 112.0,
+    "previous_prediction_error": -1.1,
+    "today_prediction_percent": 1.35
+  },
+  {
+    "ticker": "PG",
+    "name": "Procter & Gamble Co.",
+    "previous_close": 152.4,
+    "today_close": 154.1,
+    "previous_prediction_error": 0.6,
+    "today_prediction_percent": 1.12
+  },
+  {
+    "ticker": "KO",
+    "name": "Coca-Cola Co.",
+    "previous_close": 58.6,
+    "today_close": 59.1,
+    "previous_prediction_error": -0.3,
+    "today_prediction_percent": 0.85
+  },
+  {
+    "ticker": "PEP",
+    "name": "PepsiCo Inc.",
+    "previous_close": 171.9,
+    "today_close": 174.2,
+    "previous_prediction_error": 0.7,
+    "today_prediction_percent": 1.33
+  },
+  {
+    "ticker": "WMT",
+    "name": "Walmart Inc.",
+    "previous_close": 140.8,
+    "today_close": 142.5,
+    "previous_prediction_error": -0.5,
+    "today_prediction_percent": 1.2
+  },
+  {
+    "ticker": "MCD",
+    "name": "McDonald's Corp.",
+    "previous_close": 278.5,
+    "today_close": 281.0,
+    "previous_prediction_error": 0.9,
+    "today_prediction_percent": 0.89
+  },
+  {
+    "ticker": "XOM",
+    "name": "Exxon Mobil Corp.",
+    "previous_close": 110.2,
+    "today_close": 112.6,
+    "previous_prediction_error": -0.7,
+    "today_prediction_percent": 1.79
+  }
+]
