@@ -1,7 +1,9 @@
+"use client";
 import Card from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
 import useSSE from "@/hooks/useSSE";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { mutate } from "swr";
 
 export default function ManualRunCard() {
   const { progress, status, startSSE } = useSSE(
@@ -36,6 +38,15 @@ export default function ManualRunCard() {
       console.error("Error starting Learning:", error);
     }
   };
+
+  useEffect(() => {
+    if (predictStatus == "completed") {
+      async function mutatePredictions() {
+        await mutate("http://localhost:8080/stock/predictions");
+      }
+      mutatePredictions();
+    }
+  }, [predictStatus]);
 
   return (
     <Card title="수동실행">
