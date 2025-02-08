@@ -1,9 +1,10 @@
-import Image from "next/image";
+// import Image from "next/image";
 import Card from "@/components/ui/Card";
+import { IStockPrediction } from "@/types/api";
 
 interface StockListCardProps {
   title?: string;
-  stocks: { ticker: string; percent: number }[];
+  stocks: IStockPrediction[];
   isPositive?: boolean;
 }
 
@@ -22,25 +23,32 @@ export default function StockListCard({
           >
             <div className="flex items-center space-x-3">
               <div className="flex items-center justify-center w-8 h-8 overflow-hidden bg-white rounded-full">
-                <Image
+                {/* <Image
                   src="/tesla-logo.png"
-                  alt={`${stock.ticker} Logo`}
+                  alt={`${stock.symbol} Logo`}
                   width={24}
                   height={24}
-                />
+                /> */}
               </div>
               <span className="text-sm font-bold text-white">
-                {stock.ticker}
+                {stock.symbol}
               </span>
             </div>
-            <span
-              className={`text-sm font-bold ${
-                isPositive ? "text-signature" : "text-fall"
-              }`}
-            >
-              {isPositive ? "+" : ""}
-              {stock.percent}%
-            </span>
+            <div className="flex flex-row space-x-3">
+              <span className={`text-sm text-thTxt`}>
+                {stock.prev_change_percent &&
+                  Math.round(stock.prev_change_percent * 100) / 100}
+                %
+              </span>
+              <span
+                className={`text-sm font-bold ${
+                  isPositive ? "text-signature" : "text-fall"
+                }`}
+              >
+                {isPositive ? "+" : ""}
+                {Math.round(stock.change_percent * 100) / 100}%
+              </span>
+            </div>
           </div>
         ))}
       </div>

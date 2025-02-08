@@ -1,21 +1,18 @@
 "use client";
-
-import { useEffect, useState } from "react";
-
-import { getStocks } from "@/utils/getStocks";
 import { IStock } from "@/types/table";
 import StockTable from "@/components/domain/StockTable";
 import Card from "@/components/ui/Card";
 import Typography from "@/components/ui/Typography";
 import ManualRunCard from "@/components/domain/ManualRunCard";
 import StockListCard from "@/components/domain/StockListCard";
+import useSWR from "swr";
+import { IStockPrediction } from "@/types/api";
 
 export default function Home() {
-  const [stocks, setStocks] = useState<IStock[]>([]);
-
-  useEffect(() => {
-    getStocks().then(setStocks).catch(console.error);
-  }, []);
+  const { data: predictions } = useSWR<IStockPrediction[]>(
+    "http://localhost:8080/stock/predictions"
+  );
+  const { data: stocks } = useSWR<IStock[]>("http://localhost:3000/api/mock");
 
   return (
     <>
@@ -23,36 +20,26 @@ export default function Home() {
 
       <div className="flex flex-wrap gap-6 mb-6">
         <ManualRunCard />
-        {/* Top 5 Card */}
-        <StockListCard
-          title="Top 5"
-          stocks={[
-            { ticker: "TSLA", percent: 23.19 },
-            { ticker: "TSLA", percent: 23.19 },
-            { ticker: "TSLA", percent: 23.19 },
-            { ticker: "TSLA", percent: 23.19 },
-            { ticker: "TSLA", percent: 23.19 },
-          ]}
-          isPositive
-        />
-        <StockListCard
-          title="Bottom 5"
-          stocks={[
-            { ticker: "TSLA", percent: 23.19 },
-            { ticker: "TSLA", percent: 23.19 },
-            { ticker: "TSLA", percent: 23.19 },
-            { ticker: "TSLA", percent: 23.19 },
-            { ticker: "TSLA", percent: 23.19 },
-          ]}
-        />
+        {predictions && (
+          <>
+            <StockListCard
+              title="Top 5"
+              stocks={predictions.splice(0, 5)}
+              isPositive
+            />
+            <StockListCard title="Bottom 5" stocks={predictions.splice(-5)} />
+          </>
+        )}
       </div>
-      <Card
-        variant="bordered"
-        padding="none"
-        className="overflow-hidden w-full"
-      >
-        <StockTable data={stocks} />
-      </Card>
+      {stocks && (
+        <Card
+          variant="bordered"
+          padding="none"
+          className="overflow-hidden w-full"
+        >
+          <StockTable data={stocks} />
+        </Card>
+      )}
     </>
   );
 }
