@@ -1,48 +1,57 @@
 import { IStock } from "@/types/table";
 import { createColumnHelper } from "@tanstack/react-table";
 import { Table } from "../table";
+import Image from "next/image";
 
 const columnHelper = createColumnHelper<IStock>();
 
-const getColumns = () => {
-  return [
-    columnHelper.accessor("ticker", {
-      id: "ticker",
-      header: () => <div className="text-left">Ticker</div>,
-      cell: (info) => <div className="text-left">{info.getValue()}</div>,
-    }),
-    columnHelper.accessor((row) => row.previous_close, {
-      id: "previous_close",
-      header: () => <div className="text-right">Prev Close</div>,
-      cell: (info) => <div className="text-right">${info.getValue()}</div>,
-    }),
-    columnHelper.accessor((row) => row.today_close, {
-      id: "today_close",
-      header: () => <div className="text-right">Today Close</div>,
-      cell: (info) => <div className="text-right">${info.getValue()}</div>,
-    }),
-    columnHelper.accessor((row) => row.previous_prediction_error, {
-      id: "previous_prediction_error",
-      header: () => <div className="text-right">Prev Prediction Error</div>,
-      cell: (info) =>
-        (info.getValue() as number) > 0 ? (
-          <div className="text-right text-rise">{info.getValue()}%</div>
-        ) : (
-          <div className="text-right text-fall">{info.getValue()}%</div>
-        ),
-    }),
-    columnHelper.accessor((row) => row.today_prediction_percent, {
-      id: "today_prediction_percent",
-      header: () => <div className="text-right">Today Prediction Error</div>,
-      cell: (info) =>
-        (info.getValue() as number) > 0 ? (
-          <div className="text-right text-rise">{info.getValue()}%</div>
-        ) : (
-          <div className="text-right text-fall">{info.getValue()}%</div>
-        ),
-    }),
-  ];
-};
+const StockSymbolCell = ({ symbol }: { symbol: string }) => (
+  <div className="text-left flex items-center space-x-3">
+    <div className="flex items-center justify-center w-8 h-8 overflow-hidden rounded-full">
+      <Image
+        src={`/logos/${symbol}.png`}
+        alt={`${symbol} Logo`}
+        width={34}
+        height={34}
+      />
+    </div>
+    <span className="text-sm font-bold text-white">{symbol}</span>
+  </div>
+);
+
+const formatPercentage = (value: number) => (
+  <div className={`text-right ${value > 0 ? "text-rise" : "text-fall"}`}>
+    {Math.round(value * 100) / 100}%
+  </div>
+);
+
+const getColumns = () => [
+  columnHelper.accessor("symbol", {
+    id: "symbol",
+    header: () => <div className="text-left">Symbol</div>,
+    cell: (info) => <StockSymbolCell symbol={info.getValue()} />,
+  }),
+  columnHelper.accessor("prev_close", {
+    id: "prev_close",
+    header: () => <div className="text-right">Prev Close</div>,
+    cell: (info) => <div className="text-right">${info.getValue()}</div>,
+  }),
+  columnHelper.accessor("latest_close", {
+    id: "latest_close",
+    header: () => <div className="text-right">Latest Close</div>,
+    cell: (info) => <div className="text-right">${info.getValue()}</div>,
+  }),
+  columnHelper.accessor("prev_change_percent", {
+    id: "prev_change_percent",
+    header: () => <div className="text-right">Prev Prediction</div>,
+    cell: (info) => formatPercentage(info.getValue() as number),
+  }),
+  columnHelper.accessor("latest_change_percent", {
+    id: "latest_change_percent",
+    header: () => <div className="text-right">Latest Prediction</div>,
+    cell: (info) => formatPercentage(info.getValue() as number),
+  }),
+];
 
 interface StockTableProps {
   data: IStock[];
