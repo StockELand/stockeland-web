@@ -1,4 +1,4 @@
-// import Image from "next/image";
+import Image from "next/image";
 import Card from "@/components/ui/Card";
 import { IStockPrediction } from "@/types/api";
 
@@ -22,13 +22,13 @@ export default function StockListCard({
             className="flex items-center justify-between px-2 py-1"
           >
             <div className="flex items-center space-x-3">
-              <div className="flex items-center justify-center w-8 h-8 overflow-hidden bg-white rounded-full">
-                {/* <Image
-                  src="/tesla-logo.png"
+              <div className="flex items-center justify-center w-8 h-8 overflow-hidden rounded-full">
+                <Image
+                  src={`/logos/${stock.symbol}.png`}
                   alt={`${stock.symbol} Logo`}
-                  width={24}
-                  height={24}
-                /> */}
+                  width={34}
+                  height={34}
+                />
               </div>
               <span className="text-sm font-bold text-white">
                 {stock.symbol}
