@@ -2,6 +2,7 @@ import { IStock } from "@/types/table";
 import { createColumnHelper } from "@tanstack/react-table";
 import { Table } from "../table";
 import Image from "next/image";
+import { CustomColumnMeta } from "../table/Table";
 
 const columnHelper = createColumnHelper<IStock>();
 
@@ -43,6 +44,7 @@ const getColumns = () => [
     cell: (info) => (
       <StockSymbolCell symbol={info.getValue()} name={info.row.original.name} />
     ),
+    meta: { isPinned: "left" } as CustomColumnMeta,
   }),
   columnHelper.accessor("prev_close", {
     id: "prev_close",
