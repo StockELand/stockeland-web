@@ -5,7 +5,13 @@ import Image from "next/image";
 
 const columnHelper = createColumnHelper<IStock>();
 
-const StockSymbolCell = ({ symbol }: { symbol: string }) => (
+const StockSymbolCell = ({
+  symbol,
+  name,
+}: {
+  symbol: string;
+  name: string;
+}) => (
   <div className="text-left flex items-center space-x-3">
     <div className="flex items-center justify-center w-8 h-8 overflow-hidden rounded-full">
       <Image
@@ -15,7 +21,12 @@ const StockSymbolCell = ({ symbol }: { symbol: string }) => (
         height={34}
       />
     </div>
-    <span className="text-sm font-bold text-white">{symbol}</span>
+    <div className="flex flex-col">
+      <span className="text-sm font-bold text-white">{symbol}</span>
+      <span className="text-xs text-thTxt truncate overflow-hidden max-w-[100px] sm:max-w-[200px] md:max-w-none">
+        {name}
+      </span>
+    </div>
   </div>
 );
 
@@ -29,7 +40,9 @@ const getColumns = () => [
   columnHelper.accessor("symbol", {
     id: "symbol",
     header: () => <div className="text-left">Symbol</div>,
-    cell: (info) => <StockSymbolCell symbol={info.getValue()} />,
+    cell: (info) => (
+      <StockSymbolCell symbol={info.getValue()} name={info.row.original.name} />
+    ),
   }),
   columnHelper.accessor("prev_close", {
     id: "prev_close",
