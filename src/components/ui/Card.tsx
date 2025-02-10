@@ -23,7 +23,7 @@ export default function Card({
   return (
     <div
       className={clsx(
-        "flex flex-col w-80 space-y-4 rounded-2xl h-fit",
+        "w-full flex flex-col md:w-80 space-y-4 rounded-2xl h-fit",
         {
           "bg-background1": variant === "default",
           "border-outline1 border-[1px]": variant === "bordered",
