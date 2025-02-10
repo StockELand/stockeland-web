@@ -4,16 +4,16 @@
 
 @layer base {
   :root {
-    --tw-bg: #181a20;
-    --tw-bg1: #1f2937;
+    --tw-bg: #181a1f;
+    --tw-bg1: #1e2329;
     --tw-text: #ededed;
     --tw-inverseTxt: #181a20;
   }
 
   @media (prefers-color-scheme: dark) {
     :root {
-      --tw-bg: #181a20;
-      --tw-bg1: #1f2937;
+      --tw-bg: #181a1f;
+      --tw-bg1: #1e2329;
       --tw-text: #ededed;
       --tw-inverseTxt: #181a20;
     }

@@ -44,7 +44,7 @@ const useSSE = (url: string) => {
     };
   }, [eventSource]);
 
-  return { progress, status, isConnected, startSSE };
+  return { progress, status, setStatus, isConnected, startSSE };
 };
 
 export default useSSE;
