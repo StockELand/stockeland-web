@@ -1,40 +1,12 @@
 import {
-  Cell,
   ColumnDef,
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
-  Header,
   useReactTable,
 } from "@tanstack/react-table";
-import UpArrow from "@/../public/assets/up-arrow.svg";
-import DownArrow from "@/../public/assets/down-arrow.svg";
-import HorizontalRule from "@/../public/assets/horizontal-rule.svg";
-
-export interface CustomColumnMeta {
-  pinAlign?: "left" | "right";
-  textAlign?: "left" | "right" | "center";
-}
-
-function getPinnedClass<T>(column: Header<T, unknown> | Cell<T, unknown>) {
-  const meta = column.column.columnDef.meta as CustomColumnMeta | undefined;
-  const pinAlign = meta?.pinAlign;
-
-  if (pinAlign === "left") {
-    return "sticky left-0 z-10 shadow-right bg-background group-hover:bg-selectedBg";
-  }
-  if (pinAlign === "right") {
-    return "sticky right-0 z-10 shadow-left bg-background group-hover:bg-selectedBg";
-  }
-  return "";
-}
-
-function getTextAlign<T>(column: Header<T, unknown> | Cell<T, unknown>) {
-  const meta = column.column.columnDef.meta as CustomColumnMeta | undefined;
-  const textAlign = meta?.textAlign;
-  const map = { left: "mr-auto", right: "ml-auto", center: "mx-auto" };
-  return `${textAlign && map[textAlign]}`;
-}
+import { getPinnedClass, getTextAlign } from "./utils";
+import { DownArrow, HorizontalRule, UpArrow } from "./SortingIcons";
 
 interface TableProps<T> {
   data: T[];
@@ -42,14 +14,19 @@ interface TableProps<T> {
   columns: ColumnDef<T, any>[];
   onSelect?: (row: T) => boolean;
   onDoubleClick?: (row: T) => void;
+  sortable: boolean;
 }
 
-export default function Table<T>({ data, columns }: TableProps<T>) {
+export default function Table<T>({
+  data,
+  columns,
+  sortable = true,
+}: TableProps<T>) {
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
+    ...(sortable && { getSortedRowModel: getSortedRowModel() }),
   });
 
   return (
@@ -77,16 +54,16 @@ export default function Table<T>({ data, columns }: TableProps<T>) {
                             header.column.columnDef.header,
                             header.getContext()
                           )}
-                      <div className="h-fit">
-                        {{
-                          asc: <UpArrow className="w-2 h-2 fill-signature2" />,
-                          desc: (
-                            <DownArrow className="w-2 h-2 fill-signature2" />
-                          ),
-                        }[header.column.getIsSorted() as string] ?? (
-                          <HorizontalRule className="w-2 h-2 stroke-signature2" />
-                        )}
-                      </div>
+                      {sortable && (
+                        <div className="h-fit">
+                          {{
+                            asc: <UpArrow />,
+                            desc: <DownArrow />,
+                          }[header.column.getIsSorted() as string] ?? (
+                            <HorizontalRule />
+                          )}
+                        </div>
+                      )}
                     </div>
                   </th>
                 );
