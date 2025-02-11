@@ -3,10 +3,13 @@ import {
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
+  Row,
   useReactTable,
 } from "@tanstack/react-table";
 import { getPinnedClass, getTextAlign } from "./utils";
 import { DownArrow, HorizontalRule, UpArrow } from "./SortingIcons";
+import { useVirtualizer } from "@tanstack/react-virtual";
+import { useRef } from "react";
 
 interface TableProps<T> {
   data: T[];
@@ -29,8 +32,25 @@ export default function Table<T>({
     ...(sortable && { getSortedRowModel: getSortedRowModel() }),
   });
 
+  const { rows } = table.getRowModel();
+  const tableContainerRef = useRef<HTMLDivElement>(null);
+
+  const rowVirtualizer = useVirtualizer<HTMLDivElement, HTMLTableRowElement>({
+    getScrollElement: () => tableContainerRef.current,
+    estimateSize: () => 64,
+    count: rows.length,
+    overscan: 10,
+  });
+  const virtualRows = rowVirtualizer.getVirtualItems();
+  const totalSize = rowVirtualizer.getTotalSize();
+  const paddingTop = virtualRows.length > 0 ? virtualRows?.[0]?.start || 0 : 0;
+  const paddingBottom =
+    virtualRows.length > 0
+      ? totalSize - (virtualRows?.[virtualRows.length - 1]?.end || 0)
+      : 0;
+
   return (
-    <div className="max-h-[720px] overflow-y-scroll">
+    <div ref={tableContainerRef} className="max-h-[720px] overflow-y-scroll">
       <table className="w-full">
         <thead className="sticky top-0 h-16 shadow-sm bg-background z-20">
           {table.getHeaderGroups().map((headerGroup) => (
@@ -39,7 +59,7 @@ export default function Table<T>({
                 return (
                   <th
                     key={header.id}
-                    className={`text-xs text-thTxt first:pl-8 last:pr-8 py-8  
+                    className={`text-xs text-thTxt first:pl-8 last:pr-8 py-8 transition-[width] 
                     ${getPinnedClass(header)}`}
                     onClick={header.column.getToggleSortingHandler()}
                   >
@@ -71,30 +91,45 @@ export default function Table<T>({
             </tr>
           ))}
         </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <tr
-              key={row.id}
-              className="h-16 group relative hover:bg-selectedBg"
-            >
-              {row.getVisibleCells().map((cell) => {
-                return (
-                  <td
-                    key={cell.id}
-                    className={`font-bold first:rounded-l-lg first:pl-8 last:rounded-r-lg last:pr-8 
-                      w-fit group-hover:bg-selectedBg ${getPinnedClass(cell)}`}
-                  >
-                    <div className={`w-fit ${getTextAlign(cell)}`}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </div>
-                  </td>
-                );
-              })}
+        <tbody style={{ height: totalSize }}>
+          {paddingTop > 0 && (
+            <tr>
+              <td style={{ height: `${paddingTop}px` }} />
             </tr>
-          ))}
+          )}
+          {virtualRows.map((virtualRow) => {
+            const row = rows[virtualRow.index] as Row<T>;
+            return (
+              <tr
+                data-index={virtualRow.index}
+                key={row.id}
+                ref={(node) => rowVirtualizer.measureElement(node)}
+                className="h-16 group relative hover:bg-selectedBg"
+              >
+                {row.getVisibleCells().map((cell) => {
+                  return (
+                    <td
+                      key={cell.id}
+                      className={`font-bold first:rounded-l-lg first:pl-8 last:rounded-r-lg last:pr-8 
+                      w-fit group-hover:bg-selectedBg ${getPinnedClass(cell)}`}
+                    >
+                      <div className={`w-fit ${getTextAlign(cell)}`}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </div>
+                    </td>
+                  );
+                })}
+              </tr>
+            );
+          })}
+          {paddingBottom > 0 && (
+            <tr>
+              <td style={{ height: `${paddingBottom}px` }} />
+            </tr>
+          )}
         </tbody>
       </table>
     </div>
