@@ -3,25 +3,37 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getSortedRowModel,
   Header,
   useReactTable,
 } from "@tanstack/react-table";
+import UpArrow from "@/../public/assets/up-arrow.svg";
+import DownArrow from "@/../public/assets/down-arrow.svg";
+import HorizontalRule from "@/../public/assets/horizontal-rule.svg";
 
 export interface CustomColumnMeta {
-  isPinned?: "left" | "right";
+  pinAlign?: "left" | "right";
+  textAlign?: "left" | "right" | "center";
 }
 
 function getPinnedClass<T>(column: Header<T, unknown> | Cell<T, unknown>) {
   const meta = column.column.columnDef.meta as CustomColumnMeta | undefined;
-  const isPinned = meta?.isPinned;
+  const pinAlign = meta?.pinAlign;
 
-  if (isPinned === "left") {
+  if (pinAlign === "left") {
     return "sticky left-0 z-10 shadow-right bg-background group-hover:bg-selectedBg";
   }
-  if (isPinned === "right") {
+  if (pinAlign === "right") {
     return "sticky right-0 z-10 shadow-left bg-background group-hover:bg-selectedBg";
   }
   return "";
+}
+
+function getTextAlign<T>(column: Header<T, unknown> | Cell<T, unknown>) {
+  const meta = column.column.columnDef.meta as CustomColumnMeta | undefined;
+  const textAlign = meta?.textAlign;
+  const map = { left: "mr-auto", right: "ml-auto", center: "mx-auto" };
+  return `${textAlign && map[textAlign]}`;
 }
 
 interface TableProps<T> {
@@ -37,6 +49,7 @@ export default function Table<T>({ data, columns }: TableProps<T>) {
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
   });
 
   return (
@@ -49,15 +62,32 @@ export default function Table<T>({ data, columns }: TableProps<T>) {
                 return (
                   <th
                     key={header.id}
-                    className={`text-thTxt first:pl-8 last:pr-8 py-8 
+                    className={`text-xs text-thTxt first:pl-8 last:pr-8 py-8  
                     ${getPinnedClass(header)}`}
+                    onClick={header.column.getToggleSortingHandler()}
                   >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
+                    <div
+                      className={`flex flex-row w-fit items-center gap-1 text-right select-none ${getTextAlign(
+                        header
+                      )}`}
+                    >
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                      <div className="h-fit">
+                        {{
+                          asc: <UpArrow className="w-2 h-2 fill-signature2" />,
+                          desc: (
+                            <DownArrow className="w-2 h-2 fill-signature2" />
+                          ),
+                        }[header.column.getIsSorted() as string] ?? (
+                          <HorizontalRule className="w-2 h-2 stroke-signature2" />
                         )}
+                      </div>
+                    </div>
                   </th>
                 );
               })}
@@ -75,9 +105,14 @@ export default function Table<T>({ data, columns }: TableProps<T>) {
                   <td
                     key={cell.id}
                     className={`font-bold first:rounded-l-lg first:pl-8 last:rounded-r-lg last:pr-8 
-                      group-hover:bg-selectedBg ${getPinnedClass(cell)}`}
+                      w-fit group-hover:bg-selectedBg ${getPinnedClass(cell)}`}
                   >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    <div className={`w-fit ${getTextAlign(cell)}`}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </div>
                   </td>
                 );
               })}
