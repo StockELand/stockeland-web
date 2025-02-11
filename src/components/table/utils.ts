@@ -1,24 +1,32 @@
 import { Cell, Header } from "@tanstack/react-table";
 import { CustomColumnMeta } from "./types";
+import { CSSProperties } from "react";
 
-export function getPinnedClass<T>(
+export function getPinnedStyle<T>(
   column: Header<T, unknown> | Cell<T, unknown>
-) {
+): CSSProperties {
   const meta = column.column.columnDef.meta as CustomColumnMeta | undefined;
   const pinAlign = meta?.pinAlign;
+  if (!pinAlign) return {};
 
-  if (pinAlign === "left") {
-    return "sticky left-0 z-10 shadow-right bg-background group-hover:bg-selectedBg";
-  }
-  if (pinAlign === "right") {
-    return "sticky right-0 z-10 shadow-left bg-background group-hover:bg-selectedBg";
-  }
-  return "";
+  const leftValue = column.column.getStart(pinAlign) ?? 0;
+
+  return {
+    position: "sticky",
+    [pinAlign]: `${leftValue}px`,
+    zIndex: 10,
+  };
 }
 
-export function getTextAlign<T>(column: Header<T, unknown> | Cell<T, unknown>) {
+export function getAlignStyle<T>(
+  column: Header<T, unknown> | Cell<T, unknown>
+): CSSProperties {
   const meta = column.column.columnDef.meta as CustomColumnMeta | undefined;
-  const textAlign = meta?.textAlign;
-  const map = { left: "mr-auto", right: "ml-auto", center: "mx-auto" };
-  return `${textAlign && map[textAlign]}`;
+  const align = meta?.align;
+  if (!align) return {};
+  return {
+    margin: align === "center" ? "auto" : undefined,
+    marginLeft: align === "right" ? "auto" : undefined,
+    marginRight: align === "left" ? "auto" : undefined,
+  };
 }

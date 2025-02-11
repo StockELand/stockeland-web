@@ -6,10 +6,11 @@ import {
   Row,
   useReactTable,
 } from "@tanstack/react-table";
-import { getPinnedClass, getTextAlign } from "./utils";
+import { getPinnedStyle, getAlignStyle } from "./utils";
 import { DownArrow, HorizontalRule, UpArrow } from "./SortingIcons";
 import { useVirtualizer } from "@tanstack/react-virtual";
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
+import { CustomColumnMeta } from "./types";
 
 interface TableProps<T> {
   data: T[];
@@ -25,11 +26,30 @@ export default function Table<T>({
   columns,
   sortable = true,
 }: TableProps<T>) {
+  const initialPinnedColumns = useMemo(() => {
+    const pinnedLeft: string[] = [];
+    const pinnedRight: string[] = [];
+
+    columns.forEach((col) => {
+      const pinAlign = (col.meta as CustomColumnMeta)?.pinAlign;
+      if (pinAlign === "left") {
+        pinnedLeft.push(col.id as string);
+      } else if (pinAlign === "right") {
+        pinnedRight.push(col.id as string);
+      }
+    });
+
+    return { left: pinnedLeft, right: pinnedRight };
+  }, [columns]);
+
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     ...(sortable && { getSortedRowModel: getSortedRowModel() }),
+    state: {
+      columnPinning: initialPinnedColumns,
+    },
   });
 
   const { rows } = table.getRowModel();
@@ -59,14 +79,13 @@ export default function Table<T>({
                 return (
                   <th
                     key={header.id}
-                    className={`text-xs text-thTxt first:pl-8 last:pr-8 py-8 transition-[width] 
-                    ${getPinnedClass(header)}`}
+                    className={`px-2 text-xs text-thTxt first:pl-8 last:pr-8 py-8 transition-[width] bg-background`}
+                    style={getPinnedStyle(header)}
                     onClick={header.column.getToggleSortingHandler()}
                   >
                     <div
-                      className={`flex flex-row w-fit items-center gap-1 text-right select-none ${getTextAlign(
-                        header
-                      )}`}
+                      style={getAlignStyle(header)}
+                      className={`relative flex flex-row w-fit items-center gap-1 text-right select-none`}
                     >
                       {header.isPlaceholder
                         ? null
@@ -110,10 +129,10 @@ export default function Table<T>({
                   return (
                     <td
                       key={cell.id}
-                      className={`font-bold first:rounded-l-lg first:pl-8 last:rounded-r-lg last:pr-8 
-                      w-fit group-hover:bg-selectedBg ${getPinnedClass(cell)}`}
+                      className={`px-2 font-bold first:rounded-l-lg first:pl-8 last:rounded-r-lg last:pr-8 bg-background w-fit group-hover:bg-selectedBg`}
+                      style={getPinnedStyle(cell)}
                     >
-                      <div className={`w-fit ${getTextAlign(cell)}`}>
+                      <div className={`w-fit`} style={getAlignStyle(cell)}>
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()

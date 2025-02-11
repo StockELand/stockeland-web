@@ -3,8 +3,6 @@ import { createColumnHelper, SortingFn } from "@tanstack/react-table";
 import Image from "next/image";
 import { CustomColumnMeta, Table } from "../table";
 
-const columnHelper = createColumnHelper<IStock>();
-
 const StockSymbolCell = ({
   symbol,
   name,
@@ -23,7 +21,7 @@ const StockSymbolCell = ({
     </div>
     <div className="flex flex-col">
       <span className="text-sm font-bold text-white">{symbol}</span>
-      <span className="text-xs text-thTxt truncate overflow-hidden max-w-[100px] sm:max-w-[200px] md:max-w-none">
+      <span className="text-xs text-thTxt truncate overflow-hidden max-w-[80px] w-none sm:max-w-[200px] md:w-[300px] md:max-w-none">
         {name}
       </span>
     </div>
@@ -46,6 +44,7 @@ const formatPercentage = (value: number) => (
   </div>
 );
 
+const columnHelper = createColumnHelper<IStock>();
 const getColumns = () => [
   columnHelper.accessor("symbol", {
     id: "symbol",
@@ -53,33 +52,33 @@ const getColumns = () => [
     cell: (info) => (
       <StockSymbolCell symbol={info.getValue()} name={info.row.original.name} />
     ),
-    meta: { pinAlign: "left", textAlign: "left" } as CustomColumnMeta,
+    meta: { pinAlign: "left", align: "left" },
   }),
   columnHelper.accessor("prev_close", {
     id: "prev_close",
     header: () => <div>Prev Close</div>,
     cell: (info) => <div>${info.getValue()}</div>,
-    meta: { textAlign: "right" } as CustomColumnMeta,
+    meta: { align: "right" } as CustomColumnMeta,
   }),
   columnHelper.accessor("latest_close", {
     id: "latest_close",
     header: () => <div>Latest Close</div>,
     cell: (info) => <div>${info.getValue()}</div>,
-    meta: { textAlign: "right" } as CustomColumnMeta,
+    meta: { align: "right" } as CustomColumnMeta,
   }),
   columnHelper.accessor("prev_change_percent", {
     id: "prev_change_percent",
     header: () => <div>Prev Prediction</div>,
     cell: (info) => formatPercentage(info.getValue() as number),
     sortingFn: createPercentageSortFn<IStock>("prev_change_percent"),
-    meta: { textAlign: "right" } as CustomColumnMeta,
+    meta: { align: "right" } as CustomColumnMeta,
   }),
   columnHelper.accessor("latest_change_percent", {
     id: "latest_change_percent",
     header: () => <div>Latest Prediction</div>,
     cell: (info) => formatPercentage(info.getValue() as number),
     sortingFn: createPercentageSortFn<IStock>("latest_change_percent"),
-    meta: { textAlign: "right" } as CustomColumnMeta,
+    meta: { align: "right" } as CustomColumnMeta,
   }),
 ];
 
