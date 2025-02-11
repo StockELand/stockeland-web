@@ -14,7 +14,7 @@ interface TableProps<T> {
   columns: ColumnDef<T, any>[];
   onSelect?: (row: T) => boolean;
   onDoubleClick?: (row: T) => void;
-  sortable: boolean;
+  sortable?: boolean;
 }
 
 export default function Table<T>({

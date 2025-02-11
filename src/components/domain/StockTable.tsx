@@ -1,8 +1,7 @@
 import { IStock } from "@/types/table";
 import { createColumnHelper, SortingFn } from "@tanstack/react-table";
-import { Table } from "../table";
 import Image from "next/image";
-import { CustomColumnMeta } from "../table/Table";
+import { CustomColumnMeta, Table } from "../table";
 
 const columnHelper = createColumnHelper<IStock>();
 
