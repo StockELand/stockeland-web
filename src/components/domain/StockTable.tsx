@@ -1,9 +1,7 @@
 import { IStock } from "@/types/table";
-import { createColumnHelper } from "@tanstack/react-table";
-import { Table } from "../table";
+import { createColumnHelper, SortingFn } from "@tanstack/react-table";
 import Image from "next/image";
-
-const columnHelper = createColumnHelper<IStock>();
+import { CustomColumnMeta, Table } from "../table";
 
 const StockSymbolCell = ({
   symbol,
@@ -23,19 +21,30 @@ const StockSymbolCell = ({
     </div>
     <div className="flex flex-col">
       <span className="text-sm font-bold text-white">{symbol}</span>
-      <span className="text-xs text-thTxt truncate overflow-hidden max-w-[100px] sm:max-w-[200px] md:max-w-none">
+      <span className="text-xs text-thTxt truncate overflow-hidden max-w-[80px] w-none sm:max-w-[200px] md:w-[300px] md:max-w-none">
         {name}
       </span>
     </div>
   </div>
 );
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const createPercentageSortFn = <T,>(key: keyof T): SortingFn<T> => {
+  return (rowA, rowB) => {
+    const statusA = Number(rowA.original[key]);
+    const statusB = Number(rowB.original[key]);
+
+    return statusA - statusB;
+  };
+};
+
 const formatPercentage = (value: number) => (
-  <div className={`text-right ${value > 0 ? "text-rise" : "text-fall"}`}>
+  <div className={`${value > 0 ? "text-rise" : "text-fall"}`}>
     {Math.round(value * 100) / 100}%
   </div>
 );
 
+const columnHelper = createColumnHelper<IStock>();
 const getColumns = () => [
   columnHelper.accessor("symbol", {
     id: "symbol",
@@ -43,26 +52,33 @@ const getColumns = () => [
     cell: (info) => (
       <StockSymbolCell symbol={info.getValue()} name={info.row.original.name} />
     ),
+    meta: { pinAlign: "left", align: "left" },
   }),
   columnHelper.accessor("prev_close", {
     id: "prev_close",
-    header: () => <div className="text-right">Prev Close</div>,
-    cell: (info) => <div className="text-right">${info.getValue()}</div>,
+    header: () => <div>Prev Close</div>,
+    cell: (info) => <div>${info.getValue()}</div>,
+    meta: { align: "right" } as CustomColumnMeta,
   }),
   columnHelper.accessor("latest_close", {
     id: "latest_close",
-    header: () => <div className="text-right">Latest Close</div>,
-    cell: (info) => <div className="text-right">${info.getValue()}</div>,
+    header: () => <div>Latest Close</div>,
+    cell: (info) => <div>${info.getValue()}</div>,
+    meta: { align: "right" } as CustomColumnMeta,
   }),
   columnHelper.accessor("prev_change_percent", {
     id: "prev_change_percent",
-    header: () => <div className="text-right">Prev Prediction</div>,
+    header: () => <div>Prev Prediction</div>,
     cell: (info) => formatPercentage(info.getValue() as number),
+    sortingFn: createPercentageSortFn<IStock>("prev_change_percent"),
+    meta: { align: "right" } as CustomColumnMeta,
   }),
   columnHelper.accessor("latest_change_percent", {
     id: "latest_change_percent",
-    header: () => <div className="text-right">Latest Prediction</div>,
+    header: () => <div>Latest Prediction</div>,
     cell: (info) => formatPercentage(info.getValue() as number),
+    sortingFn: createPercentageSortFn<IStock>("latest_change_percent"),
+    meta: { align: "right" } as CustomColumnMeta,
   }),
 ];
 
