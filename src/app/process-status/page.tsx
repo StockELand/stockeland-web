@@ -3,7 +3,7 @@ import Typography from "@/components/ui/Typography";
 import { DatePicker, formatDate } from "@/components/date-picker";
 import { useState } from "react";
 
-export default function Process() {
+export default function ProcessStatus() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
 
   return (
