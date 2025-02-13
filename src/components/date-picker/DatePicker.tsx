@@ -5,6 +5,7 @@ import { useDatePicker } from "./useDatePicker";
 
 export default function DatePicker({
   highlightedDates,
+  displayDateGroups,
   doubleCalendar = false,
 }: DatePickerProps) {
   const {
@@ -15,9 +16,10 @@ export default function DatePicker({
     goToNextMonth,
     goToPreviousMonth,
     setCurrentMonth,
+    getDisplayTypeAndColor,
     view,
     setView,
-  } = useDatePicker({ highlightedDates, doubleCalendar });
+  } = useDatePicker({ highlightedDates, doubleCalendar, displayDateGroups });
 
   return (
     <div className="relative">
@@ -46,12 +48,14 @@ export default function DatePicker({
           view={view}
           setView={setView}
           setCurrentMonth={setCurrentMonth}
+          getDisplayTypeAndColor={getDisplayTypeAndColor}
         />
         {doubleCalendar && view == "date" && (
           <Calendar
             currentMonth={
               new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1)
             }
+            getDisplayTypeAndColor={getDisplayTypeAndColor}
             onSelect={setSelectedDate}
             isHighlighted={isHighlighted}
             view={view}

@@ -4,6 +4,7 @@ export interface DatePickerProps extends UseDatePickerProps {
 
 export interface UseDatePickerProps {
   highlightedDates?: Date[];
+  displayDateGroups?: DisplayDateGroup[];
   doubleCalendar?: boolean;
 }
 
@@ -14,5 +15,14 @@ export interface CalenderProps {
   isHighlighted: (date: Date) => boolean;
   view: ViewType;
   setView: (type: ViewType) => void;
+  getDisplayTypeAndColor: (
+    date: Date
+  ) => { type: string; color: string } | null;
 }
 export type ViewType = "date" | "month" | "year";
+
+export interface DisplayDateGroup {
+  type: string;
+  dates: Date[];
+  color: string;
+}

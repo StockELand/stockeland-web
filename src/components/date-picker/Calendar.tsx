@@ -11,8 +11,8 @@ const years = Array.from(
 export default function Calendar({
   currentMonth,
   onSelect,
-  isHighlighted,
   setCurrentMonth,
+  getDisplayTypeAndColor,
   view,
   setView,
 }: CalenderProps) {
@@ -20,14 +20,14 @@ export default function Calendar({
 
   return (
     <div className="p-3 flex flex-col w-[356px]">
-      <div className="flex flex-row w-fit mx-auto gap-1 font-bold text-lg z-10">
+      <div className="flex flex-row w-fit mx-auto font-bold text-lg z-10">
         <button
           className={`p-2 hover:bg-outline1 rounded-lg ${
             view === "year" && "text-signature"
           }`}
           onClick={() => setView("year")}
         >
-          {currentMonth.getFullYear()}
+          {currentMonth.getFullYear()}년
         </button>
         <button
           className={`p-2 hover:bg-outline1 rounded-lg ${
@@ -35,7 +35,7 @@ export default function Calendar({
           }`}
           onClick={() => setView("month")}
         >
-          {currentMonth.getMonth() + 1}
+          {currentMonth.getMonth() + 1}월
         </button>
       </div>
 
@@ -47,21 +47,28 @@ export default function Calendar({
             ))}
           </div>
           <div className="grid grid-cols-7 px-3 pb-3">
-            {days.map((day, idx) => (
-              <button
-                key={idx}
-                className={`font-bold text-lg size-11 p-1 group`}
-                onClick={() => day && onSelect(day)}
-              >
-                <div
-                  className={`flex rounded-xl size-full items-center justify-center group-hover:bg-outline1 group-hover:text-foreground ${
-                    day && isHighlighted(day) ? "bg-rise text-background" : ""
-                  }`}
+            {days.map((day, idx) => {
+              const displayInfo = day && getDisplayTypeAndColor(day);
+              const displayStyle = displayInfo
+                ? { backgroundColor: displayInfo.color }
+                : undefined;
+              return (
+                <button
+                  key={idx}
+                  className={`font-bold text-lg size-11 p-1 group`}
+                  onClick={() => day && onSelect(day)}
                 >
-                  <span className="size-fit">{day ? day.getDate() : ""}</span>
-                </div>
-              </button>
-            ))}
+                  <div
+                    style={displayStyle}
+                    className={`flex rounded-xl size-full items-center justify-center group-hover:!bg-outline1 group-hover:!text-foreground ${
+                      displayStyle && "text-background"
+                    }`}
+                  >
+                    <span className="size-fit">{day ? day.getDate() : ""}</span>
+                  </div>
+                </button>
+              );
+            })}
           </div>
         </>
       )}
