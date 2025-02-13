@@ -14,7 +14,7 @@ export default function Home() {
 
   return (
     <>
-      <Typography variant="h2">Dashboard</Typography>
+      <Typography variant="h1">Dashboard</Typography>
       <div className="flex flex-wrap gap-6 mb-6">
         <ManualRunCard />
         {predictions && (

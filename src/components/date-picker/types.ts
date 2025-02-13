@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 
 export interface DatePickerProps extends UseDatePickerProps {
-  onChange?: Dispatch<SetStateAction<Date>>;
+  onChange?: Dispatch<SetStateAction<Date | null>>;
   inputComponent?: HTMLInputElement;
 }
 

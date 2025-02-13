@@ -8,7 +8,7 @@ export default function ProcessStatus() {
 
   return (
     <>
-      <Typography variant="h2" isMargin={false} className="mb-2">
+      <Typography variant="h1" isMargin={false} className="mb-2">
         Parsing
       </Typography>
       <Typography color="primary" variant="h4">
