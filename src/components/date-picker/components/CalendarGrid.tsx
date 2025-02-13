@@ -1,13 +1,22 @@
+import { useCallback, useMemo } from "react";
 import { WEEK_DAYS } from "../constants";
 import { CalendarGridProps } from "../types";
 import { getMonthDays } from "../utils/dateUtils";
+import clsx from "clsx";
 
 export default function CalendarGrid({
+  selectedDate,
   currentMonth,
   onSelect,
   getDisplayTypeAndColor,
 }: CalendarGridProps) {
-  const days = getMonthDays(currentMonth);
+  const days = useMemo(() => getMonthDays(currentMonth), [currentMonth]);
+  const handleSelect = useCallback(
+    (day: Date) => {
+      if (day) onSelect(day);
+    },
+    [onSelect]
+  );
 
   return (
     <>
@@ -18,24 +27,36 @@ export default function CalendarGrid({
       </div>
       <div className="grid grid-cols-7 px-3 pb-3">
         {days.map((day, idx) => {
+          if (!day) return <div key={idx}></div>;
+          const isSelected =
+            day &&
+            selectedDate &&
+            day.toDateString() === selectedDate.toDateString();
           const displayInfo = day && getDisplayTypeAndColor(day);
-          const displayStyle = displayInfo
-            ? { backgroundColor: displayInfo.color }
-            : undefined;
+          const shouldApplyDisplayStyle = !isSelected && displayInfo;
 
           return (
             <button
               key={idx}
               className="font-bold text-lg size-11 p-1 group"
-              onClick={() => day && onSelect(day)}
+              onClick={() => day && handleSelect(day)}
             >
               <div
-                style={displayStyle}
-                className={`flex rounded-xl size-full items-center justify-center group-hover:!bg-outline1 group-hover:!text-foreground ${
-                  displayStyle && "text-background"
-                }`}
+                className={clsx(
+                  "flex rounded-xl size-full items-center justify-center",
+                  isSelected && "bg-signature2 text-background",
+                  shouldApplyDisplayStyle && "text-background",
+                  isSelected || shouldApplyDisplayStyle
+                    ? "group-hover:opacity-70"
+                    : "group-hover:bg-outline1 group-hover:text-foreground"
+                )}
+                style={
+                  shouldApplyDisplayStyle
+                    ? { backgroundColor: displayInfo.color }
+                    : undefined
+                }
               >
-                <span className="size-fit">{day ? day.getDate() : ""}</span>
+                <span className="size-fit">{day.getDate()}</span>
               </div>
             </button>
           );

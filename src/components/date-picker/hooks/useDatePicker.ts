@@ -4,12 +4,15 @@ import { isSameDay } from "../utils/dateUtils";
 import { UseDatePickerProps, ViewType } from "../types";
 
 export const useDatePicker = ({
+  selectedDate: externalSelectedDate,
   highlightedDates = [],
   displayDateGroups = [],
   doubleCalendar = false,
 }: UseDatePickerProps) => {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date | null>(
+    externalSelectedDate || new Date()
+  );
+  const [currentMonth, setCurrentMonth] = useState(selectedDate || new Date());
   const [view, setView] = useState<ViewType>("date");
 
   const goToPreviousMonth = () => {

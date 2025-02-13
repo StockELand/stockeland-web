@@ -14,3 +14,7 @@ export function formatDate(date: Date): string {
 export function formatISODate(isoString: string): string {
   return isoString.split("T")[0];
 }
+
+export function formatLocalDate(date: Date): Date {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+}

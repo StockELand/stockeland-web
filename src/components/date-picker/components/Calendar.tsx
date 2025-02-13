@@ -4,6 +4,7 @@ import YearPicker from "./YearPicker";
 import { CalenderProps } from "../types";
 
 export default function Calendar({
+  selectedDate,
   currentMonth,
   onSelect,
   setCurrentMonth,
@@ -34,6 +35,7 @@ export default function Calendar({
 
       {view === "date" && (
         <CalendarGrid
+          selectedDate={selectedDate}
           currentMonth={currentMonth}
           onSelect={onSelect}
           getDisplayTypeAndColor={getDisplayTypeAndColor}

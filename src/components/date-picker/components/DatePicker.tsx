@@ -2,14 +2,17 @@ import Calendar from "./Calendar";
 import { LeftArrow, RightArrow } from "./Icons";
 import { DatePickerProps } from "../types";
 import { useDatePicker } from "../hooks/useDatePicker";
+import { formatLocalDate } from "../utils/formatUtils";
 
 export default function DatePicker({
+  selectedDate,
+  onChange,
   highlightedDates,
   displayDateGroups,
   doubleCalendar = false,
 }: DatePickerProps) {
   const {
-    selectedDate,
+    selectedDate: internalSelectedDate,
     setSelectedDate,
     currentMonth,
     isHighlighted,
@@ -19,11 +22,20 @@ export default function DatePicker({
     getDisplayTypeAndColor,
     view,
     setView,
-  } = useDatePicker({ highlightedDates, doubleCalendar, displayDateGroups });
+  } = useDatePicker({
+    selectedDate,
+    highlightedDates,
+    doubleCalendar,
+    displayDateGroups,
+  });
+
+  const handleDateSelect = (date: Date) => {
+    setSelectedDate(formatLocalDate(date));
+    if (onChange) onChange(date);
+  };
 
   return (
     <div className="relative">
-      {selectedDate && selectedDate.toISOString()}
       <div className="relative flex bg-background1 w-fit rounded-2xl">
         {view == "date" && (
           <div className="absolute flex w-full h-11 top-3 justify-between px-6 z-1 ">
@@ -42,8 +54,9 @@ export default function DatePicker({
           </div>
         )}
         <Calendar
+          selectedDate={internalSelectedDate}
           currentMonth={currentMonth}
-          onSelect={setSelectedDate}
+          onSelect={handleDateSelect}
           isHighlighted={isHighlighted}
           view={view}
           setView={setView}
@@ -52,11 +65,12 @@ export default function DatePicker({
         />
         {doubleCalendar && view == "date" && (
           <Calendar
+            selectedDate={internalSelectedDate}
             currentMonth={
               new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1)
             }
             getDisplayTypeAndColor={getDisplayTypeAndColor}
-            onSelect={setSelectedDate}
+            onSelect={handleDateSelect}
             isHighlighted={isHighlighted}
             view={view}
             setView={setView}
