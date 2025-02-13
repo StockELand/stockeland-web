@@ -19,13 +19,13 @@ export default function CalendarGrid({
   );
 
   return (
-    <>
-      <div className="grid grid-cols-7 text-center text-xs h-8 items-center text-thTxt px-3">
+    <div className="flex flex-col px-3 pb-2">
+      <div className="grid grid-cols-7 text-center text-xs h-8 items-center text-thTxt">
         {WEEK_DAYS.map((day) => (
           <div key={day}>{day}</div>
         ))}
       </div>
-      <div className="grid grid-cols-7 px-3 pb-3">
+      <div className="grid grid-cols-7">
         {days.map((day, idx) => {
           if (!day) return <div key={idx}></div>;
           const isSelected =
@@ -38,7 +38,7 @@ export default function CalendarGrid({
           return (
             <button
               key={idx}
-              className="font-bold text-lg size-11 p-1 group"
+              className="font-bold text-lg h-11 p-1.5 group"
               onClick={() => day && handleSelect(day)}
             >
               <div
@@ -56,12 +56,12 @@ export default function CalendarGrid({
                     : undefined
                 }
               >
-                <span className="size-fit">{day.getDate()}</span>
+                {day.getDate()}
               </div>
             </button>
           );
         })}
       </div>
-    </>
+    </div>
   );
 }

@@ -5,7 +5,6 @@ import { UseDatePickerProps, ViewType } from "../types";
 
 export const useDatePicker = ({
   selectedDate: externalSelectedDate,
-  highlightedDates = [],
   displayDateGroups = [],
   doubleCalendar = false,
 }: UseDatePickerProps) => {
@@ -36,16 +35,11 @@ export const useDatePicker = ({
     return null;
   };
 
-  const isHighlighted = (date: Date) => {
-    return highlightedDates.some((d) => isSameDay(d, date));
-  };
-
   return {
     selectedDate,
     setSelectedDate,
     currentMonth,
     setCurrentMonth,
-    isHighlighted,
     doubleCalendar,
     goToPreviousMonth,
     getDisplayTypeAndColor,

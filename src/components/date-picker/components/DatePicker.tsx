@@ -7,7 +7,6 @@ import { formatLocalDate } from "../utils/formatUtils";
 export default function DatePicker({
   selectedDate,
   onChange,
-  highlightedDates,
   displayDateGroups,
   doubleCalendar = false,
 }: DatePickerProps) {
@@ -15,7 +14,6 @@ export default function DatePicker({
     selectedDate: internalSelectedDate,
     setSelectedDate,
     currentMonth,
-    isHighlighted,
     goToNextMonth,
     goToPreviousMonth,
     setCurrentMonth,
@@ -24,7 +22,6 @@ export default function DatePicker({
     setView,
   } = useDatePicker({
     selectedDate,
-    highlightedDates,
     doubleCalendar,
     displayDateGroups,
   });
@@ -57,7 +54,6 @@ export default function DatePicker({
           selectedDate={internalSelectedDate}
           currentMonth={currentMonth}
           onSelect={handleDateSelect}
-          isHighlighted={isHighlighted}
           view={view}
           setView={setView}
           setCurrentMonth={setCurrentMonth}
@@ -71,7 +67,6 @@ export default function DatePicker({
             }
             getDisplayTypeAndColor={getDisplayTypeAndColor}
             onSelect={handleDateSelect}
-            isHighlighted={isHighlighted}
             view={view}
             setView={setView}
             setCurrentMonth={setCurrentMonth}

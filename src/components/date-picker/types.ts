@@ -1,23 +1,23 @@
+import { Dispatch, SetStateAction } from "react";
+
 export interface DatePickerProps extends UseDatePickerProps {
-  onChange?: (date: Date) => void;
+  onChange?: Dispatch<SetStateAction<Date>>;
   inputComponent?: HTMLInputElement;
 }
 
 export interface UseDatePickerProps {
   selectedDate?: Date | null;
-  highlightedDates?: Date[];
   displayDateGroups?: DisplayDateGroup[];
   doubleCalendar?: boolean;
 }
 
 export interface CalenderProps {
   selectedDate: Date | null;
-  currentMonth: Date;
   onSelect: (date: Date) => void;
-  setCurrentMonth: (date: Date) => void;
-  isHighlighted: (date: Date) => boolean;
+  currentMonth: Date;
+  setCurrentMonth: Dispatch<SetStateAction<Date>>;
   view: ViewType;
-  setView: (type: ViewType) => void;
+  setView: Dispatch<SetStateAction<ViewType>>;
   getDisplayTypeAndColor: (
     date: Date
   ) => { type: string; color: string } | null;
@@ -31,7 +31,7 @@ export interface DisplayDateGroup {
 }
 
 export interface PickerProps {
-  setCurrentMonth: (date: Date) => void;
+  setCurrentMonth: Dispatch<SetStateAction<Date>>;
   setView: (type: ViewType) => void;
 }
 
