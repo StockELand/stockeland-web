@@ -1,7 +1,7 @@
 // hooks.ts
 import { useState } from "react";
-import { isSameDay } from "./utils";
-import { UseDatePickerProps, ViewType } from "./types";
+import { isSameDay } from "../utils/dateUtils";
+import { UseDatePickerProps, ViewType } from "../types";
 
 export const useDatePicker = ({
   highlightedDates = [],

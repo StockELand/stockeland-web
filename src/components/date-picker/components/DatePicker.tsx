@@ -1,7 +1,7 @@
 import Calendar from "./Calendar";
 import { LeftArrow, RightArrow } from "./Icons";
-import { DatePickerProps } from "./types";
-import { useDatePicker } from "./useDatePicker";
+import { DatePickerProps } from "../types";
+import { useDatePicker } from "../hooks/useDatePicker";
 
 export default function DatePicker({
   highlightedDates,

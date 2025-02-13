@@ -26,3 +26,16 @@ export interface DisplayDateGroup {
   dates: Date[];
   color: string;
 }
+
+export interface PickerProps {
+  setCurrentMonth: (date: Date) => void;
+  setView: (type: ViewType) => void;
+}
+
+export interface CalendarGridProps {
+  currentMonth: Date;
+  onSelect: (date: Date) => void;
+  getDisplayTypeAndColor: (
+    date: Date
+  ) => { type: string; color: string } | null;
+}

@@ -6,7 +6,7 @@ import ManualRunCard from "@/components/domain/ManualRunCard";
 import StockListCard from "@/components/domain/StockListCard";
 import useSWR from "swr";
 import { IStockPrediction } from "@/types/api";
-import DatePicker from "@/components/date-picker/DatePicker";
+import { DatePicker } from "@/components/date-picker";
 
 export default function Home() {
   const { data: predictions } = useSWR<IStockPrediction[]>(
