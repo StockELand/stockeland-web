@@ -12,7 +12,9 @@ export default function MonthPicker({ setCurrentMonth, setView }: PickerProps) {
           className="text-lg font-semibold h-14 p-1 group"
           onClick={() => {
             setView("date");
-            setCurrentMonth(new Date(new Date().getFullYear(), month - 1));
+            setCurrentMonth(
+              (prevMonth) => new Date(prevMonth.getFullYear(), month - 1)
+            );
           }}
         >
           <div className="flex rounded-md size-full items-center justify-center group-hover:bg-outline1 group-hover:text-foreground">
