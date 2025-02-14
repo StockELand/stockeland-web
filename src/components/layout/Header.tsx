@@ -9,7 +9,16 @@ export default function Header() {
         </Link>
       </div>
       <nav className="flex items-center">
-        <span className="px-3 text-sm font-bold cursor-pointer">Dashboard</span>
+        <Link href="/">
+          <span className="px-3 text-sm font-bold cursor-pointer">
+            대시보드
+          </span>
+        </Link>
+        <Link href="/process-status">
+          <span className="px-3 text-sm font-bold cursor-pointer">
+            작업 상태
+          </span>
+        </Link>
         <span className="px-3 text-sm font-bold cursor-pointer">설정</span>
       </nav>
     </header>

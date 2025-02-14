@@ -1,7 +1,14 @@
 import clsx from "clsx";
 import { ReactNode } from "react";
 
-type TypographyVariant = "h1" | "h2" | "h3" | "body" | "caption" | "small";
+type TypographyVariant =
+  | "h1"
+  | "h2"
+  | "h3"
+  | "h4"
+  | "body"
+  | "caption"
+  | "small";
 type TypographyColor = "default" | "inverse" | "primary" | "danger" | "success";
 type TypographyAlign = "left" | "center" | "right" | "justify";
 
@@ -11,6 +18,7 @@ interface TypographyProps {
   align?: TypographyAlign;
   className?: string;
   children: ReactNode;
+  isMargin?: boolean;
 }
 
 export default function Typography({
@@ -19,16 +27,19 @@ export default function Typography({
   align = "left",
   className,
   children,
+  isMargin = true,
 }: TypographyProps) {
   return (
     <p
       className={clsx(
-        "mb-6",
         {
+          "mb-6": isMargin,
+
           // ✅ 타이포그래피 크기 (variant)
           "text-4xl font-extrabold": variant === "h1",
           "text-3xl font-bold": variant === "h2",
           "text-2xl font-semibold": variant === "h3",
+          "text-lg font-semibold": variant === "h4",
           "text-base": variant === "body",
           "text-sm": variant === "caption",
           "text-xs": variant === "small",
@@ -36,7 +47,7 @@ export default function Typography({
           // ✅ 색상 (color)
           "text-foreground": color === "default",
           "text-inverseForground": color === "inverse",
-          "text-signature": color === "primary",
+          "text-thTxt": color === "primary",
           "text-fall": color === "danger",
           "text-rise": color === "success",
 

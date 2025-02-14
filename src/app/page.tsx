@@ -6,7 +6,6 @@ import ManualRunCard from "@/components/domain/ManualRunCard";
 import StockListCard from "@/components/domain/StockListCard";
 import useSWR from "swr";
 import { IStockPrediction } from "@/types/api";
-
 export default function Home() {
   const { data: predictions } = useSWR<IStockPrediction[]>(
     "http://localhost:8080/stock/predictions"
@@ -15,8 +14,7 @@ export default function Home() {
 
   return (
     <>
-      <Typography variant="h2">Dashboard</Typography>
-
+      <Typography variant="h1">Dashboard</Typography>
       <div className="flex flex-wrap gap-6 mb-6">
         <ManualRunCard />
         {predictions && (
@@ -33,15 +31,7 @@ export default function Home() {
           </>
         )}
       </div>
-      {stocks && (
-        // <Card
-        //   variant="bordered"
-        //   padding="none"
-        //   className="overflow-hidden w-full"
-        // >
-        // </Card>
-        <StockTable data={stocks} />
-      )}
+      {stocks && <StockTable data={stocks} />}
     </>
   );
 }
