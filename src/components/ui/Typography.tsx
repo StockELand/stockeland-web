@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { ReactNode } from "react";
+import React, { HTMLAttributes } from "react";
 
 type TypographyVariant =
   | "h1"
@@ -12,25 +12,24 @@ type TypographyVariant =
 type TypographyColor = "default" | "inverse" | "primary" | "danger" | "success";
 type TypographyAlign = "left" | "center" | "right" | "justify";
 
-interface TypographyProps {
+export interface TypographyProps extends HTMLAttributes<HTMLDivElement> {
   variant?: TypographyVariant;
   color?: TypographyColor;
-  align?: TypographyAlign;
-  className?: string;
-  children: ReactNode;
+  textAlign?: TypographyAlign;
   isMargin?: boolean;
 }
 
 export default function Typography({
   variant = "body",
   color = "default",
-  align = "left",
+  textAlign = "left",
   className,
-  children,
   isMargin = true,
+  ...props
 }: TypographyProps) {
   return (
-    <p
+    <div
+      {...props}
       className={clsx(
         {
           "mb-6": isMargin,
@@ -52,15 +51,15 @@ export default function Typography({
           "text-rise": color === "success",
 
           // ✅ 텍스트 정렬 (align)
-          "text-left": align === "left",
-          "text-center": align === "center",
-          "text-right": align === "right",
-          "text-justify": align === "justify",
+          "text-left": textAlign === "left",
+          "text-center": textAlign === "center",
+          "text-right": textAlign === "right",
+          "text-justify": textAlign === "justify",
         },
         className
       )}
     >
-      {children}
-    </p>
+      {props.children}
+    </div>
   );
 }
