@@ -6,11 +6,12 @@ import {
   Row,
   useReactTable,
 } from "@tanstack/react-table";
-import { getPinnedStyle, getAlignStyle } from "./utils";
+import { getAlignClass, getPinnedClass } from "./utils";
 import { DownArrow, HorizontalRule, UpArrow } from "./SortingIcons";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { useMemo, useRef } from "react";
 import { CustomColumnMeta } from "./types";
+import clsx from "clsx";
 
 interface TableProps<T> {
   data: T[];
@@ -79,13 +80,17 @@ export default function Table<T>({
                 return (
                   <th
                     key={header.id}
-                    className={`px-2 text-xs text-thTxt first:pl-8 last:pr-8 py-8 transition-[width] bg-background`}
-                    style={getPinnedStyle(header)}
+                    className={clsx(
+                      `px-2 text-xs text-thTxt first:pl-8 last:pr-8 py-8 transition-[width] bg-background `,
+                      getPinnedClass(header)
+                    )}
                     onClick={header.column.getToggleSortingHandler()}
                   >
                     <div
-                      style={getAlignStyle(header)}
-                      className={`relative flex flex-row w-fit items-center gap-1 text-right select-none`}
+                      className={clsx(
+                        "relative flex flex-row w-fit items-center gap-1 text-right select-none",
+                        getAlignClass(header)
+                      )}
                     >
                       {header.isPlaceholder
                         ? null
@@ -129,10 +134,12 @@ export default function Table<T>({
                   return (
                     <td
                       key={cell.id}
-                      className={`px-2 font-bold first:rounded-l-lg first:pl-8 last:rounded-r-lg last:pr-8 bg-background w-fit group-hover:bg-selectedBg`}
-                      style={getPinnedStyle(cell)}
+                      className={clsx(
+                        `px-2 font-bold first:rounded-l-lg first:pl-8 last:rounded-r-lg last:pr-8 bg-background group-hover:bg-selectedBg`,
+                        getPinnedClass(cell)
+                      )}
                     >
-                      <div className={`w-fit`} style={getAlignStyle(cell)}>
+                      <div className={clsx("w-fit", getAlignClass(cell))}>
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
