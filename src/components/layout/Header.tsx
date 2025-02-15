@@ -14,7 +14,7 @@ export default function Header() {
             대시보드
           </span>
         </Link>
-        <Link href="/process-status">
+        <Link href="/process-status/parse">
           <span className="px-3 text-sm font-bold cursor-pointer">
             작업 상태
           </span>
