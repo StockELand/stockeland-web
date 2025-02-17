@@ -28,3 +28,14 @@ export interface IPredictionLog {
   message: string;
 }
 export type IPredictionStatus = "success" | "fail";
+
+export interface IParseData {
+  id: number;
+  close: number;
+  date: string;
+  high: number;
+  low: number;
+  open: number;
+  symbol: string;
+  volume: number;
+}

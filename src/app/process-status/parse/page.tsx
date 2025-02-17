@@ -12,6 +12,7 @@ import Card from "@/components/ui/Card";
 import { useEffect, useState } from "react";
 import useProcessStatus from "@/hooks/useProcessStatus";
 import { IParseLog } from "@/types/table";
+import ParseDataTable from "@/components/domain/ParseDataTable";
 
 const statusProcessing = (
   data: { [key: string]: DisplayDateGroup } | undefined
@@ -37,7 +38,7 @@ export default function ParseStatus() {
   );
   const activeTab = searchParams.get("tab") || "log";
 
-  const { logs, status, setDateRange } = useProcessStatus<IParseLog>({
+  const { data, logs, status, setDateRange } = useProcessStatus<IParseLog>({
     uri: "parse",
     selectedDate,
   });
@@ -85,13 +86,22 @@ export default function ParseStatus() {
         />
       </div>
 
-      {logs && activeTab === "log" && (
+      {logs && logs?.length !== 0 && activeTab === "log" && (
         <Card
           className="!w-full overflow-hidden"
           variant="bordered"
           padding="none"
         >
           <ParseLogTable data={logs} />
+        </Card>
+      )}
+      {data && data?.length !== 0 && activeTab === "data" && (
+        <Card
+          className="!w-full overflow-hidden"
+          variant="bordered"
+          padding="none"
+        >
+          <ParseDataTable data={data} />
         </Card>
       )}
     </>

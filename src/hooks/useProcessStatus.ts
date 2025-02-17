@@ -42,7 +42,14 @@ export default function useProcessStatus<T>({
       : null
   );
 
+  const { data } = useSWR(
+    selectedDate
+      ? `http://localhost:8080/${uri}?date=${formatDate(selectedDate)}`
+      : null
+  );
+
   return {
+    data,
     logs,
     status: statusProcessing(status),
     setDateRange,
