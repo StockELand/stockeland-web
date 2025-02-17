@@ -1,14 +1,20 @@
 import { Dispatch, SetStateAction } from "react";
 
 export interface DatePickerProps extends UseDatePickerProps {
-  onChange?: Dispatch<SetStateAction<Date | null>>;
+  onChange?: (date: Date | null) => void;
   inputComponent?: HTMLInputElement;
 }
 
 export interface UseDatePickerProps {
   selectedDate?: Date | null;
-  displayDateGroups?: DisplayDateGroup[];
   doubleCalendar?: boolean;
+  displayDateGroups?: { [key: string]: DisplayDateGroup };
+  onDateRangeChange?: Dispatch<
+    SetStateAction<{
+      startDate: Date | null;
+      endDate: Date | null;
+    }>
+  >;
 }
 
 export interface CalenderProps {
@@ -25,8 +31,7 @@ export interface CalenderProps {
 export type ViewType = "date" | "month" | "year";
 
 export interface DisplayDateGroup {
-  type: string;
-  dates: Date[];
+  dates: string[];
   color: string;
 }
 

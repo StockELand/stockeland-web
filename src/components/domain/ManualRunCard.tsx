@@ -29,16 +29,16 @@ export default function ManualRunCard() {
   };
 
   useEffect(() => {
-    if (prediction.status === "completed") {
+    if (prediction.status === "Completed") {
       async function mutatePredictions() {
         await mutate("http://localhost:8080/stock/predictions");
         await mutate("http://localhost:8080/stock/all");
-        prediction.setStatus("pending");
+        prediction.setStatus("Pending");
       }
       mutatePredictions();
     }
-    if (parse.status === "completed") {
-      parse.setStatus("pending");
+    if (parse.status === "Completed") {
+      parse.setStatus("Pending");
     }
   }, [parse, prediction]);
 
@@ -46,32 +46,32 @@ export default function ManualRunCard() {
     <Card title="수동실행">
       <div className="flex flex-col space-y-2">
         <Button onClick={startParsing} className="overflow-x-auto relative">
-          {parse.status !== "completed" && parse.status !== "pending" && (
+          {parse.status !== "Completed" && parse.status !== "Pending" && (
             <div
               className="absolute inset-0 bg-rise text-xs h-full text-inverseForground text-center leading-none"
               style={{ width: `${parse.progress}%` }}
             />
           )}
           <div className="relative z-10">
-            {parse.status === "completed"
+            {parse.status === "Completed"
               ? "Parsing Completed"
-              : parse.status === "pending"
+              : parse.status === "Pending"
               ? "Start Parsing"
               : `Parsing ${parse.status}... ${parse.progress}%`}
           </div>
         </Button>
         <Button onClick={startLearning} className="overflow-x-auto relative">
-          {prediction.status !== "completed" &&
-            prediction.status !== "pending" && (
+          {prediction.status !== "Completed" &&
+            prediction.status !== "Pending" && (
               <div
                 className="absolute inset-0 bg-rise text-xs h-full text-inverseForground text-center leading-none"
                 style={{ width: `${prediction.progress}%` }}
               />
             )}
           <div className="relative z-10">
-            {prediction.status === "completed"
+            {prediction.status === "Completed"
               ? "Learning Completed"
-              : prediction.status === "pending"
+              : prediction.status === "Pending"
               ? "Start Learning"
               : `Learning ${prediction.status}... ${prediction.progress}%`}
           </div>

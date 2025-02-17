@@ -18,3 +18,7 @@ export function formatISODate(isoString: string): string {
 export function formatLocalDate(date: Date): Date {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate());
 }
+
+export function formatISOToFullDate(date: string): string {
+  return date.replace("T", " ").slice(0, -5);
+}

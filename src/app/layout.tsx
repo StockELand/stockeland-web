@@ -23,7 +23,7 @@ export default function RootLayout({
       <body className={`${notoSansKr.variable} font-sans`}>
         <SWRProvider>
           <Header />
-          <main className="px-3 md:px-0 pt-6  max-w-[1200px] m-auto">
+          <main className="px-3 md:px-0 py-6  max-w-[1200px] m-auto">
             {children}
           </main>
         </SWRProvider>
