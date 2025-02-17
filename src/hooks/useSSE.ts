@@ -7,7 +7,7 @@ interface SSEData {
 
 const useSSE = (url: string) => {
   const [progress, setProgress] = useState(0);
-  const [status, setStatus] = useState("pending");
+  const [status, setStatus] = useState("Pending");
   const [isConnected, setIsConnected] = useState(false);
   const [eventSource, setEventSource] = useState<EventSource | null>(null);
 
@@ -20,7 +20,7 @@ const useSSE = (url: string) => {
       const { progress, state } = JSON.parse(event.data) as SSEData;
       setProgress(progress);
       setStatus(state);
-      if (state === "completed") {
+      if (state === "Completed") {
         es.close();
         setIsConnected(false);
       }
