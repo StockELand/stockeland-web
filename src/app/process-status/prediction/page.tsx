@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import useProcessStatus from "@/hooks/useProcessStatus";
 import PredictionLogTable from "@/components/domain/PredictionLogTable";
 import { IPredictionLog } from "@/types/table";
+import PredictionDataTable from "@/components/domain/PredictionDataTable";
 
 const statusProcessing = (
   data: { [key: string]: DisplayDateGroup } | undefined
@@ -37,10 +38,12 @@ export default function ParseStatus() {
   );
   const activeTab = searchParams.get("tab") || "log";
 
-  const { logs, status, setDateRange } = useProcessStatus<IPredictionLog>({
-    uri: "predict",
-    selectedDate,
-  });
+  const { data, logs, status, setDateRange } = useProcessStatus<IPredictionLog>(
+    {
+      uri: "predict",
+      selectedDate,
+    }
+  );
 
   const handleTabClick = (tab: string) => {
     router.push(
@@ -85,13 +88,22 @@ export default function ParseStatus() {
         />
       </div>
 
-      {logs && activeTab === "log" && (
+      {logs && logs?.length !== 0 && activeTab === "log" && (
         <Card
           className="!w-full overflow-hidden"
           variant="bordered"
           padding="none"
         >
           <PredictionLogTable data={logs} />
+        </Card>
+      )}
+      {data && data?.length !== 0 && activeTab === "data" && (
+        <Card
+          className="!w-full overflow-hidden"
+          variant="bordered"
+          padding="none"
+        >
+          <PredictionDataTable data={data} />
         </Card>
       )}
     </>

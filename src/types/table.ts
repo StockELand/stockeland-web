@@ -39,3 +39,10 @@ export interface IParseData {
   symbol: string;
   volume: number;
 }
+
+export interface IPredictionData {
+  id: number;
+  symbol: string;
+  predicted_at: string;
+  change_percent: number;
+}
