@@ -21,7 +21,7 @@ const columnHelper = createColumnHelper<IPredictionLog>();
 const getColumns = () => [
   columnHelper.accessor("predictedAt", {
     id: "predictedAt",
-    header: () => <div className="text-left">Parsed At</div>,
+    header: () => <div className="text-left">Predicted At</div>,
     cell: (info) => <div>{formatISOToFullDate(info.getValue())}</div>,
     meta: { align: "left" } as CustomColumnMeta,
   }),
