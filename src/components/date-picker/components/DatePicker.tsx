@@ -9,6 +9,7 @@ export default function DatePicker({
   onChange,
   displayDateGroups,
   doubleCalendar = false,
+  onDateRangeChange,
 }: DatePickerProps) {
   const {
     selectedDate: internalSelectedDate,
@@ -24,6 +25,7 @@ export default function DatePicker({
     selectedDate,
     doubleCalendar,
     displayDateGroups,
+    onDateRangeChange,
   });
 
   const handleDateSelect = (date: Date) => {

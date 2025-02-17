@@ -1,10 +1,10 @@
-import { IParseLog, IParseStatus } from "@/types/table";
+import { IPredictionLog, IPredictionStatus } from "@/types/table";
 import { createColumnHelper } from "@tanstack/react-table";
 import { CustomColumnMeta, Table } from "../table";
 import clsx from "clsx";
 import { formatISOToFullDate } from "../date-picker";
 
-const StatusCell = ({ status }: { status: IParseStatus }) => {
+const StatusCell = ({ status }: { status: IPredictionStatus }) => {
   return (
     <div
       className={clsx("border-2 px-3 py-[2px] rounded-lg", {
@@ -17,10 +17,10 @@ const StatusCell = ({ status }: { status: IParseStatus }) => {
   );
 };
 
-const columnHelper = createColumnHelper<IParseLog>();
+const columnHelper = createColumnHelper<IPredictionLog>();
 const getColumns = () => [
-  columnHelper.accessor("parsedAt", {
-    id: "parsedAt",
+  columnHelper.accessor("predictedAt", {
+    id: "predictedAt",
     header: () => <div className="text-left">Parsed At</div>,
     cell: (info) => <div>{formatISOToFullDate(info.getValue())}</div>,
     meta: { align: "left" } as CustomColumnMeta,
@@ -63,10 +63,10 @@ const getColumns = () => [
   }),
 ];
 
-interface ParseLogTableProps {
-  data: IParseLog[];
+interface PredictionLogTableProps {
+  data: IPredictionLog[];
 }
 
-export default function ParseLogTable({ data }: ParseLogTableProps) {
-  return <Table<IParseLog> data={data} columns={getColumns()} />;
+export default function PredictionLogTable({ data }: PredictionLogTableProps) {
+  return <Table<IPredictionLog> data={data} columns={getColumns()} />;
 }

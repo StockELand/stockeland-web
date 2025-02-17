@@ -7,11 +7,11 @@ import {
 } from "@/components/date-picker";
 import Tab from "@/components/ui/Tab";
 import { useRouter, useSearchParams } from "next/navigation";
-import ParseLogTable from "@/components/domain/ParseLogTable";
 import Card from "@/components/ui/Card";
 import { useEffect, useState } from "react";
 import useProcessStatus from "@/hooks/useProcessStatus";
-import { IParseLog } from "@/types/table";
+import PredictionLogTable from "@/components/domain/PredictionLogTable";
+import { IPredictionLog } from "@/types/table";
 
 const statusProcessing = (
   data: { [key: string]: DisplayDateGroup } | undefined
@@ -37,8 +37,8 @@ export default function ParseStatus() {
   );
   const activeTab = searchParams.get("tab") || "log";
 
-  const { logs, status, setDateRange } = useProcessStatus<IParseLog>({
-    uri: "parse",
+  const { logs, status, setDateRange } = useProcessStatus<IPredictionLog>({
+    uri: "predict",
     selectedDate,
   });
 
@@ -91,7 +91,7 @@ export default function ParseStatus() {
           variant="bordered"
           padding="none"
         >
-          <ParseLogTable data={logs} />
+          <PredictionLogTable data={logs} />
         </Card>
       )}
     </>

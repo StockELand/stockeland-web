@@ -11,10 +11,20 @@ export interface IStock {
 
 export interface IParseLog {
   id: number;
-  parsed_at: string;
+  parsedAt: string;
   status: IParseStatus;
-  modified_count: number;
-  execution_time: number;
+  modifiedCount: number;
+  executionTime: number;
   message: string;
 }
 export type IParseStatus = "success" | "fail";
+
+export interface IPredictionLog {
+  id: number;
+  predictedAt: string;
+  status: IPredictionStatus;
+  modifiedCount: number;
+  executionTime: number;
+  message: string;
+}
+export type IPredictionStatus = "success" | "fail";
