@@ -1,12 +1,12 @@
 export interface IStock {
   symbol: string;
   name: string;
-  latest_date: string;
-  latest_close: number;
-  latest_change_percent: number;
-  prev_date: string;
-  prev_close: number;
-  prev_change_percent: number;
+  latestDate: string;
+  latestClose: number;
+  latestChangePercent: number;
+  prevDate: string;
+  prevClose: number;
+  prevChangePercent: number;
 }
 
 export interface IParseLog {
@@ -43,6 +43,6 @@ export interface IParseData {
 export interface IPredictionData {
   id: number;
   symbol: string;
-  predicted_at: string;
-  change_percent: number;
+  predictedAt: string;
+  changePercent: number;
 }

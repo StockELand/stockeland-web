@@ -36,8 +36,8 @@ export default function StockListCard({
             </div>
             <div className="flex flex-row space-x-3">
               <span className={`text-sm text-thTxt`}>
-                {stock.prev_change_percent &&
-                  Math.round(stock.prev_change_percent * 100) / 100}
+                {stock.prevChangePercent &&
+                  Math.round(stock.prevChangePercent * 100) / 100}
                 %
               </span>
               <span
@@ -46,7 +46,7 @@ export default function StockListCard({
                 }`}
               >
                 {isPositive ? "+" : ""}
-                {Math.round(stock.change_percent * 100) / 100}%
+                {Math.round(stock.changePercent * 100) / 100}%
               </span>
             </div>
           </div>

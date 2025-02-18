@@ -18,21 +18,26 @@ const StatusCell = ({ status }: { status: IParseStatus }) => {
 };
 
 const columnHelper = createColumnHelper<IParseLog>();
+const PARSED_AT = "parsedAt";
+const STATUS = "status";
+const MODIFIED_COUNT = "modifiedCount";
+const EXECUTION_TIME = "executionTime";
+const MESSAGE = "message";
 const getColumns = () => [
-  columnHelper.accessor("parsedAt", {
-    id: "parsedAt",
+  columnHelper.accessor(PARSED_AT, {
+    id: PARSED_AT,
     header: () => <div className="text-left">Parsed At</div>,
     cell: (info) => <div>{formatISOToFullDate(info.getValue())}</div>,
     meta: { align: "left" } as CustomColumnMeta,
   }),
-  columnHelper.accessor("status", {
-    id: "status",
+  columnHelper.accessor(STATUS, {
+    id: STATUS,
     header: () => <div>Status</div>,
     cell: (info) => <StatusCell status={info.getValue()} />,
     meta: { align: "center" } as CustomColumnMeta,
   }),
-  columnHelper.accessor("modifiedCount", {
-    id: "modifiedCount",
+  columnHelper.accessor(MODIFIED_COUNT, {
+    id: MODIFIED_COUNT,
     header: () => (
       <div>
         Modified
@@ -43,8 +48,8 @@ const getColumns = () => [
     cell: (info) => <div>{info.getValue()}</div>,
     meta: { align: "right" } as CustomColumnMeta,
   }),
-  columnHelper.accessor("executionTime", {
-    id: "executionTime",
+  columnHelper.accessor(EXECUTION_TIME, {
+    id: EXECUTION_TIME,
     header: () => (
       <div>
         Excution
@@ -55,8 +60,8 @@ const getColumns = () => [
     cell: (info) => <div>{info.getValue()}s</div>,
     meta: { align: "right" } as CustomColumnMeta,
   }),
-  columnHelper.accessor("message", {
-    id: "message",
+  columnHelper.accessor(MESSAGE, {
+    id: MESSAGE,
     header: () => <div>Message</div>,
     cell: (info) => <div>{info.getValue()}</div>,
     meta: { align: "left" } as CustomColumnMeta,

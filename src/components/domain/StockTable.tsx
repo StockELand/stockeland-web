@@ -45,39 +45,46 @@ const formatPercentage = (value: number) => (
 );
 
 const columnHelper = createColumnHelper<IStock>();
+
+const SYMBOL = "symbol";
+const PREV_CLOSE = "prevClose";
+const LATEST_CLOSE = "latestClose";
+const PREV_CHANGE_PERCENT = "prevChangePercent";
+const LATEST_CHANGE_PERCENT = "latestChangePercent";
+
 const getColumns = () => [
-  columnHelper.accessor("symbol", {
-    id: "symbol",
+  columnHelper.accessor(SYMBOL, {
+    id: SYMBOL,
     header: () => <div className="text-left">Symbol</div>,
     cell: (info) => (
       <StockSymbolCell symbol={info.getValue()} name={info.row.original.name} />
     ),
     meta: { pinAlign: "left", align: "left" },
   }),
-  columnHelper.accessor("prev_close", {
-    id: "prev_close",
+  columnHelper.accessor(PREV_CLOSE, {
+    id: PREV_CLOSE,
     header: () => <div>Prev Close</div>,
     cell: (info) => <div>${info.getValue()}</div>,
     meta: { align: "right" } as CustomColumnMeta,
   }),
-  columnHelper.accessor("latest_close", {
-    id: "latest_close",
+  columnHelper.accessor(LATEST_CLOSE, {
+    id: LATEST_CLOSE,
     header: () => <div>Latest Close</div>,
     cell: (info) => <div>${info.getValue()}</div>,
     meta: { align: "right" } as CustomColumnMeta,
   }),
-  columnHelper.accessor("prev_change_percent", {
-    id: "prev_change_percent",
+  columnHelper.accessor(PREV_CHANGE_PERCENT, {
+    id: PREV_CHANGE_PERCENT,
     header: () => <div>Prev Prediction</div>,
     cell: (info) => formatPercentage(info.getValue() as number),
-    sortingFn: createPercentageSortFn<IStock>("prev_change_percent"),
+    sortingFn: createPercentageSortFn<IStock>(PREV_CHANGE_PERCENT),
     meta: { align: "right" } as CustomColumnMeta,
   }),
-  columnHelper.accessor("latest_change_percent", {
-    id: "latest_change_percent",
+  columnHelper.accessor(LATEST_CHANGE_PERCENT, {
+    id: LATEST_CHANGE_PERCENT,
     header: () => <div>Latest Prediction</div>,
     cell: (info) => formatPercentage(info.getValue() as number),
-    sortingFn: createPercentageSortFn<IStock>("latest_change_percent"),
+    sortingFn: createPercentageSortFn<IStock>(LATEST_CHANGE_PERCENT),
     meta: { align: "right" } as CustomColumnMeta,
   }),
 ];
