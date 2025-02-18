@@ -3,21 +3,26 @@ import { CustomColumnMeta, Table } from "../table";
 import { IPredictionData } from "@/types/table";
 
 const columnHelper = createColumnHelper<IPredictionData>();
+
+const SYMBOL = "symbol";
+const PREDICTED_AT = "predictedAt";
+const CHANGE_PERCENT = "changePercent";
+
 const getColumns = () => [
-  columnHelper.accessor("symbol", {
-    id: "symbol",
+  columnHelper.accessor(SYMBOL, {
+    id: SYMBOL,
     header: () => <div>Symbol</div>,
     cell: (info) => <div>{info.getValue()}</div>,
     meta: { align: "left" } as CustomColumnMeta,
   }),
-  columnHelper.accessor("predicted_at", {
-    id: "predicted_at",
+  columnHelper.accessor(PREDICTED_AT, {
+    id: PREDICTED_AT,
     header: () => <div>Date</div>,
     cell: (info) => <div>{info.getValue()}</div>,
     meta: { align: "left" } as CustomColumnMeta,
   }),
-  columnHelper.accessor("change_percent", {
-    id: "change_percent",
+  columnHelper.accessor(CHANGE_PERCENT, {
+    id: CHANGE_PERCENT,
     header: () => <div>Change Percent</div>,
     cell: (info) => <div>{info.getValue()}</div>,
     meta: { align: "right" } as CustomColumnMeta,

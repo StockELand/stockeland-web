@@ -18,21 +18,35 @@ const StatusCell = ({ status }: { status: IPredictionStatus }) => {
 };
 
 const columnHelper = createColumnHelper<IPredictionLog>();
+
+const PREDICTED_AT = "predictedAt";
+const STATUS = "status";
+const MODIFIED_COUNT = "modifiedCount";
+const EXECUTION_TIME = "executionTime";
+const MESSAGE = "message";
+const LAST_DATA_DATE = "lastDataDate";
+
 const getColumns = () => [
-  columnHelper.accessor("predictedAt", {
-    id: "predictedAt",
+  columnHelper.accessor(PREDICTED_AT, {
+    id: PREDICTED_AT,
     header: () => <div className="text-left">Predicted At</div>,
     cell: (info) => <div>{formatISOToFullDate(info.getValue())}</div>,
     meta: { align: "left" } as CustomColumnMeta,
   }),
-  columnHelper.accessor("status", {
-    id: "status",
+  columnHelper.accessor(STATUS, {
+    id: STATUS,
     header: () => <div>Status</div>,
     cell: (info) => <StatusCell status={info.getValue()} />,
     meta: { align: "center" } as CustomColumnMeta,
   }),
-  columnHelper.accessor("modifiedCount", {
-    id: "modifiedCount",
+  columnHelper.accessor(LAST_DATA_DATE, {
+    id: LAST_DATA_DATE,
+    header: () => <div className="text-left">Last Data Date</div>,
+    cell: (info) => <div>{info.getValue()}</div>,
+    meta: { align: "center" } as CustomColumnMeta,
+  }),
+  columnHelper.accessor(MODIFIED_COUNT, {
+    id: MODIFIED_COUNT,
     header: () => (
       <div>
         Modified
@@ -43,8 +57,8 @@ const getColumns = () => [
     cell: (info) => <div>{info.getValue()}</div>,
     meta: { align: "right" } as CustomColumnMeta,
   }),
-  columnHelper.accessor("executionTime", {
-    id: "executionTime",
+  columnHelper.accessor(EXECUTION_TIME, {
+    id: EXECUTION_TIME,
     header: () => (
       <div>
         Excution
@@ -55,8 +69,8 @@ const getColumns = () => [
     cell: (info) => <div>{info.getValue()}s</div>,
     meta: { align: "right" } as CustomColumnMeta,
   }),
-  columnHelper.accessor("message", {
-    id: "message",
+  columnHelper.accessor(MESSAGE, {
+    id: MESSAGE,
     header: () => <div>Message</div>,
     cell: (info) => <div>{info.getValue()}</div>,
     meta: { align: "left" } as CustomColumnMeta,

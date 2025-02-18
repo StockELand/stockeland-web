@@ -6,41 +6,41 @@ import { useEffect } from "react";
 import { mutate } from "swr";
 
 export default function ManualRunCard() {
-  const parse = useSSE("http://localhost:8080/parse/progress");
+  const parse = useSSE("http://localhost:8080/event/parse/progress");
 
-  const prediction = useSSE("http://localhost:8080/predict/progress");
+  const predict = useSSE("http://localhost:8080/event/predict/progress");
 
   const startParsing = async () => {
     try {
       parse.startSSE();
-      await fetch("http://localhost:8080/parse/update", { method: "POST" });
+      await fetch("http://localhost:8080/parse", { method: "POST" });
     } catch (error) {
       console.error("Error starting parsing:", error);
     }
   };
 
-  const startLearning = async () => {
+  const startPredicting = async () => {
     try {
-      prediction.startSSE();
-      await fetch("http://localhost:8080/predict/update", { method: "POST" });
+      predict.startSSE();
+      await fetch("http://localhost:8080/predict", { method: "POST" });
     } catch (error) {
-      console.error("Error starting Learning:", error);
+      console.error("Error starting Predicting:", error);
     }
   };
 
   useEffect(() => {
-    if (prediction.status === "Completed") {
+    if (predict.status === "Completed") {
       async function mutatePredictions() {
         await mutate("http://localhost:8080/stock/predictions");
         await mutate("http://localhost:8080/stock/all");
-        prediction.setStatus("Pending");
+        predict.setStatus("Pending");
       }
       mutatePredictions();
     }
     if (parse.status === "Completed") {
       parse.setStatus("Pending");
     }
-  }, [parse, prediction]);
+  }, [parse, predict]);
 
   return (
     <Card title="수동실행">
@@ -57,23 +57,22 @@ export default function ManualRunCard() {
               ? "Parsing Completed"
               : parse.status === "Pending"
               ? "Start Parsing"
-              : `Parsing ${parse.status}... ${parse.progress}%`}
+              : `${parse.status}... ${parse.progress}%`}
           </div>
         </Button>
-        <Button onClick={startLearning} className="overflow-x-auto relative">
-          {prediction.status !== "Completed" &&
-            prediction.status !== "Pending" && (
-              <div
-                className="absolute inset-0 bg-rise text-xs h-full text-inverseForground text-center leading-none"
-                style={{ width: `${prediction.progress}%` }}
-              />
-            )}
+        <Button onClick={startPredicting} className="overflow-x-auto relative">
+          {predict.status !== "Completed" && predict.status !== "Pending" && (
+            <div
+              className="absolute inset-0 bg-rise text-xs h-full text-inverseForground text-center leading-none"
+              style={{ width: `${predict.progress}%` }}
+            />
+          )}
           <div className="relative z-10">
-            {prediction.status === "Completed"
-              ? "Learning Completed"
-              : prediction.status === "Pending"
-              ? "Start Learning"
-              : `Learning ${prediction.status}... ${prediction.progress}%`}
+            {predict.status === "Completed"
+              ? "Predicting Completed"
+              : predict.status === "Pending"
+              ? "Start Predicting"
+              : `${predict.status}... ${predict.progress}%`}
           </div>
         </Button>
       </div>
