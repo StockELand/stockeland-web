@@ -6,9 +6,9 @@ import { useEffect } from "react";
 import { mutate } from "swr";
 
 export default function ManualRunCard() {
-  const parse = useSSE("http://localhost:8080/parse/progress");
+  const parse = useSSE("http://localhost:8080/event/parse/progress");
 
-  const prediction = useSSE("http://localhost:8080/predict/progress");
+  const prediction = useSSE("http://localhost:8080/event/predict/progress");
 
   const startParsing = async () => {
     try {
