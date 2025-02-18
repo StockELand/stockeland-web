@@ -16,6 +16,9 @@ export interface IParseLog {
   modifiedCount: number;
   executionTime: number;
   message: string;
+  parsedRangeStart: string;
+  parsedRangeEnd: string;
+  lastDataDate: string;
 }
 export type IParseStatus = "success" | "fail";
 

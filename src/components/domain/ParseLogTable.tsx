@@ -20,6 +20,7 @@ const StatusCell = ({ status }: { status: IParseStatus }) => {
 const columnHelper = createColumnHelper<IParseLog>();
 const PARSED_AT = "parsedAt";
 const STATUS = "status";
+const DATE_RANGE = "parsedRangeStart";
 const MODIFIED_COUNT = "modifiedCount";
 const EXECUTION_TIME = "executionTime";
 const MESSAGE = "message";
@@ -34,6 +35,17 @@ const getColumns = () => [
     id: STATUS,
     header: () => <div>Status</div>,
     cell: (info) => <StatusCell status={info.getValue()} />,
+    meta: { align: "center" } as CustomColumnMeta,
+  }),
+  columnHelper.accessor(DATE_RANGE, {
+    id: DATE_RANGE,
+    header: () => <div>Date Range</div>,
+    cell: (info) => (
+      <div>
+        {info.getValue() &&
+          `${info.getValue()} ~ ${info.row.original.parsedRangeEnd}`}
+      </div>
+    ),
     meta: { align: "center" } as CustomColumnMeta,
   }),
   columnHelper.accessor(MODIFIED_COUNT, {
