@@ -29,6 +29,7 @@ export interface IPredictionLog {
   modifiedCount: number;
   executionTime: number;
   message: string;
+  lastDataDate: string;
 }
 export type IPredictionStatus = "success" | "fail";
 

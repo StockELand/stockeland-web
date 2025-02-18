@@ -71,7 +71,7 @@ export default function ManualRunCard() {
             {predict.status === "Completed"
               ? "Predicting Completed"
               : predict.status === "Pending"
-              ? "Start Learning"
+              ? "Start Predicting"
               : `${predict.status}... ${predict.progress}%`}
           </div>
         </Button>

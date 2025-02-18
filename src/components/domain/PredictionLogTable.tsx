@@ -24,6 +24,7 @@ const STATUS = "status";
 const MODIFIED_COUNT = "modifiedCount";
 const EXECUTION_TIME = "executionTime";
 const MESSAGE = "message";
+const LAST_DATA_DATE = "lastDataDate";
 
 const getColumns = () => [
   columnHelper.accessor(PREDICTED_AT, {
@@ -36,6 +37,12 @@ const getColumns = () => [
     id: STATUS,
     header: () => <div>Status</div>,
     cell: (info) => <StatusCell status={info.getValue()} />,
+    meta: { align: "center" } as CustomColumnMeta,
+  }),
+  columnHelper.accessor(LAST_DATA_DATE, {
+    id: LAST_DATA_DATE,
+    header: () => <div className="text-left">Last Data Date</div>,
+    cell: (info) => <div>{info.getValue()}</div>,
     meta: { align: "center" } as CustomColumnMeta,
   }),
   columnHelper.accessor(MODIFIED_COUNT, {
