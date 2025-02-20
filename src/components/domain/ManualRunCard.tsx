@@ -29,6 +29,11 @@ export default function ManualRunCard() {
   };
 
   useEffect(() => {
+    parse.startSSE();
+    predict.startSSE();
+  }, []);
+
+  useEffect(() => {
     if (predict.status === "Completed") {
       async function mutatePredictions() {
         await mutate("http://localhost:8080/stock/predictions");
