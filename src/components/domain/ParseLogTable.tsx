@@ -28,7 +28,9 @@ const getColumns = () => [
   columnHelper.accessor(PARSED_AT, {
     id: PARSED_AT,
     header: () => <div className="text-left">Parsed At</div>,
-    cell: (info) => <div>{formatISOToFullDate(info.getValue())}</div>,
+    cell: (info) => (
+      <div className="text-nowrap">{formatISOToFullDate(info.getValue())}</div>
+    ),
     meta: { align: "left" } as CustomColumnMeta,
   }),
   columnHelper.accessor(STATUS, {
@@ -41,7 +43,7 @@ const getColumns = () => [
     id: DATE_RANGE,
     header: () => <div>Date Range</div>,
     cell: (info) => (
-      <div>
+      <div className="text-nowrap">
         {info.getValue() &&
           `${info.getValue()} ~ ${info.row.original.parsedRangeEnd}`}
       </div>
@@ -75,7 +77,9 @@ const getColumns = () => [
   columnHelper.accessor(MESSAGE, {
     id: MESSAGE,
     header: () => <div>Message</div>,
-    cell: (info) => <div>{info.getValue()}</div>,
+    cell: (info) => (
+      <div className="overflow-x-hidden text-nowrap">{info.getValue()}</div>
+    ),
     meta: { align: "left" } as CustomColumnMeta,
   }),
 ];
