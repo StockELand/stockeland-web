@@ -4,15 +4,18 @@ import {
   DatePicker,
   DisplayDateGroup,
   formatDate,
+  useDatePickerState,
 } from "@/components/date-picker";
 import Tab from "@/components/ui/Tab";
 import { useRouter, useSearchParams } from "next/navigation";
 import Card from "@/components/ui/Card";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useProcessStatus from "@/hooks/useProcessStatus";
 import PredictionLogTable from "@/components/domain/PredictionLogTable";
 import { IPredictionLog } from "@/types/table";
 import PredictionDataTable from "@/components/domain/PredictionDataTable";
+import Input from "@/components/ui/Input";
+import CalendarIcon from "@/../public/assets/calendar.svg";
 
 const statusProcessing = (
   data: { [key: string]: DisplayDateGroup } | undefined
@@ -33,9 +36,15 @@ export default function ParseStatus() {
   const router = useRouter();
 
   const defaultDate = searchParams.get("date");
-  const [selectedDate, setSelectedDate] = useState<Date | null>(
-    (defaultDate && new Date(defaultDate)) || new Date()
-  );
+
+  const {
+    inputValue,
+    handleDateChange,
+    handleInputChange,
+    selectedDate,
+    setSelectedDate,
+  } = useDatePickerState((defaultDate && new Date(defaultDate)) || new Date());
+
   const activeTab = searchParams.get("tab") || "log";
 
   const { data, logs, status, setDateRange } = useProcessStatus<IPredictionLog>(
@@ -54,7 +63,7 @@ export default function ParseStatus() {
   const handleDateSelect = (date: Date | null) => {
     if (date) {
       router.push(`?tab=${activeTab}&date=${formatDate(date)}`);
-      setSelectedDate(date);
+      // setSelectedDate(date);
     }
   };
 
@@ -65,17 +74,28 @@ export default function ParseStatus() {
     } else {
       setSelectedDate(new Date());
     }
-  }, [searchParams]);
+  }, [searchParams, setSelectedDate]);
 
   return (
     <>
-      <div className="mb-6">
+      <div className="mb-6 flex flex-row">
         <DatePicker
           selectedDate={selectedDate}
-          onChange={handleDateSelect}
-          onDateRangeChange={setDateRange}
+          onChange={(date) => {
+            handleDateChange(date);
+            handleDateSelect(date);
+          }}
           displayDateGroups={statusProcessing(status)}
-          doubleCalendar
+          onDateRangeChange={setDateRange}
+          // doubleCalendar
+          customInput={
+            <Input
+              rightIcon={<CalendarIcon className="size-5" />}
+              value={inputValue}
+              onChange={handleInputChange}
+              placeholder="YYYY-MM-DD"
+            />
+          }
         />
       </div>
 
