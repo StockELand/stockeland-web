@@ -1,8 +1,13 @@
 import { Dispatch, SetStateAction } from "react";
 
-export interface DatePickerProps extends UseDatePickerProps {
+export type DatePickerProps = CalendarPopupProps;
+
+export interface CalendarPopupProps extends CalendarViewProps {
+  customInput?: React.ReactNode;
+}
+
+export interface CalendarViewProps extends UseDatePickerProps {
   onChange?: (date: Date | null) => void;
-  inputComponent?: HTMLInputElement;
 }
 
 export interface UseDatePickerProps {

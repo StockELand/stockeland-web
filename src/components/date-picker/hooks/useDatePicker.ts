@@ -12,13 +12,26 @@ export const useDatePicker = ({
   const [selectedDate, setSelectedDate] = useState<Date | null>(
     externalSelectedDate || new Date()
   );
-  const [currentMonth, setCurrentMonth] = useState(selectedDate || new Date());
+  const [currentMonth, setCurrentMonth] = useState(
+    externalSelectedDate || new Date()
+  );
   const [view, setView] = useState<ViewType>("date");
 
+  // ✅ 외부에서 전달된 selectedDate가 변경될 때 currentMonth 업데이트
   useEffect(() => {
-    if (externalSelectedDate) setSelectedDate(externalSelectedDate);
+    if (externalSelectedDate) {
+      setSelectedDate(externalSelectedDate);
+      setCurrentMonth(
+        new Date(
+          externalSelectedDate.getFullYear(),
+          externalSelectedDate.getMonth(),
+          1
+        )
+      );
+    }
   }, [externalSelectedDate]);
 
+  // ✅ currentMonth 변경 시 onDateRangeChange 호출
   useEffect(() => {
     const sDate = new Date(
       currentMonth.getFullYear(),
