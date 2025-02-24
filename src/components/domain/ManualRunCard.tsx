@@ -1,7 +1,7 @@
 "use client";
 import Card from "@/components/ui/Card";
 import ParseProcessButton from "./ParseProcessButton";
-import PredictionProcessButton from "./PredictProcessButton";
+import PredictionProcessButton from "./PredictionProcessButton";
 
 export default function ManualRunCard() {
   return (
