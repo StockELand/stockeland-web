@@ -16,6 +16,7 @@ import { IPredictionLog } from "@/types/table";
 import PredictionDataTable from "@/components/domain/PredictionDataTable";
 import Input from "@/components/ui/Input";
 import CalendarIcon from "@/../public/assets/calendar.svg";
+import PredictionProcessButton from "@/components/domain/PredictionProcessButton";
 
 const statusProcessing = (
   data: { [key: string]: DisplayDateGroup } | undefined
@@ -78,7 +79,7 @@ export default function ParseStatus() {
 
   return (
     <>
-      <div className="mb-6 flex flex-row">
+      <div className="mb-6 flex flex-row gap-4">
         <DatePicker
           selectedDate={selectedDate}
           onChange={(date) => {
@@ -96,6 +97,9 @@ export default function ParseStatus() {
               placeholder="YYYY-MM-DD"
             />
           }
+        />
+        <PredictionProcessButton
+          date={selectedDate ? formatDate(selectedDate) : undefined}
         />
       </div>
 

@@ -4,7 +4,22 @@ import useSSE from "@/hooks/useSSE";
 import { useEffect } from "react";
 import { mutate } from "swr";
 
-export default function PredictionProcessButton() {
+const fetcherWithBody = async (url: string, body: { date?: string }) => {
+  const response = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  return response.json();
+};
+
+interface PredictionProcessButtonProps {
+  date?: string;
+}
+
+export default function PredictionProcessButton({
+  date,
+}: PredictionProcessButtonProps) {
   const { startSSE, status, setStatus, progress } = useSSE(
     "http://localhost:8080/event/predict/progress"
   );
@@ -12,7 +27,7 @@ export default function PredictionProcessButton() {
   const startPredicting = async () => {
     try {
       startSSE();
-      await fetch("http://localhost:8080/predict", { method: "POST" });
+      await fetcherWithBody("http://localhost:8080/predict", { date });
     } catch (error) {
       console.error("Error start Predict:", error);
     }
@@ -27,6 +42,7 @@ export default function PredictionProcessButton() {
       async function mutatePredictions() {
         await mutate("http://localhost:8080/stock/predictions");
         await mutate("http://localhost:8080/stock/all");
+        await mutate(`http://localhost:8080/predict/logs`);
         setStatus("Pending");
       }
       mutatePredictions();
@@ -40,7 +56,10 @@ export default function PredictionProcessButton() {
   };
 
   return (
-    <Button onClick={startPredicting} className="overflow-x-auto relative">
+    <Button
+      onClick={startPredicting}
+      className="overflow-x-auto relative min-w-40"
+    >
       {status !== "Completed" && status !== "Pending" && (
         <div
           className="absolute inset-0 bg-rise text-xs h-full text-inverseForground text-center leading-none"
