@@ -1,6 +1,6 @@
 import { createColumnHelper } from "@tanstack/react-table";
-import { CustomColumnMeta, Table } from "../table";
 import { IParseData } from "@/types/table";
+import { CustomColumnMeta, Table } from "@/components/table";
 
 const columnHelper = createColumnHelper<IParseData>();
 const getColumns = () => [

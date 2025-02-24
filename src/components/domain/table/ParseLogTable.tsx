@@ -1,8 +1,8 @@
+import { formatISOToFullDate } from "@/components/date-picker";
+import { CustomColumnMeta, Table } from "@/components/table";
 import { IParseLog, IParseStatus } from "@/types/table";
 import { createColumnHelper } from "@tanstack/react-table";
-import { CustomColumnMeta, Table } from "../table";
 import clsx from "clsx";
-import { formatISOToFullDate } from "../date-picker";
 
 const StatusCell = ({ status }: { status: IParseStatus }) => {
   return (

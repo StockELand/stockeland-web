@@ -11,12 +11,12 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Card from "@/components/ui/Card";
 import { useEffect } from "react";
 import useProcessStatus from "@/hooks/useProcessStatus";
-import PredictionLogTable from "@/components/domain/PredictionLogTable";
 import { IPredictionLog } from "@/types/table";
-import PredictionDataTable from "@/components/domain/PredictionDataTable";
 import Input from "@/components/ui/Input";
 import CalendarIcon from "@/../public/assets/calendar.svg";
 import PredictionProcessButton from "@/components/domain/PredictionProcessButton";
+import PredictionLogTable from "@/components/domain/table/PredictionLogTable";
+import PredictionDataTable from "@/components/domain/table/PredictionDataTable";
 
 const statusProcessing = (
   data: { [key: string]: DisplayDateGroup } | undefined

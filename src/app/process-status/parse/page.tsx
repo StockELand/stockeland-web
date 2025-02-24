@@ -7,12 +7,12 @@ import {
 } from "@/components/date-picker";
 import Tab from "@/components/ui/Tab";
 import { useRouter, useSearchParams } from "next/navigation";
-import ParseLogTable from "@/components/domain/ParseLogTable";
 import Card from "@/components/ui/Card";
 import { useEffect, useState } from "react";
 import useProcessStatus from "@/hooks/useProcessStatus";
 import { IParseLog } from "@/types/table";
-import ParseDataTable from "@/components/domain/ParseDataTable";
+import ParseDataTable from "@/components/domain/table/ParseDataTable";
+import ParseLogTable from "@/components/domain/table/ParseLogTable";
 
 const statusProcessing = (
   data: { [key: string]: DisplayDateGroup } | undefined
