@@ -4,7 +4,7 @@ import useSSE from "@/hooks/useSSE";
 import { useEffect } from "react";
 import { mutate } from "swr";
 
-export default function PredictProcessButton() {
+export default function PredictionProcessButton() {
   const { startSSE, status, setStatus, progress } = useSSE(
     "http://localhost:8080/event/predict/progress"
   );
