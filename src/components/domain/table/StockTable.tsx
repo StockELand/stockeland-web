@@ -1,7 +1,7 @@
 import { IStock } from "@/types/table";
 import { createColumnHelper, SortingFn } from "@tanstack/react-table";
 import Image from "next/image";
-import { CustomColumnMeta, Table } from "../table";
+import { CustomColumnMeta, Table } from "../../table";
 
 const StockSymbolCell = ({
   symbol,
