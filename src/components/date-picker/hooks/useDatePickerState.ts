@@ -5,13 +5,13 @@ import { parseLocalDate, formatDate } from "../utils/formatUtils";
 export const useDatePickerState = (initialDate: Date | null = null) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(initialDate);
   const [inputValue, setInputValue] = useState<string>(
-    initialDate ? formatDate(initialDate) : ""
+    formatDate(initialDate) || ""
   );
 
   const handleDateChange = (date: Date | null) => {
     if (date) {
       setSelectedDate(date);
-      setInputValue(formatDate(date));
+      setInputValue(formatDate(date) || "");
     }
   };
 

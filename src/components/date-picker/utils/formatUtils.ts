@@ -1,7 +1,8 @@
 /**
- * 날짜를 YYYY-MM-DD 형식으로 변환
+ * 날짜를 YYYY-MM-DD 형식의 문자열로 변환
  */
-export function formatDate(date: Date): string {
+export function formatDate(date?: Date | null): string | null {
+  if (!date) return null;
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
     2,
     "0"

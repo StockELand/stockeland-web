@@ -10,16 +10,13 @@ export interface CalendarViewProps extends UseDatePickerProps {
   onChange?: (date: Date | null) => void;
 }
 
+export type DateRangeType = { startDate: Date | null; endDate: Date | null };
+
 export interface UseDatePickerProps {
   selectedDate?: Date | null;
   doubleCalendar?: boolean;
   displayDateGroups?: { [key: string]: DisplayDateGroup };
-  onDateRangeChange?: Dispatch<
-    SetStateAction<{
-      startDate: Date | null;
-      endDate: Date | null;
-    }>
-  >;
+  onDateRangeChange?: (range: DateRangeType) => void;
 }
 
 export interface CalenderProps {
