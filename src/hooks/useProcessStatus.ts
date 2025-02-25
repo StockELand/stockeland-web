@@ -1,7 +1,22 @@
 "use client";
-import useSWR from "swr";
 import { useState } from "react";
-import { DisplayDateGroup, formatDate } from "@/components/date-picker";
+import {
+  DateRangeType,
+  DisplayDateGroup,
+  formatDate,
+} from "@/components/date-picker";
+import { useGetPredictionLog } from "@/services/predict/useGetPredictionLog";
+import {
+  GetPredictionStatusQuery,
+  useGetPredictionStatus,
+} from "@/services/predict/useGetPredictionStatus";
+import { useGetPredictions } from "@/services/predict/useGetPredictions";
+import {
+  GetParseStatusQuery,
+  useGetParseStatus,
+} from "@/services/parse/useGetParseStatus";
+import { useGetParseLog } from "@/services/parse/useGetParseLog";
+import { useGetParseData } from "@/services/parse/useGetParseData";
 
 const statusProcessing = (
   data: { [key: string]: DisplayDateGroup } | undefined
@@ -12,41 +27,28 @@ const statusProcessing = (
   return data;
 };
 
-interface useProcessStatusProps {
-  uri: "parse" | "predict";
-  selectedDate: Date | null;
-}
+export function usePredictProcessStatus(selectedDate: Date | null) {
+  const [dateStrRange, setDateStrRange] = useState<GetPredictionStatusQuery>({
+    startDate: null,
+    endDate: null,
+  });
 
-export default function useProcessStatus<T>({
-  uri,
-  selectedDate,
-}: useProcessStatusProps) {
-  const [dateRange, setDateRange] = useState<{
-    startDate: Date | null;
-    endDate: Date | null;
-  }>({ startDate: null, endDate: null });
+  const formatingSelectedDate = () => {
+    return selectedDate ? { date: formatDate(selectedDate) } : undefined;
+  };
 
-  const shouldFetch = dateRange.startDate && dateRange.endDate;
+  const { data: logs } = useGetPredictionLog(formatingSelectedDate());
 
-  const { data: logs } = useSWR<T[]>(
-    selectedDate
-      ? `http://localhost:8080/${uri}/logs?date=${formatDate(selectedDate)}`
-      : null
-  );
+  const { data } = useGetPredictions(formatingSelectedDate());
 
-  const { data: status } = useSWR<{ [key: string]: DisplayDateGroup }>(
-    shouldFetch
-      ? `http://localhost:8080/${uri}/status?startDate=${
-          dateRange.startDate && formatDate(dateRange.startDate)
-        }&endDate=${dateRange.endDate && formatDate(dateRange.endDate)}`
-      : null
-  );
+  const { data: status } = useGetPredictionStatus(dateStrRange);
 
-  const { data } = useSWR(
-    selectedDate
-      ? `http://localhost:8080/${uri}?date=${formatDate(selectedDate)}`
-      : null
-  );
+  const setDateRange = ({ startDate, endDate }: DateRangeType) => {
+    setDateStrRange({
+      startDate: formatDate(startDate),
+      endDate: formatDate(endDate),
+    });
+  };
 
   return {
     data,
@@ -55,3 +57,35 @@ export default function useProcessStatus<T>({
     setDateRange,
   };
 }
+export function useParseProcessStatus(selectedDate: Date | null) {
+  const [dateStrRange, setDateStrRange] = useState<GetParseStatusQuery>({
+    startDate: null,
+    endDate: null,
+  });
+
+  const formatingSelectedDate = () => {
+    return selectedDate ? { date: formatDate(selectedDate) } : undefined;
+  };
+
+  const { data: logs } = useGetParseLog(formatingSelectedDate());
+
+  const { data } = useGetParseData(formatingSelectedDate());
+
+  const { data: status } = useGetParseStatus(dateStrRange);
+
+  const setDateRange = ({ startDate, endDate }: DateRangeType) => {
+    setDateStrRange({
+      startDate: formatDate(startDate),
+      endDate: formatDate(endDate),
+    });
+  };
+
+  return {
+    data,
+    logs,
+    status: statusProcessing(status),
+    setDateRange,
+  };
+}
+// eslint-disable-next-line import/no-anonymous-default-export
+export default { usePredictProcessStatus, useParseProcessStatus };

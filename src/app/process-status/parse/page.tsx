@@ -9,8 +9,7 @@ import Tab from "@/components/ui/Tab";
 import { useRouter, useSearchParams } from "next/navigation";
 import Card from "@/components/ui/Card";
 import { useEffect, useState } from "react";
-import useProcessStatus from "@/hooks/useProcessStatus";
-import { IParseLog } from "@/types/table";
+import { useParseProcessStatus } from "@/hooks/useProcessStatus";
 import ParseDataTable from "@/components/domain/table/ParseDataTable";
 import ParseLogTable from "@/components/domain/table/ParseLogTable";
 
@@ -38,10 +37,8 @@ export default function ParseStatus() {
   );
   const activeTab = searchParams.get("tab") || "log";
 
-  const { data, logs, status, setDateRange } = useProcessStatus<IParseLog>({
-    uri: "parse",
-    selectedDate,
-  });
+  const { data, logs, status, setDateRange } =
+    useParseProcessStatus(selectedDate);
 
   const handleTabClick = (tab: string) => {
     router.push(

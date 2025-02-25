@@ -10,13 +10,12 @@ import Tab from "@/components/ui/Tab";
 import { useRouter, useSearchParams } from "next/navigation";
 import Card from "@/components/ui/Card";
 import { useEffect } from "react";
-import useProcessStatus from "@/hooks/useProcessStatus";
-import { IPredictionLog } from "@/types/table";
 import Input from "@/components/ui/Input";
 import CalendarIcon from "@/../public/assets/calendar.svg";
 import PredictionProcessButton from "@/components/domain/PredictionProcessButton";
 import PredictionLogTable from "@/components/domain/table/PredictionLogTable";
 import PredictionDataTable from "@/components/domain/table/PredictionDataTable";
+import { usePredictProcessStatus } from "@/hooks/useProcessStatus";
 
 const statusProcessing = (
   data: { [key: string]: DisplayDateGroup } | undefined
@@ -48,12 +47,8 @@ export default function ParseStatus() {
 
   const activeTab = searchParams.get("tab") || "log";
 
-  const { data, logs, status, setDateRange } = useProcessStatus<IPredictionLog>(
-    {
-      uri: "predict",
-      selectedDate,
-    }
-  );
+  const { data, logs, status, setDateRange } =
+    usePredictProcessStatus(selectedDate);
 
   const handleTabClick = (tab: string) => {
     router.push(
@@ -64,7 +59,6 @@ export default function ParseStatus() {
   const handleDateSelect = (date: Date | null) => {
     if (date) {
       router.push(`?tab=${activeTab}&date=${formatDate(date)}`);
-      // setSelectedDate(date);
     }
   };
 
@@ -98,9 +92,7 @@ export default function ParseStatus() {
             />
           }
         />
-        <PredictionProcessButton
-          date={selectedDate ? formatDate(selectedDate) : undefined}
-        />
+        <PredictionProcessButton date={formatDate(selectedDate)} />
       </div>
 
       <div className="w-full border-b-[0.5px] border-outline1 h-fit pb-[6px] mb-4">

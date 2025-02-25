@@ -3,19 +3,18 @@ import Button from "@/components/ui/Button";
 import useSSE from "@/hooks/useSSE";
 import { useEffect } from "react";
 import clsx from "clsx";
+import { usePostParse } from "@/services/parse/usePostParse";
 
 export default function ParseProcessButton() {
   const { startSSE, setStatus, status, progress } = useSSE(
     "http://localhost:8080/event/parse/progress"
   );
 
-  const startParsing = async () => {
-    try {
-      startSSE();
-      await fetch("http://localhost:8080/parse", { method: "POST" });
-    } catch (error) {
-      console.error("Error start parse:", error);
-    }
+  const { startParse } = usePostParse();
+
+  const handlerStartParse = () => {
+    startSSE();
+    startParse();
   };
 
   useEffect(() => {
@@ -33,7 +32,7 @@ export default function ParseProcessButton() {
   };
 
   return (
-    <Button onClick={startParsing} className="relative overflow-x-auto">
+    <Button onClick={handlerStartParse} className="relative overflow-x-auto">
       <div
         className={clsx(
           "absolute inset-0 bg-rise text-xs h-full text-inverseForground text-center leading-none transition-all",

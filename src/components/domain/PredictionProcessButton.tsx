@@ -1,36 +1,30 @@
 "use client";
 import Button from "@/components/ui/Button";
+import { API } from "@/constants/api";
 import useSSE from "@/hooks/useSSE";
+import { refreshPredictionLog } from "@/services/predict/useGetPredictionLog";
+import { refreshPredictions } from "@/services/predict/useGetPredictions";
+import { usePostPredict } from "@/services/predict/usePostPredict";
+import { refreshStockAll } from "@/services/stock/useGetStockAll";
 import { useEffect } from "react";
-import { mutate } from "swr";
-
-const fetcherWithBody = async (url: string, body: { date?: string }) => {
-  const response = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
-  return response.json();
-};
+import { formatDate } from "../date-picker";
 
 interface PredictionProcessButtonProps {
-  date?: string;
+  date?: string | null;
 }
 
 export default function PredictionProcessButton({
   date,
 }: PredictionProcessButtonProps) {
   const { startSSE, status, setStatus, progress } = useSSE(
-    "http://localhost:8080/event/predict/progress"
+    API.PREDICT.PROGRESS
   );
 
-  const startPredicting = async () => {
-    try {
-      startSSE();
-      await fetcherWithBody("http://localhost:8080/predict", { date });
-    } catch (error) {
-      console.error("Error start Predict:", error);
-    }
+  const { startPredict } = usePostPredict();
+
+  const handlerStartPredict = () => {
+    startSSE();
+    startPredict({ date });
   };
 
   useEffect(() => {
@@ -40,14 +34,15 @@ export default function PredictionProcessButton({
   useEffect(() => {
     if (status === "Completed") {
       async function mutatePredictions() {
-        await mutate("http://localhost:8080/stock/predictions");
-        await mutate("http://localhost:8080/stock/all");
-        await mutate(`http://localhost:8080/predict/logs`);
+        console.log({ date: formatDate(new Date()) });
+        await refreshPredictions({ date });
+        await refreshPredictionLog({ date: formatDate(new Date()) });
+        await refreshStockAll();
         setStatus("Pending");
       }
       mutatePredictions();
     }
-  }, [status, setStatus]);
+  }, [status]);
 
   const renderButtonText = () => {
     if (status === "Completed") return "Predict completed";
@@ -57,7 +52,7 @@ export default function PredictionProcessButton({
 
   return (
     <Button
-      onClick={startPredicting}
+      onClick={handlerStartPredict}
       className="overflow-x-auto relative min-w-40"
     >
       {status !== "Completed" && status !== "Pending" && (
