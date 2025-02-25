@@ -15,6 +15,7 @@ import PredictionProcessButton from "@/components/domain/PredictionProcessButton
 import PredictionLogTable from "@/components/domain/table/PredictionLogTable";
 import PredictionDataTable from "@/components/domain/table/PredictionDataTable";
 import { usePredictProcessStatus } from "@/hooks/useProcessStatus";
+import { useTabNavigation } from "@/hooks/useTabNavigation";
 
 const tabs = [
   { label: "Log", value: "log" },
@@ -29,20 +30,21 @@ export default function ParseStatus() {
   const { inputValue, handleDateChange, handleInputChange, selectedDate } =
     useDatePickerState((defaultDate && new Date(defaultDate)) || new Date());
 
-  const activeTab = searchParams.get("tab") || "log";
-
   const { data, logs, status, setDateRange } =
     usePredictProcessStatus(selectedDate);
 
-  const handleTabClick = (tab: string) => {
-    router.push(
-      `?tab=${tab}${selectedDate && `&date=${formatDate(selectedDate)}`}`
-    );
-  };
+  const { activeTab, handleTabClick } = useTabNavigation({
+    tabs,
+    mode: "query",
+    syncParams: ["date"],
+  });
 
   const handleDateSelect = (date: Date | null) => {
     if (date) {
-      router.push(`?tab=${activeTab}&date=${formatDate(date)}`);
+      const params = new URLSearchParams(searchParams);
+      params.set("tab", activeTab);
+      params.set("date", formatDate(date) || "");
+      router.push(`?${params.toString()}`);
     }
   };
 

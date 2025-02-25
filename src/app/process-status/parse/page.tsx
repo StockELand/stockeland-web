@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { useParseProcessStatus } from "@/hooks/useProcessStatus";
 import ParseDataTable from "@/components/domain/table/ParseDataTable";
 import ParseLogTable from "@/components/domain/table/ParseLogTable";
+import { useTabNavigation } from "@/hooks/useTabNavigation";
 
 const tabs = [
   { label: "Log", value: "log" },
@@ -22,23 +23,24 @@ export default function ParseStatus() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(
     (defaultDate && new Date(defaultDate)) || new Date()
   );
-  const activeTab = searchParams.get("tab") || "log";
 
   const { data, logs, status, setDateRange } =
     useParseProcessStatus(selectedDate);
 
-  const handleTabClick = (tab: string) => {
-    router.push(
-      `?tab=${tab}${selectedDate && `&date=${formatDate(selectedDate)}`}`
-    );
-  };
+  const { activeTab, handleTabClick } = useTabNavigation({
+    tabs,
+    mode: "query",
+    syncParams: ["date"],
+  });
 
   const handleDateSelect = (date: Date | null) => {
     if (date) {
-      router.push(`?tab=${activeTab}&date=${formatDate(date)}`);
+      const params = new URLSearchParams(searchParams);
+      params.set("tab", activeTab);
+      params.set("date", formatDate(date) || "");
+      router.push(`?${params.toString()}`);
     }
   };
-
   useEffect(() => {
     const date = searchParams.get("date");
     if (date) {
