@@ -2,26 +2,20 @@
 
 import {
   DatePicker,
-  DisplayDateGroup,
   formatDate,
+  useDatePickerState,
 } from "@/components/date-picker";
 import Tab from "@/components/ui/Tab";
 import { useRouter, useSearchParams } from "next/navigation";
 import Card from "@/components/ui/Card";
-import { useEffect, useState } from "react";
-import useProcessStatus from "@/hooks/useProcessStatus";
-import PredictionLogTable from "@/components/domain/PredictionLogTable";
-import { IPredictionLog } from "@/types/table";
-import PredictionDataTable from "@/components/domain/PredictionDataTable";
-
-const statusProcessing = (
-  data: { [key: string]: DisplayDateGroup } | undefined
-): { [key: string]: DisplayDateGroup } | undefined => {
-  if (!data) return;
-  data["success"]["color"] = "#a6fc35";
-  data["fail"]["color"] = "#F6465D";
-  return data;
-};
+import { useEffect } from "react";
+import Input from "@/components/ui/Input";
+import CalendarIcon from "@/../public/assets/calendar.svg";
+import PredictionProcessButton from "@/components/domain/PredictionProcessButton";
+import PredictionLogTable from "@/components/domain/table/PredictionLogTable";
+import PredictionDataTable from "@/components/domain/table/PredictionDataTable";
+import { usePredictProcessStatus } from "@/hooks/useProcessStatus";
+import { useTabNavigation } from "@/hooks/useTabNavigation";
 
 const tabs = [
   { label: "Log", value: "log" },
@@ -33,50 +27,57 @@ export default function ParseStatus() {
   const router = useRouter();
 
   const defaultDate = searchParams.get("date");
-  const [selectedDate, setSelectedDate] = useState<Date | null>(
-    (defaultDate && new Date(defaultDate)) || new Date()
-  );
-  const activeTab = searchParams.get("tab") || "log";
+  const { inputValue, handleDateChange, handleInputChange, selectedDate } =
+    useDatePickerState((defaultDate && new Date(defaultDate)) || new Date());
 
-  const { data, logs, status, setDateRange } = useProcessStatus<IPredictionLog>(
-    {
-      uri: "predict",
-      selectedDate,
-    }
-  );
+  const { data, logs, status, setDateRange } =
+    usePredictProcessStatus(selectedDate);
 
-  const handleTabClick = (tab: string) => {
-    router.push(
-      `?tab=${tab}${selectedDate && `&date=${formatDate(selectedDate)}`}`
-    );
-  };
+  const { activeTab, handleTabClick } = useTabNavigation({
+    tabs,
+    mode: "query",
+    syncParams: ["date"],
+  });
 
   const handleDateSelect = (date: Date | null) => {
     if (date) {
-      router.push(`?tab=${activeTab}&date=${formatDate(date)}`);
-      setSelectedDate(date);
+      const params = new URLSearchParams(searchParams);
+      params.set("tab", activeTab);
+      params.set("date", formatDate(date) || "");
+      router.push(`?${params.toString()}`);
     }
   };
 
   useEffect(() => {
     const date = searchParams.get("date");
     if (date) {
-      setSelectedDate(new Date(date));
+      handleDateChange(new Date(date));
     } else {
-      setSelectedDate(new Date());
+      handleDateChange(new Date());
     }
   }, [searchParams]);
 
   return (
     <>
-      <div className="mb-6">
+      <div className="mb-6 flex flex-row gap-4">
         <DatePicker
           selectedDate={selectedDate}
-          onChange={handleDateSelect}
+          onChange={(date) => {
+            handleDateChange(date);
+            handleDateSelect(date);
+          }}
+          displayDateGroups={status}
           onDateRangeChange={setDateRange}
-          displayDateGroups={statusProcessing(status)}
-          doubleCalendar
+          customInput={
+            <Input
+              rightIcon={<CalendarIcon className="size-5" />}
+              value={inputValue}
+              onChange={handleInputChange}
+              placeholder="YYYY-MM-DD"
+            />
+          }
         />
+        <PredictionProcessButton date={formatDate(selectedDate)} />
       </div>
 
       <div className="w-full border-b-[0.5px] border-outline1 h-fit pb-[6px] mb-4">

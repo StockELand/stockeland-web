@@ -1,20 +1,22 @@
 import { Dispatch, SetStateAction } from "react";
 
-export interface DatePickerProps extends UseDatePickerProps {
-  onChange?: (date: Date | null) => void;
-  inputComponent?: HTMLInputElement;
+export type DatePickerProps = CalendarPopupProps;
+
+export interface CalendarPopupProps extends CalendarViewProps {
+  customInput?: React.ReactNode;
 }
+
+export interface CalendarViewProps extends UseDatePickerProps {
+  onChange?: (date: Date | null) => void;
+}
+
+export type DateRangeType = { startDate: Date | null; endDate: Date | null };
 
 export interface UseDatePickerProps {
   selectedDate?: Date | null;
   doubleCalendar?: boolean;
   displayDateGroups?: { [key: string]: DisplayDateGroup };
-  onDateRangeChange?: Dispatch<
-    SetStateAction<{
-      startDate: Date | null;
-      endDate: Date | null;
-    }>
-  >;
+  onDateRangeChange?: (range: DateRangeType) => void;
 }
 
 export interface CalenderProps {

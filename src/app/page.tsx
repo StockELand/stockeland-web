@@ -1,16 +1,14 @@
 "use client";
-import { IStock } from "@/types/table";
-import StockTable from "@/components/domain/StockTable";
 import Typography from "@/components/ui/Typography";
 import ManualRunCard from "@/components/domain/ManualRunCard";
 import StockListCard from "@/components/domain/StockListCard";
-import useSWR from "swr";
-import { IStockPrediction } from "@/types/api";
+import StockTable from "@/components/domain/table/StockTable";
+import { useGetStockPredictions } from "@/services/stock/useGetStockPredictions";
+import { useGetStockAll } from "@/services/stock/useGetStockAll";
+
 export default function Home() {
-  const { data: predictions } = useSWR<IStockPrediction[]>(
-    "http://localhost:8080/stock/predictions"
-  );
-  const { data: stocks } = useSWR<IStock[]>("http://localhost:8080/stock/all");
+  const { data: predictions } = useGetStockPredictions();
+  const { data: stocks } = useGetStockAll();
 
   return (
     <>

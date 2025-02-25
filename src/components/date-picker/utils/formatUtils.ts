@@ -1,24 +1,26 @@
 /**
- * 날짜를 YYYY-MM-DD 형식으로 변환
+ * 날짜를 YYYY-MM-DD 형식의 문자열로 변환
  */
-export function formatDate(date: Date): string {
+export function formatDate(date?: Date | null): string | null {
+  if (!date) return null;
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
     2,
     "0"
   )}-${String(date.getDate()).padStart(2, "0")}`;
 }
 
-/**
- * ISO 형식 (YYYY-MM-DDTHH:mm:ss.sssZ)에서 YYYY-MM-DD로 변환
- */
-export function formatISODate(isoString: string): string {
-  return isoString.split("T")[0];
-}
-
-export function formatLocalDate(date: Date): Date {
-  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
-}
-
 export function formatISOToFullDate(date: string): string {
   return date.replace("T", " ").slice(0, -5);
 }
+
+export const parseLocalDate = (dateString?: string): Date | null => {
+  if (!dateString) return null;
+  const [year, month, day] = dateString.split("-").map(Number);
+  const date = new Date(year, month - 1, day);
+  return date &&
+    date.getFullYear() === year &&
+    date.getMonth() === month - 1 &&
+    date.getDate() === day
+    ? date
+    : null;
+};

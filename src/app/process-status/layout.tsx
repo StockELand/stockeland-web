@@ -1,7 +1,7 @@
 "use client";
 
 import Tab from "@/components/ui/Tab";
-import { usePathname, useRouter } from "next/navigation";
+import { useTabNavigation } from "@/hooks/useTabNavigation";
 
 const tabs = [
   { label: "Parse", value: "/process-status/parse" },
@@ -13,19 +13,17 @@ export default function ProcessStatusLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const pathname = usePathname();
-  const router = useRouter();
-
-  const handleTabClick = (path: string) => {
-    router.push(path);
-  };
+  const { activeTab, handleTabClick } = useTabNavigation({
+    tabs,
+    mode: "path",
+  });
 
   return (
     <>
       <Tab
         tabs={tabs}
         typographyProps={{ variant: "h1" }}
-        activeTab={pathname}
+        activeTab={activeTab}
         onChange={handleTabClick}
         className="mb-6"
         showIndicator={false}
