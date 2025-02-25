@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  DatePicker,
-  DisplayDateGroup,
-  formatDate,
-} from "@/components/date-picker";
+import { DatePicker, formatDate } from "@/components/date-picker";
 import Tab from "@/components/ui/Tab";
 import { useRouter, useSearchParams } from "next/navigation";
 import Card from "@/components/ui/Card";
@@ -12,15 +8,6 @@ import { useEffect, useState } from "react";
 import { useParseProcessStatus } from "@/hooks/useProcessStatus";
 import ParseDataTable from "@/components/domain/table/ParseDataTable";
 import ParseLogTable from "@/components/domain/table/ParseLogTable";
-
-const statusProcessing = (
-  data: { [key: string]: DisplayDateGroup } | undefined
-): { [key: string]: DisplayDateGroup } | undefined => {
-  if (!data) return;
-  data["success"]["color"] = "#a6fc35";
-  data["fail"]["color"] = "#F6465D";
-  return data;
-};
 
 const tabs = [
   { label: "Log", value: "log" },
@@ -49,7 +36,6 @@ export default function ParseStatus() {
   const handleDateSelect = (date: Date | null) => {
     if (date) {
       router.push(`?tab=${activeTab}&date=${formatDate(date)}`);
-      setSelectedDate(date);
     }
   };
 
@@ -69,7 +55,7 @@ export default function ParseStatus() {
           selectedDate={selectedDate}
           onChange={handleDateSelect}
           onDateRangeChange={setDateRange}
-          displayDateGroups={statusProcessing(status)}
+          displayDateGroups={status}
           doubleCalendar
         />
       </div>

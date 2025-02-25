@@ -27,6 +27,5 @@ export const useDatePickerState = (initialDate: Date | null = null) => {
     setInputValue,
     handleDateChange,
     handleInputChange,
-    setSelectedDate,
   };
 };

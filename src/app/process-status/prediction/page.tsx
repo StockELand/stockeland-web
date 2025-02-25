@@ -2,7 +2,6 @@
 
 import {
   DatePicker,
-  DisplayDateGroup,
   formatDate,
   useDatePickerState,
 } from "@/components/date-picker";
@@ -17,15 +16,6 @@ import PredictionLogTable from "@/components/domain/table/PredictionLogTable";
 import PredictionDataTable from "@/components/domain/table/PredictionDataTable";
 import { usePredictProcessStatus } from "@/hooks/useProcessStatus";
 
-const statusProcessing = (
-  data: { [key: string]: DisplayDateGroup } | undefined
-): { [key: string]: DisplayDateGroup } | undefined => {
-  if (!data) return;
-  data["success"]["color"] = "#a6fc35";
-  data["fail"]["color"] = "#F6465D";
-  return data;
-};
-
 const tabs = [
   { label: "Log", value: "log" },
   { label: "Data", value: "data" },
@@ -36,14 +26,8 @@ export default function ParseStatus() {
   const router = useRouter();
 
   const defaultDate = searchParams.get("date");
-
-  const {
-    inputValue,
-    handleDateChange,
-    handleInputChange,
-    selectedDate,
-    setSelectedDate,
-  } = useDatePickerState((defaultDate && new Date(defaultDate)) || new Date());
+  const { inputValue, handleDateChange, handleInputChange, selectedDate } =
+    useDatePickerState((defaultDate && new Date(defaultDate)) || new Date());
 
   const activeTab = searchParams.get("tab") || "log";
 
@@ -65,11 +49,11 @@ export default function ParseStatus() {
   useEffect(() => {
     const date = searchParams.get("date");
     if (date) {
-      setSelectedDate(new Date(date));
+      handleDateChange(new Date(date));
     } else {
-      setSelectedDate(new Date());
+      handleDateChange(new Date());
     }
-  }, [searchParams, setSelectedDate]);
+  }, [searchParams]);
 
   return (
     <>
@@ -80,9 +64,8 @@ export default function ParseStatus() {
             handleDateChange(date);
             handleDateSelect(date);
           }}
-          displayDateGroups={statusProcessing(status)}
+          displayDateGroups={status}
           onDateRangeChange={setDateRange}
-          // doubleCalendar
           customInput={
             <Input
               rightIcon={<CalendarIcon className="size-5" />}
