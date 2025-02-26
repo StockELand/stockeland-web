@@ -41,7 +41,7 @@ export const useRangeDatePickerState = (
     const parsedStart = parseLocalDate(startString);
     const parsedEnd = parseLocalDate(endString);
 
-    if (parsedStart || parsedEnd) {
+    if (parsedStart && parsedEnd) {
       handleRangeChange({ startDate: parsedStart, endDate: parsedEnd });
     }
   };

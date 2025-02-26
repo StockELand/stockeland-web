@@ -15,8 +15,14 @@ export function formatISOToFullDate(date: string): string {
 
 export const parseLocalDate = (dateString?: string): Date | null => {
   if (!dateString) return null;
+
+  // YYYY-MM-DD 형식만 허용하는 정규식
+  const validFormat = /^\d{4}-\d{2}-\d{2}$/;
+  if (!validFormat.test(dateString)) return null;
+
   const [year, month, day] = dateString.split("-").map(Number);
   const date = new Date(year, month - 1, day);
+
   return date &&
     date.getFullYear() === year &&
     date.getMonth() === month - 1 &&
