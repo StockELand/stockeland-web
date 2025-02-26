@@ -32,10 +32,6 @@ export default function ParseProcessButton({
   };
 
   useEffect(() => {
-    startSSE();
-  }, [startSSE]);
-
-  useEffect(() => {
     if (status === "Completed") {
       async function mutatePredictions() {
         await refreshParseData();

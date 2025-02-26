@@ -1,7 +1,7 @@
 // src/services/usePredict.ts
-import useSWR, { mutate } from "swr";
+import useSWR from "swr";
 import { API } from "@/constants/api";
-import { getFetcher } from "@/lib/fetcher";
+import { getFetcher, refresh } from "@/lib/fetcher";
 import { IParseLog } from "@/types/table";
 
 export interface GetParseLogQuery {
@@ -21,6 +21,5 @@ export const useGetParseLog = (
 };
 
 export const refreshParseLog = async (payload?: GetParseLogQuery) => {
-  const key = [API.PARSE.LOGS, payload];
-  await mutate(key);
+  await refresh(API.PARSE.LOGS, payload);
 };

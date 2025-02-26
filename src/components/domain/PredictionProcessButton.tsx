@@ -28,10 +28,6 @@ export default function PredictionProcessButton({
   };
 
   useEffect(() => {
-    startSSE();
-  }, [startSSE]);
-
-  useEffect(() => {
     if (status === "Completed") {
       async function mutatePredictions() {
         await refreshPredictions({ date: formatDate(date) });
