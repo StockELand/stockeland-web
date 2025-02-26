@@ -34,7 +34,6 @@ export default function PredictionProcessButton({
   useEffect(() => {
     if (status === "Completed") {
       async function mutatePredictions() {
-        console.log({ date: formatDate(new Date()) });
         await refreshPredictions({ date });
         await refreshPredictionLog({ date: formatDate(new Date()) });
         await refreshStockAll();
