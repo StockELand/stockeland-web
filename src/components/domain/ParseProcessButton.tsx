@@ -10,14 +10,25 @@ import { formatDate } from "../date-picker";
 import { refreshParseLog } from "@/services/parse/useGetParseLog";
 import { refreshStockAll } from "@/services/stock/useGetStockAll";
 
-export default function ParseProcessButton() {
+interface ParseProcessButtonProps {
+  startDate?: Date | null;
+  endDate?: Date | null;
+}
+
+export default function ParseProcessButton({
+  startDate,
+  endDate,
+}: ParseProcessButtonProps) {
   const { startSSE, setStatus, status, progress } = useSSE(API.PARSE.PROGRESS);
 
   const { startParse } = usePostParse();
 
   const handlerStartParse = () => {
     startSSE();
-    startParse();
+    startParse({
+      startDate: formatDate(startDate),
+      endDate: formatDate(endDate),
+    });
   };
 
   useEffect(() => {

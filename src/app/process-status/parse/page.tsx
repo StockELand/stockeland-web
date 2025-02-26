@@ -84,7 +84,7 @@ export default function ParseStatus() {
               />
             }
           />
-          <ParseProcessButton />
+          <ParseProcessButton {...rangeDate} />
         </div>
       </div>
 
