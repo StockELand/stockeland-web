@@ -77,7 +77,7 @@ export default function ParseStatus() {
             />
           }
         />
-        <PredictionProcessButton date={formatDate(selectedDate)} />
+        <PredictionProcessButton date={selectedDate} />
       </div>
 
       <div className="w-full border-b-[0.5px] border-outline1 h-fit pb-[6px] mb-4">
