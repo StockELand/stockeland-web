@@ -22,7 +22,7 @@ export const useDatePicker = ({
   );
   const { currentMonth, setCurrentMonth, goToNextMonth, goToPreviousMonth } =
     useCalendarNavigation(
-      externalDate || new Date(),
+      externalDate || rangeDate?.startDate || new Date(),
       doubleCalendar,
       onMonthRangeChange
     );
