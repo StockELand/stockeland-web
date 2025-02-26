@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import { mutate } from "swr";
+
 const buildQueryString = (params: Record<string, unknown>): string => {
   const query = new URLSearchParams();
   Object.entries(params).forEach(([key, value]) => {
@@ -61,5 +63,27 @@ export const postFetcher = async <T>(
     onError?.(error);
     console.error("POST API Error:", error);
     throw error;
+  }
+};
+
+/**
+ * SWR 캐시를 엔드포인트 기준으로 갱신하는 유틸 함수
+ * @param endpoint - 갱신할 엔드포인트 URL
+ * @param payload - 선택적 payload, 있으면 해당 요청만 갱신, 없으면 전체 갱신
+ */
+export const refresh = async <T>(endpoint: string, payload?: T) => {
+  if (payload) {
+    const key = [endpoint, payload];
+    await mutate(key);
+  } else {
+    await mutate((key) => {
+      if (typeof key === "string") {
+        return key === endpoint;
+      }
+      if (Array.isArray(key)) {
+        return key[0] === endpoint;
+      }
+      return false;
+    });
   }
 };

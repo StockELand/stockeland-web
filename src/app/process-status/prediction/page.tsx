@@ -1,12 +1,8 @@
 "use client";
 
-import {
-  DatePicker,
-  formatDate,
-  useDatePickerState,
-} from "@/components/date-picker";
+import { DatePicker, useDatePickerState } from "@/components/date-picker";
 import Tab from "@/components/ui/Tab";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import Card from "@/components/ui/Card";
 import { useEffect } from "react";
 import Input from "@/components/ui/Input";
@@ -24,7 +20,6 @@ const tabs = [
 
 export default function ParseStatus() {
   const searchParams = useSearchParams();
-  const router = useRouter();
 
   const defaultDate = searchParams.get("date");
   const { inputValue, handleDateChange, handleInputChange, selectedDate } =
@@ -38,15 +33,6 @@ export default function ParseStatus() {
     mode: "query",
     syncParams: ["date"],
   });
-
-  const handleDateSelect = (date: Date | null) => {
-    if (date) {
-      const params = new URLSearchParams(searchParams);
-      params.set("tab", activeTab);
-      params.set("date", formatDate(date) || "");
-      router.push(`?${params.toString()}`);
-    }
-  };
 
   useEffect(() => {
     const date = searchParams.get("date");
@@ -62,12 +48,9 @@ export default function ParseStatus() {
       <div className="mb-6 flex flex-row gap-4">
         <DatePicker
           selectedDate={selectedDate}
-          onChange={(date) => {
-            handleDateChange(date);
-            handleDateSelect(date);
-          }}
+          onChange={handleDateChange}
           displayDateGroups={status}
-          onDateRangeChange={setDateRange}
+          onMonthRangeChange={setDateRange}
           customInput={
             <Input
               rightIcon={<CalendarIcon className="size-5" />}
@@ -77,7 +60,7 @@ export default function ParseStatus() {
             />
           }
         />
-        <PredictionProcessButton date={formatDate(selectedDate)} />
+        <PredictionProcessButton date={selectedDate} />
       </div>
 
       <div className="w-full border-b-[0.5px] border-outline1 h-fit pb-[6px] mb-4">

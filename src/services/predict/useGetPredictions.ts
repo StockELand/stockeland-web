@@ -1,7 +1,7 @@
 // src/services/usePredict.ts
-import useSWR, { mutate } from "swr";
+import useSWR from "swr";
 import { API } from "@/constants/api";
-import { getFetcher } from "@/lib/fetcher";
+import { getFetcher, refresh } from "@/lib/fetcher";
 import { IPredictionData } from "@/types/table";
 
 export interface GetPredictionsQuery {
@@ -21,6 +21,5 @@ export const useGetPredictions = (
 };
 
 export const refreshPredictions = async (payload?: GetPredictionsQuery) => {
-  const key = [API.PREDICT.DATA, payload];
-  await mutate(key);
+  await refresh(API.PREDICT.DATA, payload);
 };

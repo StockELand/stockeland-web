@@ -1,7 +1,7 @@
 // src/services/usePredict.ts
-import useSWR, { mutate } from "swr";
+import useSWR from "swr";
 import { API } from "@/constants/api";
-import { getFetcher } from "@/lib/fetcher";
+import { getFetcher, refresh } from "@/lib/fetcher";
 import { IStockPrediction } from "@/types/api";
 
 export const useGetStockPredictions = (
@@ -15,6 +15,5 @@ export const useGetStockPredictions = (
 };
 
 export const refreshStockPredictions = async () => {
-  const key = [API.STOCK.PREDICTIONS];
-  await mutate(key);
+  await refresh(API.STOCK.PREDICTIONS);
 };

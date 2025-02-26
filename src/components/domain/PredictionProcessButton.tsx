@@ -10,7 +10,7 @@ import { useEffect } from "react";
 import { formatDate } from "../date-picker";
 
 interface PredictionProcessButtonProps {
-  date?: string | null;
+  date?: Date | null;
 }
 
 export default function PredictionProcessButton({
@@ -24,18 +24,13 @@ export default function PredictionProcessButton({
 
   const handlerStartPredict = () => {
     startSSE();
-    startPredict({ date });
+    startPredict({ date: formatDate(date) });
   };
-
-  useEffect(() => {
-    startSSE();
-  }, [startSSE]);
 
   useEffect(() => {
     if (status === "Completed") {
       async function mutatePredictions() {
-        console.log({ date: formatDate(new Date()) });
-        await refreshPredictions({ date });
+        await refreshPredictions({ date: formatDate(date) });
         await refreshPredictionLog({ date: formatDate(new Date()) });
         await refreshStockAll();
         setStatus("Pending");

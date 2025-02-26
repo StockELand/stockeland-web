@@ -6,17 +6,19 @@ export interface CalendarPopupProps extends CalendarViewProps {
   customInput?: React.ReactNode;
 }
 
-export interface CalendarViewProps extends UseDatePickerProps {
-  onChange?: (date: Date | null) => void;
-}
+export type CalendarViewProps = UseDatePickerProps;
 
-export type DateRangeType = { startDate: Date | null; endDate: Date | null };
+export type DateRangeType = { startDate?: Date | null; endDate?: Date | null };
 
 export interface UseDatePickerProps {
+  onChange?: (date: Date | null) => void;
+  rangeDate?: DateRangeType;
   selectedDate?: Date | null;
   doubleCalendar?: boolean;
+  enableRange?: boolean;
   displayDateGroups?: { [key: string]: DisplayDateGroup };
-  onDateRangeChange?: (range: DateRangeType) => void;
+  onMonthRangeChange?: (range: DateRangeType) => void;
+  onRangeChange?: (range: DateRangeType) => void;
 }
 
 export interface CalenderProps {
@@ -29,6 +31,8 @@ export interface CalenderProps {
   getDisplayTypeAndColor: (
     date: Date
   ) => { type: string; color: string } | null;
+  isDateInRange?: (date: Date) => boolean;
+  rangeDate?: DateRangeType;
 }
 export type ViewType = "date" | "month" | "year";
 
@@ -49,4 +53,6 @@ export interface CalendarGridProps {
   getDisplayTypeAndColor: (
     date: Date
   ) => { type: string; color: string } | null;
+  isDateInRange?: (date: Date) => boolean;
+  rangeDate?: DateRangeType;
 }

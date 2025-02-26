@@ -1,7 +1,7 @@
 // src/services/usePredict.ts
-import useSWR, { mutate } from "swr";
+import useSWR from "swr";
 import { API } from "@/constants/api";
-import { getFetcher } from "@/lib/fetcher";
+import { getFetcher, refresh } from "@/lib/fetcher";
 import { DisplayDateGroup } from "@/components/date-picker";
 
 export interface GetParseStatusQuery {
@@ -29,10 +29,5 @@ export const useGetParseStatus = (
 export const refreshPredictionStatus = async (
   payload?: GetParseStatusQuery
 ) => {
-  const shouldFetch = !!payload?.startDate && !!payload?.endDate;
-
-  if (!shouldFetch) return;
-
-  const key = [API.PARSE.STATUS, payload];
-  await mutate(key);
+  await refresh(API.PARSE.STATUS, payload);
 };
