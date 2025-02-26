@@ -7,8 +7,8 @@ export const useRangeDateSelection = (
   externalRangeDate?: DateRangeType,
   onRangeChange?: ({ startDate, endDate }: DateRangeType) => void
 ) => {
-  const [rangeStart, setRangeStart] = useState<Date | null>(null);
-  const [rangeEnd, setRangeEnd] = useState<Date | null>(null);
+  const [rangeStart, setRangeStart] = useState<Date | null | undefined>(null);
+  const [rangeEnd, setRangeEnd] = useState<Date | null | undefined>(null);
 
   const handleRangeSelect = (date: Date) => {
     if (rangeStart && !rangeEnd) {
