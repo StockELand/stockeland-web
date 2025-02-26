@@ -9,6 +9,10 @@ import { useParseProcessStatus } from "@/hooks/useProcessStatus";
 import ParseDataTable from "@/components/domain/table/ParseDataTable";
 import ParseLogTable from "@/components/domain/table/ParseLogTable";
 import { useTabNavigation } from "@/hooks/useTabNavigation";
+import Input from "@/components/ui/Input";
+import { useRangeDatePickerState } from "@/components/date-picker/hooks/useRangeDatePickerState";
+import ParseProcessButton from "@/components/domain/ParseProcessButton";
+import CalendarIcon from "@/../public/assets/calendar.svg";
 
 const tabs = [
   { label: "Log", value: "log" },
@@ -50,9 +54,12 @@ export default function ParseStatus() {
     }
   }, [searchParams]);
 
+  const { inputValue, handleInputChange, rangeDate, handleRangeChange } =
+    useRangeDatePickerState();
+
   return (
     <>
-      <div className="mb-6">
+      <div className="mb-6 flex flex-col gap-6">
         <DatePicker
           selectedDate={selectedDate}
           onChange={handleDateSelect}
@@ -60,6 +67,25 @@ export default function ParseStatus() {
           displayDateGroups={status}
           doubleCalendar
         />
+
+        <div className="flex flex-row gap-4">
+          <DatePicker
+            rangeDate={rangeDate}
+            onRangeChange={handleRangeChange}
+            enableRange
+            customInput={
+              <Input
+                rightIcon={<CalendarIcon className="size-5" />}
+                value={inputValue}
+                onChange={handleInputChange}
+                placeholder="YYYY-MM-DD ~ YYYY-MM-DD"
+                className="w-72"
+                textAlign="center"
+              />
+            }
+          />
+          <ParseProcessButton />
+        </div>
       </div>
 
       <div className="w-full border-b-[0.5px] border-outline1 h-fit pb-[6px] mb-4">
