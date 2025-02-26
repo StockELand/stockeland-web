@@ -8,7 +8,7 @@ export interface CalendarPopupProps extends CalendarViewProps {
 
 export type CalendarViewProps = UseDatePickerProps;
 
-export type DateRangeType = { startDate: Date | null; endDate: Date | null };
+export type DateRangeType = { startDate?: Date | null; endDate?: Date | null };
 
 export interface UseDatePickerProps {
   onChange?: (date: Date | null) => void;

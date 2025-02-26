@@ -7,8 +7,12 @@ export const useRangeDatePickerState = (
   initialStartDate: Date | null = null,
   initialEndDate: Date | null = null
 ) => {
-  const [rangeStart, setRangeStart] = useState<Date | null>(initialStartDate);
-  const [rangeEnd, setRangeEnd] = useState<Date | null>(initialEndDate);
+  const [rangeStart, setRangeStart] = useState<Date | null | undefined>(
+    initialStartDate
+  );
+  const [rangeEnd, setRangeEnd] = useState<Date | null | undefined>(
+    initialEndDate
+  );
 
   const [inputValue, setInputValue] = useState<string>(
     initialStartDate && initialEndDate
