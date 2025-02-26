@@ -6,8 +6,8 @@ export { default as DatePicker } from "./components/DatePicker";
 // export { default as YearPicker } from "./components/YearPicker";
 
 // Hooks (커스텀 훅)
-export { useDatePicker } from "./hooks/useDatePicker";
 export { useDatePickerState } from "./hooks/useDatePickerState";
+export { useRangeDatePickerState } from "./hooks/useRangeDatePickerState";
 
 // Utilities (유틸 함수들)
 export * from "./utils/dateUtils";

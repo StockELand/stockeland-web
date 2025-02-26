@@ -1,12 +1,10 @@
 // components/CalendarPopup.tsx
 import { useRef, useState } from "react";
 import CalendarView from "./CalendarView";
-import { useOutsideClick } from "../hooks/useOutsideClick";
+import { useOutsideClick } from "../_hooks/useOutsideClick";
 import { CalendarPopupProps } from "../types";
 
 export default function CalendarPopup({
-  selectedDate,
-  onChange,
   customInput,
   ...props
 }: CalendarPopupProps) {
@@ -20,11 +18,7 @@ export default function CalendarPopup({
       <div onClick={() => setIsOpen(!isOpen)}>{customInput}</div>
       {isOpen && (
         <div className="absolute z-50 mt-1 shadow-xl ">
-          <CalendarView
-            {...props}
-            selectedDate={selectedDate}
-            onChange={onChange}
-          />
+          <CalendarView {...props} />
         </div>
       )}
     </div>

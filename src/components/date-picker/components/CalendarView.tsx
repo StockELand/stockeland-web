@@ -1,19 +1,15 @@
 // components/CalendarView.tsx
 import Calendar from "./Calendar";
-import { useDatePicker } from "../hooks/useDatePicker";
+import { useDatePicker } from "../_hooks/useDatePicker";
 import { CalendarViewProps } from "../types";
 import { LeftArrow, RightArrow } from "./Icons";
 
 export default function CalendarView({
-  selectedDate,
-  onChange,
-  displayDateGroups,
   doubleCalendar = false,
-  onDateRangeChange,
+  ...props
 }: CalendarViewProps) {
   const {
-    selectedDate: internalSelectedDate,
-    setSelectedDate,
+    selectedDate,
     currentMonth,
     goToNextMonth,
     goToPreviousMonth,
@@ -21,17 +17,13 @@ export default function CalendarView({
     getDisplayTypeAndColor,
     view,
     setView,
+    isDateInRange,
+    rangeDate,
+    handleDateSelect,
   } = useDatePicker({
-    selectedDate,
     doubleCalendar,
-    displayDateGroups,
-    onDateRangeChange,
+    ...props,
   });
-
-  const handleDateSelect = (date: Date | null) => {
-    setSelectedDate(date);
-    onChange?.(date);
-  };
 
   return (
     <div className="relative">
@@ -53,17 +45,19 @@ export default function CalendarView({
           </div>
         )}
         <Calendar
-          selectedDate={internalSelectedDate}
+          selectedDate={selectedDate}
           currentMonth={currentMonth}
           onSelect={handleDateSelect}
           view={view}
           setView={setView}
           setCurrentMonth={setCurrentMonth}
           getDisplayTypeAndColor={getDisplayTypeAndColor}
+          isDateInRange={isDateInRange}
+          rangeDate={rangeDate}
         />
         {doubleCalendar && view == "date" && (
           <Calendar
-            selectedDate={internalSelectedDate}
+            selectedDate={selectedDate}
             currentMonth={
               new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1)
             }
@@ -72,6 +66,8 @@ export default function CalendarView({
             view={view}
             setView={setView}
             setCurrentMonth={setCurrentMonth}
+            isDateInRange={isDateInRange}
+            rangeDate={rangeDate}
           />
         )}
       </div>

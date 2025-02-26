@@ -11,6 +11,8 @@ export default function Calendar({
   getDisplayTypeAndColor,
   view,
   setView,
+  isDateInRange,
+  rangeDate,
 }: CalenderProps) {
   return (
     <div className="p-3 flex flex-col w-[356px]">
@@ -39,6 +41,8 @@ export default function Calendar({
           currentMonth={currentMonth}
           onSelect={onSelect}
           getDisplayTypeAndColor={getDisplayTypeAndColor}
+          isDateInRange={isDateInRange}
+          rangeDate={rangeDate}
         />
       )}
       {view === "month" && (

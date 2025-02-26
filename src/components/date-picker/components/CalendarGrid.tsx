@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from "react";
 import { WEEK_DAYS } from "../constants";
 import { CalendarGridProps } from "../types";
-import { getMonthDays } from "../utils/dateUtils";
+import { getMonthDays, isSameDay } from "../utils/dateUtils";
 import clsx from "clsx";
 
 export default function CalendarGrid({
@@ -9,8 +9,11 @@ export default function CalendarGrid({
   currentMonth,
   onSelect,
   getDisplayTypeAndColor,
+  isDateInRange,
+  rangeDate,
 }: CalendarGridProps) {
   const days = useMemo(() => getMonthDays(currentMonth), [currentMonth]);
+
   const handleSelect = useCallback(
     (day: Date) => {
       if (day) onSelect(day);
@@ -28,27 +31,51 @@ export default function CalendarGrid({
       <div className="grid grid-cols-7">
         {days.map((day, idx) => {
           if (!day) return <div key={idx}></div>;
-          const isSelected =
-            day &&
-            selectedDate &&
-            day.toDateString() === selectedDate.toDateString();
+
+          const isSelected = selectedDate && isSameDay(day, selectedDate);
+
           const displayInfo = day && getDisplayTypeAndColor(day);
           const shouldApplyDisplayStyle = !isSelected && displayInfo;
+
+          const isRangeStart =
+            rangeDate?.startDate && isSameDay(day, rangeDate.startDate);
+          const isRangeEnd =
+            rangeDate?.endDate && isSameDay(day, rangeDate.endDate);
+          const inRange = isDateInRange?.(day);
+          const isOnlyRangeStart = isRangeStart && !isRangeEnd;
 
           return (
             <button
               key={idx}
-              className="font-bold text-lg h-11 p-1.5 group"
+              className="font-bold text-lg h-11 p-1.5 group relative"
               onClick={() => day && handleSelect(day)}
             >
+              {isOnlyRangeStart && (
+                <div
+                  className={
+                    "absolute inset-0 rounded-xl !bg-signature2 transition-all "
+                  }
+                />
+              )}
+              {inRange && (
+                <div
+                  className={clsx(
+                    "absolute inset-0 bg-signature2/70 transition-all ",
+                    isRangeStart && "!rounded-l-xl !bg-signature2",
+                    isRangeEnd && "rounded-r-xl !bg-signature2"
+                  )}
+                />
+              )}
+
               <div
                 className={clsx(
-                  "flex rounded-xl size-full items-center justify-center",
+                  "relative flex rounded-xl size-full items-center justify-center transition-all",
                   isSelected && "bg-signature2 text-background",
                   shouldApplyDisplayStyle && "text-background",
                   isSelected || shouldApplyDisplayStyle
                     ? "group-hover:opacity-70"
-                    : "group-hover:bg-outline1 group-hover:text-foreground"
+                    : "group-hover:bg-outline1 group-hover:text-foreground",
+                  (inRange || isOnlyRangeStart) && "text-background"
                 )}
                 style={
                   shouldApplyDisplayStyle
