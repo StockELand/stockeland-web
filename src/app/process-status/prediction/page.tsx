@@ -67,7 +67,7 @@ export default function ParseStatus() {
             handleDateSelect(date);
           }}
           displayDateGroups={status}
-          onDateRangeChange={setDateRange}
+          onMonthRangeChange={setDateRange}
           customInput={
             <Input
               rightIcon={<CalendarIcon className="size-5" />}

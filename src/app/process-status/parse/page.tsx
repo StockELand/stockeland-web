@@ -56,7 +56,7 @@ export default function ParseStatus() {
         <DatePicker
           selectedDate={selectedDate}
           onChange={handleDateSelect}
-          onDateRangeChange={setDateRange}
+          onMonthRangeChange={setDateRange}
           displayDateGroups={status}
           doubleCalendar
         />
