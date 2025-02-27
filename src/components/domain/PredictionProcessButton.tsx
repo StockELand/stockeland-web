@@ -8,6 +8,7 @@ import { usePostPredict } from "@/services/predict/usePostPredict";
 import { refreshStockAll } from "@/services/stock/useGetStockAll";
 import { useEffect } from "react";
 import { formatDate } from "../date-picker";
+import { refreshStockPredictions } from "@/services/stock/useGetStockPredictions";
 
 interface PredictionProcessButtonProps {
   date?: Date | null;
@@ -32,6 +33,7 @@ export default function PredictionProcessButton({
       async function mutatePredictions() {
         await refreshPredictions({ date: formatDate(date) });
         await refreshPredictionLog({ date: formatDate(new Date()) });
+        await refreshStockPredictions();
         await refreshStockAll();
         setStatus("Pending");
       }

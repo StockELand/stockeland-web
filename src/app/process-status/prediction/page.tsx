@@ -35,6 +35,10 @@ export default function ParseStatus() {
   });
 
   useEffect(() => {
+    handleDateChange(selectedDate);
+  }, [selectedDate]);
+
+  useEffect(() => {
     const date = searchParams.get("date");
     if (date) {
       handleDateChange(new Date(date));
