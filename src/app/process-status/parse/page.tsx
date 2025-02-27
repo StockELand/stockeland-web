@@ -1,8 +1,12 @@
 "use client";
 
-import { DatePicker, useDatePickerState } from "@/components/date-picker";
+import {
+  DatePicker,
+  formatDate,
+  useDatePickerState,
+} from "@/components/date-picker";
 import Tab from "@/components/ui/Tab";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Card from "@/components/ui/Card";
 import { useEffect } from "react";
 import { useParseProcessStatus } from "@/hooks/useProcessStatus";
@@ -21,6 +25,7 @@ const tabs = [
 
 export default function ParseStatus() {
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   const defaultDate = searchParams.get("date");
 
@@ -37,6 +42,14 @@ export default function ParseStatus() {
     syncParams: ["date"],
   });
 
+  const handleDateSelect = (date: Date | null) => {
+    if (date) {
+      const params = new URLSearchParams(searchParams);
+      params.set("tab", activeTab);
+      params.set("date", formatDate(date) || "");
+      router.push(`?${params.toString()}`);
+    }
+  };
   useEffect(() => {
     const date = searchParams.get("date");
     if (date) {
@@ -54,7 +67,7 @@ export default function ParseStatus() {
       <div className="mb-6 flex flex-col gap-6">
         <DatePicker
           selectedDate={selectedDate}
-          onChange={handleDateChange}
+          onChange={handleDateSelect}
           onMonthRangeChange={setDateRange}
           displayDateGroups={status}
           doubleCalendar
