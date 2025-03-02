@@ -18,6 +18,7 @@ export const API = {
   },
   STOCK: {
     ALL: `${BASE_URL}/stock/all`,
+    BYSYMBOL: `${BASE_URL}/stock`,
     PREDICTIONS: `${BASE_URL}/stock/predictions`,
   },
 };
