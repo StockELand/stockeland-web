@@ -1,4 +1,5 @@
-export const BASE_URL = "http://localhost:8080";
+// export const BASE_URL = "http://localhost:8080";
+export const BASE_URL = "http://192.168.0.21:8080";
 
 export const API = {
   PREDICT: {
@@ -17,6 +18,7 @@ export const API = {
   },
   STOCK: {
     ALL: `${BASE_URL}/stock/all`,
+    BYSYMBOL: `${BASE_URL}/stock`,
     PREDICTIONS: `${BASE_URL}/stock/predictions`,
   },
 };
