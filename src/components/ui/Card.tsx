@@ -35,7 +35,7 @@ export default function Card({
       )}
       {...props}
     >
-      {title && <h2 className="text-m font-bold text-white">{title}</h2>}
+      {title && <h2 className="text-m font-bold text-text">{title}</h2>}
       {children}
     </div>
   );

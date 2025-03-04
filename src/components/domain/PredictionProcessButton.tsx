@@ -54,11 +54,11 @@ export default function PredictionProcessButton({
     >
       {status !== "Completed" && status !== "Pending" && (
         <div
-          className="absolute inset-0 bg-rise text-xs h-full text-inverseForground text-center leading-none"
+          className="absolute inset-0 bg-signature text-xs h-full text-[#181a20] text-center leading-none"
           style={{ width: `${progress}%` }}
         />
       )}
-      <div className="relative z-10">{renderButtonText()}</div>
+      <div className="relative z-10 text-[#181a20]">{renderButtonText()}</div>
     </Button>
   );
 }

@@ -56,12 +56,12 @@ export default function ParseProcessButton({
     >
       <div
         className={clsx(
-          "absolute inset-0 bg-rise text-xs h-full text-inverseForground text-center leading-none transition-all",
+          "absolute inset-0 bg-signature text-xs h-full text-[#181a20] text-center leading-none transition-all",
           { hidden: status === "Completed" || status === "Pending" }
         )}
         style={{ width: `${progress}%` }}
       />
-      <div className="relative z-10">{renderButtonText()}</div>
+      <div className="relative z-10 text-[#181a20]">{renderButtonText()}</div>
     </Button>
   );
 }

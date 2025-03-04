@@ -38,7 +38,11 @@ export default function StockDetail() {
               ₩{data && data[0].close}
             </Typography>
           </div>
-          <Card variant="bordered" className="!w-full">
+          <Card
+            variant="bordered"
+            className="!w-full overflow-hidden"
+            padding={"none"}
+          >
             <StockPriceTable data={data ? data : []} />
           </Card>
         </>

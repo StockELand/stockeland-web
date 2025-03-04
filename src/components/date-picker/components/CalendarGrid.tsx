@@ -75,13 +75,9 @@ export default function CalendarGrid({
                   isSelected || shouldApplyDisplayStyle
                     ? "group-hover:opacity-70"
                     : "group-hover:bg-outline1 group-hover:text-foreground",
-                  (inRange || isOnlyRangeStart) && "text-background"
+                  (inRange || isOnlyRangeStart) && "text-background",
+                  shouldApplyDisplayStyle && `bg-${displayInfo.color}`
                 )}
-                style={
-                  shouldApplyDisplayStyle
-                    ? { backgroundColor: displayInfo.color }
-                    : undefined
-                }
               >
                 {day.getDate()}
               </div>

@@ -30,7 +30,7 @@ export default function StockListCard({
                   height={34}
                 />
               </div>
-              <span className="text-sm font-bold text-white">
+              <span className="text-sm font-bold text-foreground">
                 {stock.symbol}
               </span>
             </div>

@@ -48,7 +48,7 @@ export default function Typography({
           "text-inverseForground": color === "inverse",
           "text-thTxt": color === "primary",
           "text-fall": color === "danger",
-          "text-rise": color === "success",
+          "text-signature": color === "success",
 
           // ✅ 텍스트 정렬 (align)
           "text-left": textAlign === "left",

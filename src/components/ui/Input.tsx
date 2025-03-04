@@ -47,11 +47,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     // 🎨 스타일 종류별 클래스 (호버 및 포커스 시 테두리 색상 변경 추가)
     const variantClasses = {
       outline:
-        "border border-outline1 hover:border-rise focus-within:border-rise transition-all",
+        "border border-outline1 hover:border-signature focus-within:border-signature transition-all",
       filled:
-        "bg-background1 border border-transparent hover:border-rise focus-within:border-rise transition-all",
+        "bg-background1 border border-transparent hover:border-signature focus-within:border-signature transition-all",
       standard:
-        "border-b border-background1 hover:border-rise focus-within:border-rise transition-all",
+        "border-b border-background1 hover:border-signature focus-within:border-signature transition-all",
     };
 
     return (
@@ -68,7 +68,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         >
           {/* 좌측 아이콘 (테두리와 함께 색상 변경) */}
           {leftIcon && (
-            <div className="absolute left-3 text-outline1 transition-all group-hover:text-rise group-focus-within:text-rise">
+            <div className="absolute left-3 text-outline1 transition-all group-hover:text-signature group-focus-within:text-signature">
               {leftIcon}
             </div>
           )}
@@ -87,7 +87,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
           {/* 우측 아이콘 (테두리와 함께 색상 변경) */}
           {rightIcon && (
-            <div className="absolute right-3 text-outline1 transition-all group-hover:text-rise group-focus-within:text-rise">
+            <div className="absolute right-3 text-outline1 transition-all group-hover:text-signature group-focus-within:text-signature">
               {rightIcon}
             </div>
           )}

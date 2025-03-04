@@ -20,7 +20,7 @@ const StockSymbolCell = ({
       />
     </div>
     <div className="flex flex-col">
-      <span className="text-sm font-bold text-white">{symbol}</span>
+      <span className="text-sm font-bold text-foreground">{symbol}</span>
       <span className="text-xs text-thTxt truncate overflow-hidden max-w-[80px] w-none sm:max-w-[200px] md:w-[300px] md:max-w-none">
         {name}
       </span>
@@ -39,7 +39,7 @@ const createPercentageSortFn = <T,>(key: keyof T): SortingFn<T> => {
 };
 
 const formatPercentage = (value: number) => (
-  <div className={`${value > 0 ? "text-rise" : "text-fall"}`}>
+  <div className={`${value > 0 ? "text-signature" : "text-fall"}`}>
     {Math.round(value * 100) / 100}%
   </div>
 );

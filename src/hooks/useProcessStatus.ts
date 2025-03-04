@@ -22,8 +22,8 @@ const statusProcessing = (
   data: { [key: string]: DisplayDateGroup } | undefined
 ): { [key: string]: DisplayDateGroup } | undefined => {
   if (!data) return;
-  data["success"]["color"] = "#a6fc35";
-  data["fail"]["color"] = "#F6465D";
+  data["success"]["color"] = "signature";
+  data["fail"]["color"] = "fall";
   return data;
 };
 
