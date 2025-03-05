@@ -14,7 +14,7 @@ import { CustomColumnMeta } from "./types";
 import clsx from "clsx";
 
 interface TableProps<T> {
-  data: T[];
+  data?: T[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   columns: ColumnDef<T, any>[];
   onSelect?: (row: T) => boolean;
@@ -23,8 +23,9 @@ interface TableProps<T> {
 }
 
 export default function Table<T>({
-  data,
+  data = [],
   columns,
+  onDoubleClick,
   sortable = true,
 }: TableProps<T>) {
   const initialPinnedColumns = useMemo(() => {
@@ -129,6 +130,9 @@ export default function Table<T>({
                 key={row.id}
                 ref={(node) => rowVirtualizer.measureElement(node)}
                 className="h-16 group relative hover:bg-selectedBg"
+                onDoubleClick={() =>
+                  onDoubleClick && onDoubleClick(row.original)
+                }
               >
                 {row.getVisibleCells().map((cell) => {
                   return (

@@ -3,29 +3,35 @@ import { API } from "@/constants/api";
 import { getFetcher, refresh } from "@/lib/fetcher";
 import { IStockPrice } from "@/types/api";
 
-export interface GetStockBySymbolQuery {
+export interface GetStockBySymbolParam {
   symbol: string;
 }
 
+export interface GetStockBySymbolQuery {
+  range?: string;
+}
+
 export const useGetStockBySymbol = (
-  payload?: GetStockBySymbolQuery,
+  payload: GetStockBySymbolQuery & GetStockBySymbolParam,
   onSuccess?: (data: IStockPrice[]) => void,
   onError?: (error: unknown) => void
 ) => {
-  // SWR key should be `null` if `symbol` is missing to prevent requests
-  const key = payload?.symbol
-    ? [API.STOCK.BYSYMBOL + "/" + payload.symbol]
-    : null;
+  const { symbol, ...query } = payload;
+  const key: [string, GetStockBySymbolQuery?] = [
+    API.STOCK.BYSYMBOL + "/" + symbol,
+    query,
+  ];
 
-  const { data, error, isLoading } = useSWR(
-    key,
-    key ? ([url]) => getFetcher(url, payload, onSuccess, onError) : null
+  const { data, error, isLoading } = useSWR(key, ([url, payload]) =>
+    getFetcher(url, payload, onSuccess, onError)
   );
 
   return { data, error, isLoading };
 };
 
-export const refreshStockBySymbol = async (payload?: GetStockBySymbolQuery) => {
-  if (!payload?.symbol) return; // Prevent refreshing when symbol is missing
-  await refresh(API.STOCK.BYSYMBOL + "/" + payload.symbol);
+export const refreshStockBySymbol = async (
+  payload: GetStockBySymbolQuery & GetStockBySymbolParam
+) => {
+  const { symbol, ...query } = payload;
+  await refresh(API.STOCK.BYSYMBOL + "/" + symbol, query);
 };
