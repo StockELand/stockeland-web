@@ -69,14 +69,14 @@ export default function CalendarGrid({
 
               <div
                 className={clsx(
+                  shouldApplyDisplayStyle && `bg-${displayInfo.color}`,
                   "relative flex rounded-xl size-full items-center justify-center transition-all",
                   isSelected && "bg-signature2 text-background",
                   shouldApplyDisplayStyle && "text-background",
                   isSelected || shouldApplyDisplayStyle
                     ? "group-hover:opacity-70"
                     : "group-hover:bg-outline1 group-hover:text-foreground",
-                  (inRange || isOnlyRangeStart) && "text-background",
-                  shouldApplyDisplayStyle && `bg-${displayInfo.color}`
+                  (inRange || isOnlyRangeStart) && "text-background"
                 )}
               >
                 {day.getDate()}

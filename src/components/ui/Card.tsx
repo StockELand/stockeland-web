@@ -23,13 +23,14 @@ export default function Card({
   return (
     <div
       className={clsx(
-        "w-full flex flex-col md:w-80 space-y-4 rounded-2xl h-fit",
+        "w-full flex flex-col md:w-80 rounded-2xl h-fit",
         {
           "bg-background1": variant === "default",
           "border-outline1 border-[1px]": variant === "bordered",
 
           "p-0": padding === "none",
-          "p-6": padding === "medium",
+          "p-3 space-y-2": padding === "small",
+          "p-6 space-y-4": padding === "medium",
         },
         className
       )}

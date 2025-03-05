@@ -14,7 +14,7 @@ import { CustomColumnMeta } from "./types";
 import clsx from "clsx";
 
 interface TableProps<T> {
-  data: T[];
+  data?: T[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   columns: ColumnDef<T, any>[];
   onSelect?: (row: T) => boolean;
@@ -23,7 +23,7 @@ interface TableProps<T> {
 }
 
 export default function Table<T>({
-  data,
+  data = [],
   columns,
   sortable = true,
 }: TableProps<T>) {

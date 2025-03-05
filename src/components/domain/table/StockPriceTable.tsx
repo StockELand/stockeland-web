@@ -43,7 +43,7 @@ const getColumns = () => [
 ];
 
 interface StockPriceTableProps {
-  data: IStockPrice[];
+  data?: IStockPrice[];
 }
 
 export default function StockPriceTable({ data }: StockPriceTableProps) {
