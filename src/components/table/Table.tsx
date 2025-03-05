@@ -25,6 +25,7 @@ interface TableProps<T> {
 export default function Table<T>({
   data = [],
   columns,
+  onDoubleClick,
   sortable = true,
 }: TableProps<T>) {
   const initialPinnedColumns = useMemo(() => {
@@ -129,6 +130,9 @@ export default function Table<T>({
                 key={row.id}
                 ref={(node) => rowVirtualizer.measureElement(node)}
                 className="h-16 group relative hover:bg-selectedBg"
+                onDoubleClick={() =>
+                  onDoubleClick && onDoubleClick(row.original)
+                }
               >
                 {row.getVisibleCells().map((cell) => {
                   return (
