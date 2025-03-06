@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 interface TabType {
   label: string;
@@ -46,31 +46,45 @@ export const useTabNavigation = ({
       currentTab = activeTab;
     }
 
-    setActiveTab(currentTab);
-    onTabChange?.(currentTab);
-  }, [searchParams, pathname, defaultTab, queryKey, tabs, mode]);
-
-  const handleTabClick = (tab: string) => {
-    if (activeTab === tab) return;
-
-    if (mode === "query") {
-      const params = new URLSearchParams(searchParams);
-      params.set(queryKey, tab);
-
-      syncParams.forEach((key) => {
-        const value = searchParams.get(key);
-        if (value) params.set(key, value);
-      });
-
-      router.push(`?${params.toString()}`);
-    } else if (mode === "path") {
-      router.push(tab);
-    } else {
-      // state 모드
-      setActiveTab(tab);
-      onTabChange?.(tab);
+    if (currentTab !== activeTab) {
+      setActiveTab(currentTab);
+      onTabChange?.(currentTab);
     }
-  };
+  }, [
+    searchParams,
+    pathname,
+    defaultTab,
+    queryKey,
+    mode,
+    activeTab,
+    tabs,
+    onTabChange,
+  ]);
+
+  const handleTabClick = useCallback(
+    (tab: string) => {
+      if (activeTab === tab) return;
+
+      if (mode === "query") {
+        const params = new URLSearchParams(searchParams);
+        params.set(queryKey, tab);
+
+        syncParams.forEach((key) => {
+          const value = searchParams.get(key);
+          if (value) params.set(key, value);
+        });
+
+        router.push(`?${params.toString()}`);
+      } else if (mode === "path") {
+        router.push(tab);
+      } else {
+        // state 모드
+        setActiveTab(tab);
+        onTabChange?.(tab);
+      }
+    },
+    [activeTab, mode, searchParams, router, queryKey, syncParams, onTabChange]
+  );
 
   return { activeTab, handleTabClick };
 };

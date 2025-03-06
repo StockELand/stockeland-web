@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import * as d3 from "d3";
 
 export function useD3<T extends SVGSVGElement | HTMLElement>(
@@ -7,11 +7,20 @@ export function useD3<T extends SVGSVGElement | HTMLElement>(
 ) {
   const ref = useRef<T>(null);
 
+  const memoizedRenderChart = useCallback(
+    (svgElement: T) => {
+      const svg = d3.select(svgElement);
+      renderChartFn(svg);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [renderChartFn, ...dependencies]
+  );
+
   useEffect(() => {
     if (ref.current) {
-      renderChartFn(d3.select(ref.current));
+      memoizedRenderChart(ref.current);
     }
-  }, dependencies);
+  }, [memoizedRenderChart]);
 
   return ref;
 }

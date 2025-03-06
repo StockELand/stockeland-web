@@ -6,9 +6,10 @@ import { refreshPredictionLog } from "@/services/predict/useGetPredictionLog";
 import { refreshPredictions } from "@/services/predict/useGetPredictions";
 import { usePostPredict } from "@/services/predict/usePostPredict";
 import { refreshStockAll } from "@/services/stock/useGetStockAll";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { formatDate } from "../date-picker";
 import { refreshStockPredictions } from "@/services/stock/useGetStockPredictions";
+import clsx from "clsx";
 
 interface PredictionProcessButtonProps {
   date?: Date | null;
@@ -20,44 +21,45 @@ export default function PredictionProcessButton({
   const { startSSE, status, setStatus, progress } = useSSE(
     API.PREDICT.PROGRESS
   );
-
   const { startPredict } = usePostPredict();
 
-  const handlerStartPredict = () => {
+  const handlerStartPredict = useCallback(() => {
     startSSE();
     startPredict({ date: formatDate(date) });
-  };
+  }, [startSSE, startPredict, date]);
 
   useEffect(() => {
     if (status === "Completed") {
-      async function mutatePredictions() {
-        await refreshPredictions({ date: formatDate(date) });
-        await refreshPredictionLog({ date: formatDate(new Date()) });
-        await refreshStockPredictions();
-        await refreshStockAll();
+      (async () => {
+        await Promise.all([
+          refreshPredictions({ date: formatDate(date) }),
+          refreshPredictionLog({ date: formatDate(new Date()) }),
+          refreshStockPredictions(),
+          refreshStockAll(),
+        ]);
         setStatus("Pending");
-      }
-      mutatePredictions();
+      })();
     }
-  }, [status]);
+  }, [status, setStatus, date]);
 
-  const renderButtonText = () => {
+  const renderButtonText = useCallback(() => {
     if (status === "Completed") return "Predict completed";
     if (status === "Pending") return "Start predict";
     return `${status}... ${progress}%`;
-  };
+  }, [status, progress]);
 
   return (
     <Button
       onClick={handlerStartPredict}
       className="overflow-x-auto relative min-w-40"
     >
-      {status !== "Completed" && status !== "Pending" && (
-        <div
-          className="absolute inset-0 bg-signature text-xs h-full text-[#181a20] text-center leading-none"
-          style={{ width: `${progress}%` }}
-        />
-      )}
+      <div
+        className={clsx(
+          "absolute inset-0 bg-signature text-xs h-full text-[#181a20] text-center leading-none transition-all",
+          { hidden: status === "Completed" || status === "Pending" }
+        )}
+        style={{ width: `${progress}%` }}
+      />
       <div className="relative z-10 text-[#181a20]">{renderButtonText()}</div>
     </Button>
   );

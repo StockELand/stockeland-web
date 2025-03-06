@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import {
   DateRangeType,
   DisplayDateGroup,
@@ -22,9 +22,11 @@ const statusProcessing = (
   data: { [key: string]: DisplayDateGroup } | undefined
 ): { [key: string]: DisplayDateGroup } | undefined => {
   if (!data) return;
-  data["success"]["color"] = "signature";
-  data["fail"]["color"] = "fall";
-  return data;
+  return {
+    ...data,
+    success: { ...data.success, color: "signature" },
+    fail: { ...data.fail, color: "fall" },
+  };
 };
 
 export function usePredictProcessStatus(selectedDate: Date | null) {
@@ -33,22 +35,25 @@ export function usePredictProcessStatus(selectedDate: Date | null) {
     endDate: null,
   });
 
-  const formatingSelectedDate = () => {
-    return selectedDate ? { date: formatDate(selectedDate) } : undefined;
-  };
+  const formattedSelectedDate = selectedDate
+    ? { date: formatDate(selectedDate) }
+    : undefined;
 
-  const { data: logs } = useGetPredictionLog(formatingSelectedDate());
-
-  const { data } = useGetPredictions(formatingSelectedDate());
-
+  const { data: logs } = useGetPredictionLog(formattedSelectedDate);
+  const { data } = useGetPredictions(formattedSelectedDate);
   const { data: status } = useGetPredictionStatus(dateStrRange);
 
-  const setDateRange = ({ startDate, endDate }: DateRangeType) => {
-    setDateStrRange({
-      startDate: formatDate(startDate),
-      endDate: formatDate(endDate),
+  const setDateRange = useCallback(({ startDate, endDate }: DateRangeType) => {
+    const formattedStart = formatDate(startDate);
+    const formattedEnd = formatDate(endDate);
+
+    setDateStrRange((prev) => {
+      if (prev.startDate === formattedStart && prev.endDate === formattedEnd) {
+        return prev;
+      }
+      return { startDate: formattedStart, endDate: formattedEnd };
     });
-  };
+  }, []);
 
   return {
     data,
@@ -57,28 +62,32 @@ export function usePredictProcessStatus(selectedDate: Date | null) {
     setDateRange,
   };
 }
+
 export function useParseProcessStatus(selectedDate: Date | null) {
   const [dateStrRange, setDateStrRange] = useState<GetParseStatusQuery>({
     startDate: null,
     endDate: null,
   });
 
-  const formatingSelectedDate = () => {
-    return selectedDate ? { date: formatDate(selectedDate) } : undefined;
-  };
+  const formattedSelectedDate = selectedDate
+    ? { date: formatDate(selectedDate) }
+    : undefined;
 
-  const { data: logs } = useGetParseLog(formatingSelectedDate());
-
-  const { data } = useGetParseData(formatingSelectedDate());
-
+  const { data: logs } = useGetParseLog(formattedSelectedDate);
+  const { data } = useGetParseData(formattedSelectedDate);
   const { data: status } = useGetParseStatus(dateStrRange);
 
-  const setDateRange = ({ startDate, endDate }: DateRangeType) => {
-    setDateStrRange({
-      startDate: formatDate(startDate),
-      endDate: formatDate(endDate),
+  const setDateRange = useCallback(({ startDate, endDate }: DateRangeType) => {
+    const formattedStart = formatDate(startDate);
+    const formattedEnd = formatDate(endDate);
+
+    setDateStrRange((prev) => {
+      if (prev.startDate === formattedStart && prev.endDate === formattedEnd) {
+        return prev; // 상태 변경 없음
+      }
+      return { startDate: formattedStart, endDate: formattedEnd };
     });
-  };
+  }, []);
 
   return {
     data,
@@ -87,5 +96,6 @@ export function useParseProcessStatus(selectedDate: Date | null) {
     setDateRange,
   };
 }
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default { usePredictProcessStatus, useParseProcessStatus };

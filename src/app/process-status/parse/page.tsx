@@ -28,7 +28,7 @@ export default function ParseStatus() {
   const router = useRouter();
 
   const defaultDate = useMemo(() => {
-    const dateParam = searchParams.get("date");
+    const dateParam = searchParams?.get("date");
     return dateParam ? new Date(dateParam) : new Date();
   }, [searchParams]);
 
@@ -43,20 +43,28 @@ export default function ParseStatus() {
     syncParams: ["date"],
   });
 
+  const params = useMemo(
+    () => new URLSearchParams(searchParams),
+    [searchParams]
+  );
+
   const handleDateSelect = useCallback(
     (date: Date | null) => {
       if (!date) return;
-      const params = new URLSearchParams(searchParams);
       params.set("tab", activeTab);
       params.set("date", formatDate(date) || "");
       router.replace(`?${params.toString()}`);
     },
-    [searchParams, activeTab, router]
+    [params, activeTab, router]
   );
 
-  useEffect(() => {
+  const updateDate = useCallback(() => {
     handleDateChange(defaultDate);
-  }, [defaultDate, handleDateChange]);
+  }, [handleDateChange, defaultDate]);
+
+  useEffect(() => {
+    updateDate();
+  }, [updateDate]);
 
   const { inputValue, handleInputChange, rangeDate, handleRangeChange } =
     useRangeDatePickerState();
@@ -80,7 +88,7 @@ export default function ParseStatus() {
             customInput={
               <Input
                 rightIcon={<CalendarIcon className="size-5" />}
-                value={inputValue}
+                value={inputValue || ""}
                 onChange={handleInputChange}
                 placeholder="YYYY-MM-DD ~ YYYY-MM-DD"
                 className="w-72"
@@ -101,7 +109,7 @@ export default function ParseStatus() {
         />
       </div>
 
-      {logs && logs?.length !== 0 && activeTab === "log" && (
+      {logs && logs.length !== 0 && activeTab === "log" && (
         <Card
           className="!w-full overflow-hidden"
           variant="bordered"
@@ -110,7 +118,7 @@ export default function ParseStatus() {
           <ParseLogTable data={logs} />
         </Card>
       )}
-      {data && data?.length !== 0 && activeTab === "data" && (
+      {data && data.length !== 0 && activeTab === "data" && (
         <Card
           className="!w-full overflow-hidden"
           variant="bordered"

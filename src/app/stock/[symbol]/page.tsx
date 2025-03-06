@@ -6,7 +6,7 @@ import { useGetStockBySymbol } from "@/services/stock/useGetStockBySymbol";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import Card from "@/components/ui/Card";
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { ChartData, TooltipProps } from "@/components/charts/core/types";
 import { LineChart } from "@/components/charts";
 import { formatDate, parseLocalDate } from "@/components/date-picker";
@@ -26,11 +26,12 @@ const CustomTooltip: React.FC<TooltipProps> = ({ data }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { label, value, ...tempData } = data;
   const stock = tempData as IStockPrice;
+
   return (
     <Card
       title={formatDate(label as Date) || undefined}
       padding="small"
-      className="!w-fit shadow-lg "
+      className="!w-fit shadow-lg"
     >
       <div className="text-sm text-nowrap">
         <p>
@@ -52,55 +53,63 @@ const CustomTooltip: React.FC<TooltipProps> = ({ data }) => {
 
 export default function StockDetail() {
   const { symbol } = useParams();
-  const symbolStr = symbol as string;
+
+  const symbolStr = useMemo(() => (symbol ? symbol.toString() : ""), [symbol]);
 
   const [selectedRange, setSelectedRange] = useState("1m");
+
   const { data, isLoading } = useGetStockBySymbol({
     symbol: symbolStr,
     range: selectedRange,
   });
 
-  const [chartData, setChartData] = useState<ChartData[]>([]);
-
-  useEffect(() => {
-    if (data) {
-      const temp = data
-        .map((stock) => ({
-          label: parseLocalDate(stock.date) || new Date(),
-          value: stock.close,
-          ...stock,
-        }))
-        .reverse();
-      setChartData(temp);
-    }
+  const chartData = useMemo<ChartData[]>(() => {
+    if (!data) return [];
+    return data
+      .map((stock) => ({
+        label: parseLocalDate(stock.date) || new Date(),
+        value: stock.close,
+        ...stock,
+      }))
+      .reverse();
   }, [data]);
 
   return (
-    <a>
-      {symbol && (
+    <div>
+      {symbolStr && (
         <div className="flex flex-row gap-2 items-center">
           <div className="flex overflow-hidden rounded-full">
             <Image
-              src={`/logos/${symbol}.png`}
-              alt={`${symbol} Logo`}
+              src={`/logos/${symbolStr}.png`}
+              alt={`${symbolStr} Logo`}
               width={32}
               height={32}
             />
           </div>
           <Typography variant="h2" className="mb-2" isMargin={false}>
-            {(symbol as string).toUpperCase()}
+            {symbolStr.toUpperCase()}
           </Typography>
         </div>
       )}
+
       <div className="flex flex-row gap-2 items-center">
-        <Typography variant="h1">${data && data[0]?.close}</Typography>
-        <Typography variant="h3" color="primary">
-          ₩{data && data[0]?.close}
+        <Typography variant="h1">
+          {isLoading ? "Loading..." : `$${data?.[0]?.close}`}
         </Typography>
+        {!isLoading && (
+          <Typography variant="h3" color="primary">
+            ₩{data?.[0]?.close}
+          </Typography>
+        )}
       </div>
-      <Card padding="none" className="!w-full mb-4" variant="bordered">
+
+      <Card padding="none" className="!w-full mb-4 " variant="bordered">
         <div className="h-[260px]">
-          {isLoading || (
+          {isLoading ? (
+            <div className="h-full flex items-center justify-center">
+              <p>Loading Chart...</p>
+            </div>
+          ) : (
             <LineChart
               data={chartData}
               TooltipComponent={CustomTooltip}
@@ -115,13 +124,20 @@ export default function StockDetail() {
           className="z-20 m-2 ml-auto"
         />
       </Card>
+
       <Card
         variant="bordered"
         className="!w-full overflow-hidden"
-        padding={"none"}
+        padding="none"
       >
-        {isLoading || <StockPriceTable data={data} />}
+        {isLoading ? (
+          <div className="h-[200px] flex items-center justify-center text-signature2">
+            <p>Loading Data...</p>
+          </div>
+        ) : (
+          <StockPriceTable data={data} />
+        )}
       </Card>
-    </a>
+    </div>
   );
 }

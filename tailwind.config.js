@@ -24,5 +24,6 @@ module.exports = {
       },
     },
   },
+  safelist: ["bg-fall", "text-signature2"],
   plugins: [],
 };
