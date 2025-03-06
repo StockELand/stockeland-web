@@ -139,6 +139,15 @@ export function useLineChart<T extends ChartData>(
       .attr("y2", innerHeight)
       .style("opacity", 0); // 초기에는 숨김
 
+    const horizontalLine = g
+      .append("line")
+      .attr("stroke", "gray")
+      .attr("stroke-width", 1)
+      .attr("stroke-dasharray", "4 4") // 점선 스타일
+      .attr("x1", 0)
+      .attr("x2", innerWidth)
+      .style("opacity", 0); // 초기에는 숨김
+
     // 🔹 **마우스 이벤트 추가**
     g.append("rect")
       .attr("width", innerWidth)
@@ -186,6 +195,11 @@ export function useLineChart<T extends ChartData>(
           .attr("x1", xScale(closestData.label.toString())!)
           .attr("x2", xScale(closestData.label.toString())!)
           .style("opacity", 1);
+
+        horizontalLine
+          .attr("y1", yScale(closestData.value)!)
+          .attr("y2", yScale(closestData.value)!)
+          .style("opacity", 1);
       }
     }
 
@@ -193,6 +207,7 @@ export function useLineChart<T extends ChartData>(
     function handlePointerLeave() {
       setTooltip((prev) => ({ ...prev, visible: false }));
       verticalLine.style("opacity", 0);
+      horizontalLine.style("opacity", 0);
     }
   }, [data, width, height]);
 
