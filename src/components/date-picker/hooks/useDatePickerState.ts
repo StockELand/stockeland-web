@@ -1,5 +1,5 @@
 // hooks/useDatePickerState.ts
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { parseLocalDate, formatDate } from "../utils/formatUtils";
 
 export const useDatePickerState = (initialDate: Date | null = null) => {
@@ -8,18 +8,28 @@ export const useDatePickerState = (initialDate: Date | null = null) => {
     formatDate(initialDate) || ""
   );
 
-  const handleDateChange = (date: Date | null) => {
+  useEffect(() => {
+    setInputValue(selectedDate ? formatDate(selectedDate) || "" : "");
+  }, [selectedDate]);
+
+  const handleDateChange = useCallback((date: Date | null) => {
     if (date) {
       setSelectedDate(date);
-      setInputValue(formatDate(date) || "");
     }
-  };
+  }, []);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-    const parsedDate = parseLocalDate(e.target.value);
-    if (parsedDate) setSelectedDate(parsedDate);
-  };
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value;
+      setInputValue(value);
+
+      const parsedDate = parseLocalDate(value);
+      if (parsedDate) {
+        setSelectedDate(parsedDate);
+      }
+    },
+    []
+  );
 
   return {
     selectedDate,
