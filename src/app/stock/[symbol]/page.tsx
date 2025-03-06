@@ -54,7 +54,7 @@ export default function StockDetail() {
   const { symbol } = useParams();
   const symbolStr = symbol as string;
 
-  const [selectedRange, setSelectedRange] = useState("1y");
+  const [selectedRange, setSelectedRange] = useState("1m");
   const { data, isLoading } = useGetStockBySymbol({
     symbol: symbolStr,
     range: selectedRange,
@@ -92,36 +92,36 @@ export default function StockDetail() {
           </Typography>
         </div>
       )}
-      {isLoading || (
-        <>
-          <div className="flex flex-row gap-2 items-center">
-            <Typography variant="h1">${data && data[0]?.close}</Typography>
-            <Typography variant="h3" color="primary">
-              ₩{data && data[0]?.close}
-            </Typography>
-          </div>
-          <Card padding="none" className="!w-full mb-4" variant="bordered">
+      <div className="flex flex-row gap-2 items-center">
+        <Typography variant="h1">${data && data[0]?.close}</Typography>
+        <Typography variant="h3" color="primary">
+          ₩{data && data[0]?.close}
+        </Typography>
+      </div>
+      <Card padding="none" className="!w-full mb-4" variant="bordered">
+        <div className="h-[260px]">
+          {isLoading || (
             <LineChart
               data={chartData}
               TooltipComponent={CustomTooltip}
               strokeColor="text-signature2"
             />
-            <AnimatedRadio
-              options={rangeOptions}
-              selected={selectedRange}
-              onChange={setSelectedRange}
-              className="z-20 m-2 ml-auto"
-            />
-          </Card>
-          <Card
-            variant="bordered"
-            className="!w-full overflow-hidden"
-            padding={"none"}
-          >
-            <StockPriceTable data={data} />
-          </Card>
-        </>
-      )}
+          )}
+        </div>
+        <AnimatedRadio
+          options={rangeOptions}
+          selected={selectedRange}
+          onChange={setSelectedRange}
+          className="z-20 m-2 ml-auto"
+        />
+      </Card>
+      <Card
+        variant="bordered"
+        className="!w-full overflow-hidden"
+        padding={"none"}
+      >
+        {isLoading || <StockPriceTable data={data} />}
+      </Card>
     </a>
   );
 }

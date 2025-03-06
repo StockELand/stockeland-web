@@ -3,6 +3,7 @@ import { LineChartProps } from "../core/types";
 import { useLineChart } from "./useLineChart";
 import { useResizeObserver } from "../core/useResizeObserver";
 import { useTooltipPosition } from "../core/useTooltipPosition";
+import clsx from "clsx";
 
 const LineChart = <T extends { label: string | Date; value: number }>({
   data,
@@ -18,7 +19,7 @@ const LineChart = <T extends { label: string | Date; value: number }>({
   );
 
   return (
-    <div ref={ref} className={`relative w-full ${className}`}>
+    <div ref={ref} className={clsx(`relative w-full`, className)}>
       <svg
         ref={svgRef}
         width={size.width}

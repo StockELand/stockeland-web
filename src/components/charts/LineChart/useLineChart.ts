@@ -51,18 +51,65 @@ export function useLineChart<T extends ChartData>(
       .nice()
       .range([innerHeight, 0]);
 
+    const defs = svg.append("defs");
+    const gradient = defs
+      .append("linearGradient")
+      .attr("id", "gradient")
+      .attr("x1", "0%")
+      .attr("x2", "0%")
+      .attr("y1", "0%")
+      .attr("y2", "100%");
+
+    gradient
+      .append("stop")
+      .attr("offset", "0%")
+      .attr("stop-color", "currentColor") // 상단 색상
+      .attr("stop-opacity", 0.2);
+
+    gradient
+      .append("stop")
+      .attr("offset", "100%")
+      .attr("stop-color", "currentColor")
+      .attr("stop-opacity", 0);
+
+    defs
+      .append("clipPath")
+      .attr("id", "clip-path")
+      .append("rect")
+      .attr("width", innerWidth)
+      .attr("height", 0) // 초기 높이 0
+      .transition()
+      .delay(300)
+      .duration(500)
+      .ease(d3.easeCubicInOut)
+      .attr("height", innerHeight);
+
+    // 🔹 **area (그라데이션 영역) 추가**
+    const area = d3
+      .area<T>()
+      .x((d) => xScale(d.label.toString())!)
+      .y0(innerHeight) // 아래쪽 경계
+      .y1((d) => yScale(d.value)); // 값에 따라 변동
+    // .curve(d3.curveMonotoneX);
+
     // 라인 생성
     const line = d3
       .line<T>()
       .x((d) => xScale(d.label.toString())!)
-      .y((d) => yScale(d.value))
-      .curve(d3.curveMonotoneX);
+      .y((d) => yScale(d.value));
+    // .curve(d3.curveMonotoneX);
 
     const g = svg
       .append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
 
     // 🔹 **라인 애니메이션 추가**
+    g.append("path")
+      .datum(data)
+      .attr("fill", "url(#gradient)") // 🔥 그라데이션 적용
+      .attr("clip-path", "url(#clip-path)") // 🔥 clipPath 적용
+      .attr("d", area);
+
     g.append("path")
       .datum(data)
       .attr("fill", "none")
@@ -76,7 +123,7 @@ export function useLineChart<T extends ChartData>(
         return this.getTotalLength();
       })
       .transition()
-      .duration(1000) // 애니메이션 지속 시간 (1초)
+      .duration(500)
       .ease(d3.easeCubicInOut)
       .attr("stroke-dashoffset", 0);
 
