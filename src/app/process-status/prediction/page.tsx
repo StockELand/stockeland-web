@@ -8,7 +8,7 @@ import {
 import Tab from "@/components/ui/Tab";
 import { useRouter, useSearchParams } from "next/navigation";
 import Card from "@/components/ui/Card";
-import { useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import Input from "@/components/ui/Input";
 import CalendarIcon from "@/../public/assets/calendar.svg";
 import PredictionProcessButton from "@/components/domain/PredictionProcessButton";
@@ -26,9 +26,13 @@ export default function ParseStatus() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const defaultDate = searchParams.get("date");
+  const defaultDate = useMemo(() => {
+    const dateParam = searchParams.get("date");
+    return dateParam ? new Date(dateParam) : new Date();
+  }, [searchParams]);
+
   const { inputValue, handleDateChange, handleInputChange, selectedDate } =
-    useDatePickerState((defaultDate && new Date(defaultDate)) || new Date());
+    useDatePickerState(defaultDate);
 
   const { data, logs, status, setDateRange } =
     usePredictProcessStatus(selectedDate);
@@ -39,23 +43,20 @@ export default function ParseStatus() {
     syncParams: ["date"],
   });
 
-  const handleDateSelect = (date: Date | null) => {
-    if (date) {
+  const handleDateSelect = useCallback(
+    (date: Date | null) => {
+      if (!date) return;
       const params = new URLSearchParams(searchParams);
       params.set("tab", activeTab);
       params.set("date", formatDate(date) || "");
-      router.push(`?${params.toString()}`);
-    }
-  };
+      router.replace(`?${params.toString()}`);
+    },
+    [searchParams, activeTab, router]
+  );
 
   useEffect(() => {
-    const date = searchParams.get("date");
-    if (date) {
-      handleDateChange(new Date(date));
-    } else {
-      handleDateChange(new Date());
-    }
-  }, [searchParams]);
+    handleDateChange(defaultDate);
+  }, [defaultDate, handleDateChange]);
 
   return (
     <>
