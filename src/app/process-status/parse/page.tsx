@@ -8,7 +8,7 @@ import {
 import Tab from "@/components/ui/Tab";
 import { useRouter, useSearchParams } from "next/navigation";
 import Card from "@/components/ui/Card";
-import { useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useParseProcessStatus } from "@/hooks/useProcessStatus";
 import ParseDataTable from "@/components/domain/table/ParseDataTable";
 import ParseLogTable from "@/components/domain/table/ParseLogTable";
@@ -27,11 +27,12 @@ export default function ParseStatus() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const defaultDate = searchParams.get("date");
+  const defaultDate = useMemo(() => {
+    const dateParam = searchParams?.get("date");
+    return dateParam ? new Date(dateParam) : new Date();
+  }, [searchParams]);
 
-  const { selectedDate, handleDateChange } = useDatePickerState(
-    (defaultDate && new Date(defaultDate)) || new Date()
-  );
+  const { selectedDate, handleDateChange } = useDatePickerState(defaultDate);
 
   const { data, logs, status, setDateRange } =
     useParseProcessStatus(selectedDate);
@@ -42,22 +43,28 @@ export default function ParseStatus() {
     syncParams: ["date"],
   });
 
-  const handleDateSelect = (date: Date | null) => {
-    if (date) {
-      const params = new URLSearchParams(searchParams);
+  const params = useMemo(
+    () => new URLSearchParams(searchParams),
+    [searchParams]
+  );
+
+  const handleDateSelect = useCallback(
+    (date: Date | null) => {
+      if (!date) return;
       params.set("tab", activeTab);
       params.set("date", formatDate(date) || "");
-      router.push(`?${params.toString()}`);
-    }
-  };
+      router.replace(`?${params.toString()}`);
+    },
+    [params, activeTab, router]
+  );
+
+  const updateDate = useCallback(() => {
+    handleDateChange(defaultDate);
+  }, [handleDateChange, defaultDate]);
+
   useEffect(() => {
-    const date = searchParams.get("date");
-    if (date) {
-      handleDateChange(new Date(date));
-    } else {
-      handleDateChange(new Date());
-    }
-  }, [searchParams]);
+    updateDate();
+  }, [updateDate]);
 
   const { inputValue, handleInputChange, rangeDate, handleRangeChange } =
     useRangeDatePickerState();
@@ -81,7 +88,7 @@ export default function ParseStatus() {
             customInput={
               <Input
                 rightIcon={<CalendarIcon className="size-5" />}
-                value={inputValue}
+                value={inputValue || ""}
                 onChange={handleInputChange}
                 placeholder="YYYY-MM-DD ~ YYYY-MM-DD"
                 className="w-72"
@@ -102,7 +109,7 @@ export default function ParseStatus() {
         />
       </div>
 
-      {logs && logs?.length !== 0 && activeTab === "log" && (
+      {logs && logs.length !== 0 && activeTab === "log" && (
         <Card
           className="!w-full overflow-hidden"
           variant="bordered"
@@ -111,7 +118,7 @@ export default function ParseStatus() {
           <ParseLogTable data={logs} />
         </Card>
       )}
-      {data && data?.length !== 0 && activeTab === "data" && (
+      {data && data.length !== 0 && activeTab === "data" && (
         <Card
           className="!w-full overflow-hidden"
           variant="bordered"

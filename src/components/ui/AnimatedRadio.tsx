@@ -58,7 +58,7 @@ export default function AnimatedRadio({
           data-key={key}
           className={clsx(
             "relative z-10 px-3 py-1 text-thTxt transition-all text-sm",
-            selected === key ? "text-signature2 font-semibold" : "text-thTxt"
+            selected === key ? "!text-signature2 font-semibold" : "text-thTxt"
           )}
           onClick={() => onChange(key)}
         >

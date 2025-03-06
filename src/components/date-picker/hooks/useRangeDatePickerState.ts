@@ -1,5 +1,4 @@
-// hooks/useRangeDatePickerState.ts
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { parseLocalDate, formatDate } from "../utils/formatUtils";
 import { DateRangeType } from "../types";
 
@@ -7,49 +6,44 @@ export const useRangeDatePickerState = (
   initialStartDate: Date | null = null,
   initialEndDate: Date | null = null
 ) => {
-  const [rangeStart, setRangeStart] = useState<Date | null | undefined>(
-    initialStartDate
-  );
-  const [rangeEnd, setRangeEnd] = useState<Date | null | undefined>(
-    initialEndDate
-  );
+  const [rangeDate, setRangeDate] = useState<DateRangeType>({
+    startDate: initialStartDate,
+    endDate: initialEndDate,
+  });
 
-  const [inputValue, setInputValue] = useState<string>(
-    initialStartDate && initialEndDate
-      ? `${formatDate(initialStartDate) || ""} ~ ${
-          formatDate(initialEndDate) || ""
-        }`
-      : ""
-  );
+  // ✅ `inputValue`를 `useMemo`로 최적화하여 불필요한 `setState` 방지
+  const inputValue = useMemo(() => {
+    const startText = rangeDate.startDate
+      ? formatDate(rangeDate.startDate)
+      : "";
+    const endText = rangeDate.endDate ? formatDate(rangeDate.endDate) : "";
+    return startText && endText
+      ? `${startText} ~ ${endText}`
+      : startText || endText;
+  }, [rangeDate.startDate, rangeDate.endDate]);
 
   const handleRangeChange = (range: DateRangeType) => {
-    const { startDate, endDate } = range;
-
-    setRangeStart(startDate || null);
-    setRangeEnd(endDate || null);
-
-    const startText = startDate ? formatDate(startDate) : "";
-    const endText = endDate ? formatDate(endDate) : "";
-    setInputValue(`${startText}${startText && endText ? " ~ " : ""}${endText}`);
+    setRangeDate(range);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setInputValue(value);
+    const value = e.target.value.trim();
+
+    if (!value.includes("~")) return; // ✅ 구분자가 없으면 변경하지 않음
 
     const [startString, endString] = value.split("~").map((v) => v.trim());
     const parsedStart = parseLocalDate(startString);
     const parsedEnd = parseLocalDate(endString);
 
+    // ✅ 유효한 날짜일 경우만 업데이트
     if (parsedStart && parsedEnd) {
-      handleRangeChange({ startDate: parsedStart, endDate: parsedEnd });
+      setRangeDate({ startDate: parsedStart, endDate: parsedEnd });
     }
   };
 
   return {
-    rangeDate: { startDate: rangeStart, endDate: rangeEnd },
+    rangeDate,
     inputValue,
-    setInputValue,
     handleRangeChange,
     handleInputChange,
   };

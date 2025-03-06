@@ -28,7 +28,6 @@ const StockSymbolCell = ({
   </div>
 );
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const createPercentageSortFn = <T,>(key: keyof T): SortingFn<T> => {
   return (rowA, rowB) => {
     const statusA = Number(rowA.original[key]);

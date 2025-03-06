@@ -1,7 +1,7 @@
 "use client";
 import Button from "@/components/ui/Button";
 import useSSE from "@/hooks/useSSE";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import clsx from "clsx";
 import { usePostParse } from "@/services/parse/usePostParse";
 import { API } from "@/constants/api";
@@ -20,34 +20,34 @@ export default function ParseProcessButton({
   endDate,
 }: ParseProcessButtonProps) {
   const { startSSE, setStatus, status, progress } = useSSE(API.PARSE.PROGRESS);
-
   const { startParse } = usePostParse();
 
-  const handlerStartParse = () => {
+  const handlerStartParse = useCallback(() => {
     startSSE();
     startParse({
       startDate: formatDate(startDate),
       endDate: formatDate(endDate),
     });
-  };
+  }, [startSSE, startParse, startDate, endDate]);
 
   useEffect(() => {
     if (status === "Completed") {
-      async function mutatePredictions() {
-        await refreshParseData();
-        await refreshParseLog({ date: formatDate(new Date()) });
-        await refreshStockAll();
+      (async () => {
+        await Promise.all([
+          refreshParseData(),
+          refreshParseLog({ date: formatDate(new Date()) }),
+          refreshStockAll(),
+        ]);
         setStatus("Pending");
-      }
-      mutatePredictions();
+      })();
     }
-  }, [status]);
+  }, [status, setStatus]);
 
-  const renderButtonText = () => {
+  const renderButtonText = useCallback(() => {
     if (status === "Completed") return "Parse completed";
     if (status === "Pending") return "Start parse";
     return `${status}... ${progress}%`;
-  };
+  }, [status, progress]);
 
   return (
     <Button

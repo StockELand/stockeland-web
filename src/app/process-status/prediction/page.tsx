@@ -8,7 +8,7 @@ import {
 import Tab from "@/components/ui/Tab";
 import { useRouter, useSearchParams } from "next/navigation";
 import Card from "@/components/ui/Card";
-import { useEffect } from "react";
+import { useCallback, useMemo } from "react";
 import Input from "@/components/ui/Input";
 import CalendarIcon from "@/../public/assets/calendar.svg";
 import PredictionProcessButton from "@/components/domain/PredictionProcessButton";
@@ -26,9 +26,18 @@ export default function ParseStatus() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const defaultDate = searchParams.get("date");
+  const params = useMemo(
+    () => new URLSearchParams(searchParams),
+    [searchParams]
+  );
+
+  const defaultDate = useMemo(() => {
+    const dateParam = params.get("date");
+    return dateParam ? new Date(dateParam) : new Date();
+  }, [params]);
+
   const { inputValue, handleDateChange, handleInputChange, selectedDate } =
-    useDatePickerState((defaultDate && new Date(defaultDate)) || new Date());
+    useDatePickerState(defaultDate);
 
   const { data, logs, status, setDateRange } =
     usePredictProcessStatus(selectedDate);
@@ -39,23 +48,17 @@ export default function ParseStatus() {
     syncParams: ["date"],
   });
 
-  const handleDateSelect = (date: Date | null) => {
-    if (date) {
-      const params = new URLSearchParams(searchParams);
+  const handleDateSelect = useCallback(
+    (date: Date | null) => {
+      if (!date) return;
+
       params.set("tab", activeTab);
       params.set("date", formatDate(date) || "");
-      router.push(`?${params.toString()}`);
-    }
-  };
 
-  useEffect(() => {
-    const date = searchParams.get("date");
-    if (date) {
-      handleDateChange(new Date(date));
-    } else {
-      handleDateChange(new Date());
-    }
-  }, [searchParams]);
+      router.replace(`?${params.toString()}`);
+    },
+    [params, activeTab, router]
+  );
 
   return (
     <>
@@ -89,7 +92,7 @@ export default function ParseStatus() {
         />
       </div>
 
-      {logs && logs?.length !== 0 && activeTab === "log" && (
+      {logs && logs.length !== 0 && activeTab === "log" && (
         <Card
           className="!w-full overflow-hidden"
           variant="bordered"
@@ -98,7 +101,7 @@ export default function ParseStatus() {
           <PredictionLogTable data={logs} />
         </Card>
       )}
-      {data && data?.length !== 0 && activeTab === "data" && (
+      {data && data.length !== 0 && activeTab === "data" && (
         <Card
           className="!w-full overflow-hidden"
           variant="bordered"

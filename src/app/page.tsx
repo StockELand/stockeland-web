@@ -7,18 +7,21 @@ import { useGetStockPredictions } from "@/services/stock/useGetStockPredictions"
 import { useGetStockAll } from "@/services/stock/useGetStockAll";
 import { IStock } from "@/types/table";
 import { useRouter } from "next/navigation";
+import { useCallback } from "react";
 
 export default function Home() {
   const { data: predictions } = useGetStockPredictions();
   const { data: stocks } = useGetStockAll();
   const router = useRouter();
 
-  // ✅ 테이블 행 더블 클릭 시 특정 주식 페이지로 이동
-  const onDoubleClick = (row: IStock) => {
-    if (row.symbol) {
-      router.push(`/stock/${row.symbol}`);
-    }
-  };
+  const onDoubleClick = useCallback(
+    (row: IStock) => {
+      if (row.symbol) {
+        router.push(`/stock/${row.symbol}`);
+      }
+    },
+    [router]
+  );
 
   return (
     <>

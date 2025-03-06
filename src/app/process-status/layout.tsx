@@ -2,6 +2,7 @@
 
 import Tab from "@/components/ui/Tab";
 import { useTabNavigation } from "@/hooks/useTabNavigation";
+import { Suspense } from "react";
 
 const tabs = [
   { label: "Parse", value: "/process-status/parse" },
@@ -28,7 +29,7 @@ export default function ProcessStatusLayout({
         className="mb-6"
         showIndicator={false}
       />
-      {children}
+      <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
     </>
   );
 }

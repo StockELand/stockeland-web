@@ -35,6 +35,9 @@ export default function CalendarGrid({
           const isSelected = selectedDate && isSameDay(day, selectedDate);
 
           const displayInfo = day && getDisplayTypeAndColor(day);
+          const displayColor = displayInfo?.color
+            ? `bg-${displayInfo.color}`
+            : "";
           const shouldApplyDisplayStyle = !isSelected && displayInfo;
 
           const isRangeStart =
@@ -53,26 +56,25 @@ export default function CalendarGrid({
               {isOnlyRangeStart && (
                 <div
                   className={
-                    "absolute inset-0 rounded-xl !bg-signature2 transition-all "
+                    "absolute inset-0 rounded-xl bg-signature2 transition-all "
                   }
                 />
               )}
               {inRange && (
                 <div
                   className={clsx(
-                    "absolute inset-0 bg-signature2/70 transition-all ",
-                    isRangeStart && "!rounded-l-xl !bg-signature2",
-                    isRangeEnd && "rounded-r-xl !bg-signature2"
+                    "absolute inset-0 transition-all bg-signature2 opacity-70",
+                    isRangeStart && "rounded-l-xl opacity-100",
+                    isRangeEnd && "rounded-r-xl opacity-100"
                   )}
                 />
               )}
 
               <div
                 className={clsx(
-                  shouldApplyDisplayStyle && `bg-${displayInfo.color}`,
                   "relative flex rounded-xl size-full items-center justify-center transition-all",
+                  shouldApplyDisplayStyle && `${displayColor} text-background`,
                   isSelected && "bg-signature2 text-background",
-                  shouldApplyDisplayStyle && "text-background",
                   isSelected || shouldApplyDisplayStyle
                     ? "group-hover:opacity-70"
                     : "group-hover:bg-outline1 group-hover:text-foreground",

@@ -12,6 +12,8 @@
     --tw-selectedBg: #f7f7f8;
     --tw-outline1: #dce0e6;
     --tw-signature: #7bc914;
+    --tw-signature2: #f6dd21;
+    --tw-fall: #f6465d;
   }
 
   @media (prefers-color-scheme: dark) {
@@ -24,6 +26,8 @@
       --tw-selectedBg: #1e2026;
       --tw-outline1: #2b3139;
       --tw-signature: #a6fc35;
+      --tw-signature2: #fcd535;
+      --tw-fall: #f6465d;
     }
   }
 

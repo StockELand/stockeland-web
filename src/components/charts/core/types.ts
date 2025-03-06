@@ -1,6 +1,7 @@
 export interface ChartData {
   label: string | Date;
   value: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 }
 
