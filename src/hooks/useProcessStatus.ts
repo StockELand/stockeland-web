@@ -4,7 +4,7 @@ import {
   DateRangeType,
   DisplayDateGroup,
   formatDate,
-} from "@/components/date-picker";
+} from "@l11040/eland-datepicker";
 import { useGetPredictionLog } from "@/services/predict/useGetPredictionLog";
 import {
   GetPredictionStatusQuery,

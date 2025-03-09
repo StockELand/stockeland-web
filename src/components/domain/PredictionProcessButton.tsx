@@ -7,9 +7,9 @@ import { refreshPredictions } from "@/services/predict/useGetPredictions";
 import { usePostPredict } from "@/services/predict/usePostPredict";
 import { refreshStockAll } from "@/services/stock/useGetStockAll";
 import { useCallback, useEffect } from "react";
-import { formatDate } from "../date-picker";
 import { refreshStockPredictions } from "@/services/stock/useGetStockPredictions";
 import clsx from "clsx";
+import { formatDate } from "@l11040/eland-datepicker";
 
 interface PredictionProcessButtonProps {
   date?: Date | null;

@@ -9,7 +9,7 @@ import Card from "@/components/ui/Card";
 import { useMemo, useState } from "react";
 import { ChartData, TooltipProps } from "@/components/charts/core/types";
 import { LineChart } from "@/components/charts";
-import { formatDate, parseLocalDate } from "@/components/date-picker";
+import { formatDate, parseLocalDate } from "@l11040/eland-datepicker";
 import { IStockPrice } from "@/types/api";
 import AnimatedRadio from "@/components/ui/AnimatedRadio";
 

@@ -4,7 +4,7 @@ import {
   DatePicker,
   formatDate,
   useDatePickerState,
-} from "@/components/date-picker";
+} from "@l11040/eland-datepicker";
 import Tab from "@/components/ui/Tab";
 import { useRouter, useSearchParams } from "next/navigation";
 import Card from "@/components/ui/Card";

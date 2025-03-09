@@ -2,7 +2,7 @@ import { IPredictionLog, IPredictionStatus } from "@/types/table";
 import { createColumnHelper } from "@tanstack/react-table";
 import { CustomColumnMeta, Table } from "@/components/table";
 import clsx from "clsx";
-import { formatISOToFullDate } from "@/components/date-picker";
+import { formatISOToFullDate } from "@l11040/eland-datepicker";
 
 const StatusCell = ({ status }: { status: IPredictionStatus }) => {
   return (

@@ -2,7 +2,7 @@
 import useSWR from "swr";
 import { API } from "@/constants/api";
 import { getFetcher, refresh } from "@/lib/fetcher";
-import { DisplayDateGroup } from "@/components/date-picker";
+import { DisplayDateGroup } from "@l11040/eland-datepicker";
 
 export interface GetParseStatusQuery {
   startDate: string | null;
