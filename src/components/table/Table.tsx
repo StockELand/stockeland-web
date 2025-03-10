@@ -78,13 +78,15 @@ export default function Table<T>({
           {table.getHeaderGroups().map((headerGroup) => (
             <tr className="h-full" key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
+                const { className, style } = getPinnedClass(header);
                 return (
                   <th
                     key={header.id}
                     className={clsx(
                       `px-2 text-xs text-thTxt first:pl-8 last:pr-8 py-8 transition-[width] bg-background `,
-                      getPinnedClass(header)
+                      className
                     )}
+                    style={style}
                     onClick={header.column.getToggleSortingHandler()}
                   >
                     <div
@@ -135,13 +137,15 @@ export default function Table<T>({
                 }
               >
                 {row.getVisibleCells().map((cell) => {
+                  const { className, style } = getPinnedClass(cell);
                   return (
                     <td
                       key={cell.id}
                       className={clsx(
                         `px-2 font-bold first:rounded-l-lg first:pl-8 last:rounded-r-lg last:pr-8 bg-background group-hover:bg-selectedBg`,
-                        getPinnedClass(cell)
+                        className
                       )}
+                      style={style}
                     >
                       <div className={clsx("w-fit", getAlignClass(cell))}>
                         {flexRender(

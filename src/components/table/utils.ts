@@ -7,12 +7,13 @@ export function getPinnedClass<T>(
 ) {
   const meta = column.column.columnDef.meta as CustomColumnMeta | undefined;
   const pinAlign = meta?.pinAlign;
-  if (!pinAlign) return {};
+  if (!pinAlign) return { className: "", style: {} };
 
-  const leftValue = column.column.getStart(pinAlign) ?? 0;
-  const alignStartStyle = `${pinAlign}-[${leftValue}px]`;
-
-  return clsx("sticky z-10", alignStartStyle);
+  const posValue = column.column.getStart(pinAlign) ?? 0;
+  return {
+    className: "sticky z-10",
+    style: { [pinAlign]: `${posValue}px` },
+  };
 }
 
 export function getAlignClass<T>(
