@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@l11040/eland-datepicker": "^1.0.9",
+    "@l11040/eland-table": "^1.0.3",
     "@tanstack/react-table": "^8.20.6",
     "@tanstack/react-virtual": "^3.13.0",
     "clsx": "^2.1.1",
