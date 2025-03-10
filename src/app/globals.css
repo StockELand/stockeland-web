@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "@l11040/eland-datepicker/dist/eland-datepicker.css";
 
 @layer base {
   :root {

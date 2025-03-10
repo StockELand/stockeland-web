@@ -1,4 +1,4 @@
-import { formatISOToFullDate } from "@/components/date-picker";
+import { formatISOToFullDate } from "@l11040/eland-datepicker";
 import { CustomColumnMeta, Table } from "@/components/table";
 import { IParseLog, IParseStatus } from "@/types/table";
 import { createColumnHelper } from "@tanstack/react-table";
