@@ -40,14 +40,14 @@ export default function AnimatedRadio({
     <div
       ref={containerRef}
       className={clsx(
-        "relative flex gap-1 bg-background1 p-2 rounded-lg w-fit shadow-lg",
+        "relative flex gap-1 bg-background1 p-2 rounded-md w-fit shadow-sm",
         className
       )}
       {...props}
     >
       {/* 선택된 옵션의 애니메이션 박스 */}
       <div
-        className="absolute top-0 bottom-0 m-1 bg-background rounded-lg shadow-lg transition-all duration-200"
+        className="absolute top-0 bottom-0 m-1 bg-background rounded-md hadow-none [box-shadow:inset_0px_0px_4px_rgba(0,0,0,0.2)] transition-all duration-200"
         style={{ left: indicatorStyle.left, width: indicatorStyle.width }}
       />
 
