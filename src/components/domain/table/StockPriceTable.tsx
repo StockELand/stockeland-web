@@ -1,6 +1,6 @@
 import { createColumnHelper } from "@tanstack/react-table";
-import { CustomColumnMeta, Table } from "@/components/table";
 import { IStockPrice } from "@/types/api";
+import { CustomColumnMeta, Table } from "@l11040/eland-table";
 
 const columnHelper = createColumnHelper<IStockPrice>();
 const getColumns = () => [
