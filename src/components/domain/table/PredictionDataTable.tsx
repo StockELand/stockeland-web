@@ -1,6 +1,6 @@
 import { createColumnHelper } from "@tanstack/react-table";
-import { CustomColumnMeta, Table } from "@/components/table";
 import { IPredictionData } from "@/types/table";
+import { CustomColumnMeta, Table } from "@l11040/eland-table";
 
 const columnHelper = createColumnHelper<IPredictionData>();
 

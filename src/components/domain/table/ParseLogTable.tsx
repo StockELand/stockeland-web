@@ -1,8 +1,8 @@
 import { formatISOToFullDate } from "@l11040/eland-datepicker";
-import { CustomColumnMeta, Table } from "@/components/table";
 import { IParseLog, IParseStatus } from "@/types/table";
 import { createColumnHelper } from "@tanstack/react-table";
 import clsx from "clsx";
+import { CustomColumnMeta, Table } from "@l11040/eland-table";
 
 const StatusCell = ({ status }: { status: IParseStatus }) => {
   return (
