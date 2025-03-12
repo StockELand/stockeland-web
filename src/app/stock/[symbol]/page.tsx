@@ -136,7 +136,7 @@ export default function StockDetail() {
       </div>
 
       <Card padding="none" className="!w-full mb-4 " variant="bordered">
-        <div className="h-[360px]">
+        <div className="h-fit">
           {isLoading ? (
             <div className="h-full flex items-center justify-center">
               <p>Loading Chart...</p>
