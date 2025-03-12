@@ -7,8 +7,7 @@ import { useParams } from "next/navigation";
 import Image from "next/image";
 import Card from "@/components/ui/Card";
 import { useMemo, useState } from "react";
-import { ChartData, TooltipProps } from "@/components/charts/core/types";
-import { LineChart } from "@/components/charts";
+import { ChartData, LineChart, CustomTooltipProps } from "@/components/charts";
 import { formatDate, parseLocalDate } from "@l11040/eland-datepicker";
 import { IStockPrice } from "@/types/api";
 import AnimatedRadio from "@/components/ui/AnimatedRadio";
@@ -21,7 +20,7 @@ const rangeOptions = [
   { key: "1y", value: "1년" },
 ];
 
-const CustomTooltip: React.FC<TooltipProps> = ({ data }) => {
+const CustomTooltip: React.FC<CustomTooltipProps> = ({ data }) => {
   if (!data) return null;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { label, value, ...tempData } = data;
