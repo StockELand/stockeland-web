@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { ChartData, TooltipProps } from "../core/types";
+import { ChartData, CustomTooltipProps, Pos2D } from "../types";
 
-export function useTooltipPosition<T extends ChartData>(
-  tooltip: TooltipProps<T>,
+export function useTooltip<T extends ChartData>(
+  tooltip: CustomTooltipProps<T>,
   containerWidth: number
 ) {
   const tooltipRef = useRef<HTMLDivElement | null>(null);
-  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+  const [tooltipPos, setTooltipPos] = useState<Pos2D>({ x: 0, y: 0 });
 
   useEffect(() => {
     if (!tooltip.visible || !tooltipRef.current) return;
@@ -15,7 +15,7 @@ export function useTooltipPosition<T extends ChartData>(
     const tooltipWidth = tooltipElement.offsetWidth;
     const padding = 10; // 차트 경계를 넘지 않도록 여백 추가
 
-    let x = tooltip.x;
+    let x = tooltip.pos.x;
 
     // **툴팁이 왼쪽을 벗어남 → 오른쪽으로 이동**
     if (x - tooltipWidth / 2 < padding) {
@@ -26,8 +26,8 @@ export function useTooltipPosition<T extends ChartData>(
       x = containerWidth - tooltipWidth / 2 - padding;
     }
 
-    setTooltipPosition({ x, y: tooltip.y });
+    setTooltipPos({ x, y: tooltip.pos.y });
   }, [tooltip, containerWidth]);
 
-  return { tooltipRef, tooltipPosition };
+  return { tooltipRef, tooltipPos };
 }

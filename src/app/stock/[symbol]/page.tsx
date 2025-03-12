@@ -7,11 +7,12 @@ import { useParams } from "next/navigation";
 import Image from "next/image";
 import Card from "@/components/ui/Card";
 import { useMemo, useState } from "react";
-import { ChartData, TooltipProps } from "@/components/charts/core/types";
-import { LineChart } from "@/components/charts";
+import { ChartData, LineChart, CustomTooltipProps } from "@/components/charts";
 import { formatDate, parseLocalDate } from "@l11040/eland-datepicker";
 import { IStockPrice } from "@/types/api";
 import AnimatedRadio from "@/components/ui/AnimatedRadio";
+import BarChart from "@/components/charts/components/BarChart";
+import SharedInteractionProvider from "@/components/charts/components/SharedInteractionProvider";
 
 const rangeOptions = [
   { key: "1w", value: "1주" },
@@ -21,7 +22,7 @@ const rangeOptions = [
   { key: "1y", value: "1년" },
 ];
 
-const CustomTooltip: React.FC<TooltipProps> = ({ data }) => {
+const CustomTooltip: React.FC<CustomTooltipProps> = ({ data }) => {
   if (!data) return null;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { label, value, ...tempData } = data;
@@ -50,6 +51,26 @@ const CustomTooltip: React.FC<TooltipProps> = ({ data }) => {
     </Card>
   );
 };
+const CustomTooltip2: React.FC<CustomTooltipProps> = ({ data }) => {
+  if (!data) return null;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { label, value, ...tempData } = data;
+  const stock = tempData as IStockPrice;
+
+  return (
+    <Card
+      title={formatDate(label as Date) || undefined}
+      padding="small"
+      className="!w-fit shadow-lg"
+    >
+      <div className="text-sm text-nowrap">
+        <p className="text-signature2">
+          <strong>Volume</strong>: {stock.volume}
+        </p>
+      </div>
+    </Card>
+  );
+};
 
 export default function StockDetail() {
   const { symbol } = useParams();
@@ -69,6 +90,17 @@ export default function StockDetail() {
       .map((stock) => ({
         label: parseLocalDate(stock.date) || new Date(),
         value: stock.close,
+        ...stock,
+      }))
+      .reverse();
+  }, [data]);
+
+  const barChartData = useMemo<ChartData[]>(() => {
+    if (!data) return [];
+    return data
+      .map((stock) => ({
+        label: parseLocalDate(stock.date) || new Date(),
+        value: stock.volume,
         ...stock,
       }))
       .reverse();
@@ -104,17 +136,28 @@ export default function StockDetail() {
       </div>
 
       <Card padding="none" className="!w-full mb-4 " variant="bordered">
-        <div className="h-[260px]">
+        <div className="h-fit">
           {isLoading ? (
             <div className="h-full flex items-center justify-center">
               <p>Loading Chart...</p>
             </div>
           ) : (
-            <LineChart
-              data={chartData}
-              TooltipComponent={CustomTooltip}
-              strokeColor="text-signature2"
-            />
+            <SharedInteractionProvider>
+              <>
+                <LineChart
+                  className="!h-[260px]"
+                  data={chartData}
+                  TooltipComponent={CustomTooltip}
+                  strokeColor="text-signature2"
+                />
+                <BarChart
+                  className="!h-[100px]"
+                  data={barChartData}
+                  TooltipComponent={CustomTooltip2}
+                  strokeColor="text-signature2"
+                />
+              </>
+            </SharedInteractionProvider>
           )}
         </div>
         <AnimatedRadio
