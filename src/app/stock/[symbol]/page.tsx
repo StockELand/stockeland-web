@@ -32,7 +32,7 @@ const CustomTooltip: React.FC<CustomTooltipProps> = ({ data }) => {
     <Card
       title={formatDate(label as Date) || undefined}
       padding="small"
-      className="!w-fit shadow-lg"
+      className="!w-fit shadow-lg z-20"
     >
       <div className="text-sm text-nowrap">
         <p>
@@ -43,9 +43,6 @@ const CustomTooltip: React.FC<CustomTooltipProps> = ({ data }) => {
         </p>
         <p className="text-fall">
           <strong>Low</strong>: {stock.low}
-        </p>
-        <p className="text-signature2">
-          <strong>Volume</strong>: {stock.volume}
         </p>
       </div>
     </Card>
@@ -61,7 +58,7 @@ const CustomTooltip2: React.FC<CustomTooltipProps> = ({ data }) => {
     <Card
       title={formatDate(label as Date) || undefined}
       padding="small"
-      className="!w-fit shadow-lg"
+      className="!w-fit shadow-lg z-20"
     >
       <div className="text-sm text-nowrap">
         <p className="text-signature2">
@@ -136,6 +133,12 @@ export default function StockDetail() {
       </div>
 
       <Card padding="none" className="!w-full mb-4 " variant="bordered">
+        <AnimatedRadio
+          options={rangeOptions}
+          selected={selectedRange}
+          onChange={setSelectedRange}
+          className="z-1 m-2 ml-auto"
+        />
         <div className="h-fit">
           {isLoading ? (
             <div className="h-full flex items-center justify-center">
@@ -160,12 +163,6 @@ export default function StockDetail() {
             </SharedInteractionProvider>
           )}
         </div>
-        <AnimatedRadio
-          options={rangeOptions}
-          selected={selectedRange}
-          onChange={setSelectedRange}
-          className="z-20 m-2 ml-auto"
-        />
       </Card>
 
       <Card

@@ -76,12 +76,17 @@ export function useBarChart<T extends ChartData>(
       .append("rect")
       .attr("class", "bar")
       .attr("x", (d) => xScale(d.label.toString())!)
-      .attr("y", (d) => yScale(d.value))
+      .attr("y", height)
       .attr("width", xScale.bandwidth() * 0.95)
-      .attr("height", (d) => height - yScale(d.value))
+      .attr("height", 0)
       .attr("fill", "currentColor")
       .attr("rx", 2)
-      .attr("ry", 2);
+      .attr("ry", 2)
+      .transition()
+      .duration(500)
+      .ease(d3.easeCubicOut)
+      .attr("y", (d) => yScale(d.value))
+      .attr("height", (d) => height - yScale(d.value));
 
     const { handleUpdateGuideLines, handleResetGuideLines } = drawGuideLines(
       config,
