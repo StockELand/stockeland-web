@@ -4,7 +4,6 @@ import { ChartData, Margin, ChartConfig } from "../types";
 import { drawGuideLines } from "../utils/drawGuideLines";
 import { attachInteraction } from "../utils/attachInteraction";
 import { useChartBase } from "./useChartBase";
-import { useSharedInteraction } from "../../components/SharedInteractionProvider";
 
 export function useLineChart<T extends ChartData>(
   data: T[],
@@ -12,28 +11,35 @@ export function useLineChart<T extends ChartData>(
   height: number,
   margin: Margin
 ) {
-  const xScale = d3
-    .scalePoint()
-    .domain(data.map((d) => d.label.toString()))
-    .range([0, width]);
+  const {
+    svgRef,
+    tooltip,
+    handlePointerMove,
+    handlePointerLeave,
+    sharedData,
+    setSharedData,
+    xScale,
+    yScale,
+    updateGuideLines,
+    resetGuideLines,
+  } = useChartBase(
+    data,
+    width,
+    height,
+    margin,
+    (data, width) =>
+      d3
+        .scalePoint()
+        .domain(data.map((d) => d.label.toString()))
+        .range([0, width]),
+    (data, height) => {
+      const values = data.map((d) => d.value);
+      const yMin = Math.min(...values);
+      const yMax = Math.max(...values);
+      return d3.scaleLinear().domain([yMin, yMax]).nice().range([height, 0]);
+    }
+  );
 
-  const values = data.map((d) => d.value);
-  const yMin = Math.min(...values);
-  const yMax = Math.max(...values);
-  const yRange = yMax - yMin;
-  const yPadding = yRange === 0 ? 5 : yRange * 0.1;
-
-  const yScale = d3
-    .scaleLinear()
-    .domain([yMin - yPadding, yMax + yPadding])
-    .nice()
-    .range([height, 0]);
-
-  const { svgRef, tooltip, handlePointerMove, handlePointerLeave } =
-    useChartBase(margin, xScale, yScale);
-  const { sharedData, setSharedData } = useSharedInteraction();
-
-  // 📌 `ChartConfig` 객체를 useMemo를 사용해 캐싱 (불필요한 재생성 방지)
   const config = useMemo<ChartConfig<T>>(
     () => ({
       svg: d3.select(svgRef.current!),
@@ -87,6 +93,8 @@ export function useLineChart<T extends ChartData>(
 
     const { handleUpdateGuideLines, handleResetGuideLines } =
       drawGuideLines(config);
+    updateGuideLines.current = handleUpdateGuideLines;
+    resetGuideLines.current = handleResetGuideLines;
 
     attachInteraction(
       config,
@@ -110,9 +118,11 @@ export function useLineChart<T extends ChartData>(
       );
       if (matchingData) {
         handlePointerMove(matchingData);
+        updateGuideLines.current(matchingData);
       }
     } else {
       handlePointerLeave();
+      resetGuideLines.current();
     }
   }, [sharedData]);
 

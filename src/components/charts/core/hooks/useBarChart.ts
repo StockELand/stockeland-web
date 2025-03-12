@@ -4,7 +4,6 @@ import { ChartConfig, ChartData, Margin } from "../types";
 import { drawGuideLines } from "../utils/drawGuideLines";
 import { attachInteraction } from "../utils/attachInteraction";
 import { useChartBase } from "./useChartBase";
-import { useSharedInteraction } from "../../components/SharedInteractionProvider";
 
 export function useBarChart<T extends ChartData>(
   data: T[],
@@ -12,31 +11,34 @@ export function useBarChart<T extends ChartData>(
   height: number,
   margin: Margin
 ) {
-  const xScale = useMemo(
-    () =>
+  const {
+    svgRef,
+    tooltip,
+    handlePointerMove,
+    handlePointerLeave,
+    sharedData,
+    setSharedData,
+    xScale,
+    yScale,
+    updateGuideLines,
+    resetGuideLines,
+  } = useChartBase(
+    data,
+    width,
+    height,
+    margin,
+    (data, width) =>
       d3
         .scaleBand()
         .domain(data.map((d) => d.label.toString()))
         .range([0, width]),
-    [data, width]
+    (data, height) => {
+      const values = data.map((d) => d.value);
+      const yMin = Math.min(...values);
+      const yMax = Math.max(...values);
+      return d3.scaleLinear().domain([yMin, yMax]).nice().range([height, 0]);
+    }
   );
-
-  const yScale = useMemo(() => {
-    const values = data.map((d) => d.value);
-    const yMin = Math.min(...values);
-    const yMax = Math.max(...values);
-    const yRange = yMax - yMin;
-    const yPadding = yRange === 0 ? 5 : yRange * 0.1;
-    return d3
-      .scaleLinear()
-      .domain([yMin - yPadding, yMax + yPadding])
-      .nice()
-      .range([height, 0]);
-  }, [data, height]);
-
-  const { svgRef, tooltip, handlePointerMove, handlePointerLeave } =
-    useChartBase(margin, xScale, yScale);
-  const { sharedData, setSharedData } = useSharedInteraction();
 
   const config = useMemo<ChartConfig<T>>(
     () => ({
@@ -85,6 +87,9 @@ export function useBarChart<T extends ChartData>(
       config,
       xOffset
     );
+    updateGuideLines.current = handleUpdateGuideLines;
+    resetGuideLines.current = handleResetGuideLines;
+
     attachInteraction(
       config,
       (closestData) => {
@@ -108,9 +113,11 @@ export function useBarChart<T extends ChartData>(
       );
       if (matchingData) {
         handlePointerMove(matchingData);
+        updateGuideLines.current(matchingData);
       }
     } else {
       handlePointerLeave();
+      resetGuideLines.current();
     }
   }, [sharedData]);
 
