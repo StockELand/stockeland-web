@@ -1,19 +1,18 @@
-import React from "react";
 import clsx from "clsx";
-import { LineChartProps } from "../core/types";
-import { useLineChart } from "./useLineChart";
 import { useChartDimensions } from "../core/hooks/useChartDimensions";
 import Tooltip from "../components/Tooltip";
+import { ChartProps } from "../core/types";
 
-const LineChart = <T extends { label: string | Date; value: number }>({
+const ChartBase = <T extends { label: string | Date; value: number }>({
   data,
+  useChartHook,
   strokeColor = "text-sinature2",
   TooltipComponent,
   className = "",
   margin = { bottom: 10, left: 10, right: 10, top: 10 },
-}: LineChartProps<T>) => {
+}: ChartProps<T>) => {
   const { ref, size, innerSize } = useChartDimensions(margin);
-  const { svgRef, tooltip } = useLineChart(
+  const { svgRef, tooltip } = useChartHook(
     data,
     innerSize.width,
     innerSize.height,
@@ -37,4 +36,4 @@ const LineChart = <T extends { label: string | Date; value: number }>({
   );
 };
 
-export default LineChart;
+export default ChartBase;

@@ -1,2 +1,3 @@
-export { default as LineChart } from "./LineChart/LineChart";
+export { default as LineChart } from "./components/LineChart";
+export * from "./components/SharedInteractionProvider";
 export * from "./core/types";

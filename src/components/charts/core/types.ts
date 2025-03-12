@@ -5,11 +5,15 @@ export interface ChartData {
   [key: string]: any;
 }
 
-export interface ChartProps {
+export interface ChartProps<T extends ChartData = ChartData> {
   width?: number;
   height?: number;
-  margin?: MarginType;
+  margin?: Margin;
   className?: string;
+  useChartHook?: any;
+  data: T[];
+  strokeColor?: string;
+  TooltipComponent?: React.ComponentType<CustomTooltipProps<T>>;
 }
 
 export interface CustomTooltipProps<T extends ChartData = ChartData> {
@@ -18,7 +22,7 @@ export interface CustomTooltipProps<T extends ChartData = ChartData> {
   visible: boolean;
 }
 
-export type MarginType = {
+export type Margin = {
   top: number;
   right: number;
   bottom: number;
@@ -30,17 +34,14 @@ export type Pos2D = {
   y: number;
 };
 
-export interface LineChartProps<T extends ChartData = ChartData>
-  extends ChartProps {
-  data: T[];
-  strokeColor?: string;
-  TooltipComponent?: React.ComponentType<CustomTooltipProps<T>>;
-}
+export type LineChartProps<T extends ChartData = ChartData> = ChartProps<T>;
+
+export type BarChartProps<T extends ChartData = ChartData> = ChartProps<T>;
 
 export interface ChartConfig<T extends ChartData> {
   svg: d3.Selection<SVGSVGElement, unknown, null, undefined>;
   g: d3.Selection<SVGGElement, unknown, null, undefined>;
-  margin: MarginType;
+  margin: Margin;
   width: number;
   height: number;
   xScale: d3.ScalePoint<string>;

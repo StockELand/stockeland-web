@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useCallback, useMemo } from "react";
-import { MarginType } from "../types";
+import { Margin } from "../types";
 
-export function useChartDimensions(margin: MarginType) {
+export function useChartDimensions(margin: Margin) {
   const ref = useRef<HTMLDivElement>(null!);
   const [size, setSize] = useState<{ width: number; height: number } | null>(
     null
