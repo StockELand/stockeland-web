@@ -67,8 +67,7 @@ export function useBarChart<T extends ChartData>(
     config.svg = svg;
     config.g = g;
 
-    // const xOffset = xScale.bandwidth() / 2;
-    const xOffset = 0;
+    const xOffset = xScale.bandwidth() / 2;
 
     g.selectAll(".bar")
       .data(data)

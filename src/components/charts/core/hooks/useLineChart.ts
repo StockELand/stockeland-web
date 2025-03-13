@@ -27,11 +27,13 @@ export function useLineChart<T extends ChartData>(
     width,
     height,
     margin,
-    (data, width) =>
-      d3
+    (data, width) => {
+      const stepSize = width / data.length;
+      return d3
         .scalePoint()
         .domain(data.map((d) => d.label.toString()))
-        .range([0, width]),
+        .range([0 + stepSize / 2, width - stepSize / 2]);
+    },
     (data, height) => {
       const values = data.map((d) => d.value);
       const yMin = Math.min(...values);
