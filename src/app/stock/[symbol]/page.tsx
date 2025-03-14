@@ -139,7 +139,7 @@ export default function StockDetail() {
           onChange={setSelectedRange}
           className="z-1 m-2 ml-auto"
         />
-        <div className="h-fit">
+        <div className="h-[360px]">
           {isLoading ? (
             <div className="h-full flex items-center justify-center">
               <p>Loading Chart...</p>
@@ -171,7 +171,7 @@ export default function StockDetail() {
         padding="none"
       >
         {isLoading ? (
-          <div className="h-[200px] flex items-center justify-center text-signature2">
+          <div className="h-[200px] flex items-center justify-center">
             <p>Loading Data...</p>
           </div>
         ) : (
